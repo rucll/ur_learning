@@ -7,8 +7,10 @@ Free Software Foundation; either version 3 of the License, or (at your
 option) any later version.
 """
 
-from sigmapie.fst_object import *
-from sigmapie.helper import *
+# from sigmapie.fst_object import *
+# from sigmapie.helper import *
+from fst_object import *
+from helper import *
 
 
 def ostia(S, Sigma, Gamma):
