@@ -45,7 +45,7 @@ class FST:
 
         # move through the transducer and write the output
         result = ""
-        current_state = ""
+        current_state = self.qe
         moved = False
         for i in range(len(w)):
             for tr in self.E:
