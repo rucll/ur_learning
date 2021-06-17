@@ -21,6 +21,12 @@ def get_OS(T,q):
     return suffs
 
 
+def lncat(w,v):
+    """Returns wv^-1; i.e. v removed from the end of w"""
+    if w.endswith(v):
+        return w[0:-len(v)]
+
+
 # Main algorithm
 
 def si2dla(D,Rho,Sigma):
@@ -43,7 +49,8 @@ def si2dla(D,Rho,Sigma):
 
     print("OSs for T_f:\t"+str(OS))
 
-    # construct T_g
+    #*** construct T_g
+
     Q_g = ["qe","qd"]
 
     corr = {}
@@ -63,4 +70,45 @@ def si2dla(D,Rho,Sigma):
     print("corr:\t\t"+str(corr))
     # print("rroc:\t\t"+str(rroc))
 
-    # return OS
+    IS = { "qe" : OS[corr["qe"]],
+           "qd" : OS[corr["qd"]]
+    }
+
+    if len(IS["qe"]) > 1:
+        IS["qe"] = IS["qe"] - (IS["qe"] & IS["qd"])
+    IS["qd"] = IS["qd"] - (IS["qe"] & IS["qd"])
+
+    print("ISs for T_g:\t"+str(IS))
+
+
+    d_g = {}
+
+    for q in Q_g:
+        for s in Sigma:
+            for r in Q_g:
+                if s in IS[r]:
+                    d_g[(q,s)] = r
+
+    print("d_g:\t"+str(d_g))
+
+    o_g = {}
+
+    for s in Sigma:
+        o_g[("q_d",s)] = s
+
+        d_tr = [ tr for tr in T_f.E if tr[0] == corr["qd"] and tr[2][0] == s ][0]
+
+        w_d = d_tr[2]
+
+        w_e = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]][0]
+
+        o_g[("q_e",s)] = lncat(w_e,w_d[1:])
+
+        # print(w_d," ",w_e)
+
+    print("o_g:\t"+str(o_g))
+
+
+    T_g = FST(Rho,Sigma)
+
+    return (T_f,T_g)
