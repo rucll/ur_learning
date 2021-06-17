@@ -80,7 +80,6 @@ def si2dla(D,Rho,Sigma):
 
     print("ISs for T_g:\t"+str(IS))
 
-
     d_g = {}
 
     for q in Q_g:
@@ -89,12 +88,12 @@ def si2dla(D,Rho,Sigma):
                 if s in IS[r]:
                     d_g[(q,s)] = r
 
-    print("d_g:\t"+str(d_g))
+    # print("d_g:\t"+str(d_g))
 
     o_g = {}
 
     for s in Sigma:
-        o_g[("q_d",s)] = s
+        o_g[("qd",s)] = s
 
         d_tr = [ tr for tr in T_f.E if tr[0] == corr["qd"] and tr[2][0] == s ][0]
 
@@ -102,13 +101,30 @@ def si2dla(D,Rho,Sigma):
 
         w_e = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]][0]
 
-        o_g[("q_e",s)] = lncat(w_e,w_d[1:])
+        o_g[("qe",s)] = lncat(w_e,w_d[1:])
 
         # print(w_d," ",w_e)
 
-    print("o_g:\t"+str(o_g))
+    # print("o_g:\t"+str(o_g))
 
+    # Translate transitions into fst_object FST format
+    E_g = []
+
+    for (q,s) in d_g.keys():
+        E_g.append((q,s,o_g[(q,s)],d_g[(q,s)]))
+
+    # print("E_g:\t"+str(E_g))
 
     T_g = FST(Rho,Sigma)
+    T_g.Q = Q_g
+    T_g.E = E_g
+    T_g.qe = rroc[q1]
+    T_g.stout = { "qe" : T_f.stout[corr["qe"]], "qd" : T_f.stout[corr["qd"]] }
+
+    print("Hypothesis for T_g:")
+    print("  Q:\t"+str(T_g.Q))
+    print("  E:\t"+str(T_g.E))
+    print("  q0:\t"+str(T_g.qe))
+    print("  stout:\t"+str(T_g.stout))
 
     return (T_f,T_g)
