@@ -26,4 +26,4 @@ D = [
     ("zz", "bcaaca"),
 ]
 
-si2dla(D,["w","x","y","z"],["a","b","c"])
+T_f, T_g = si2dla(D,["w","x","y","z"],["a","b","c"])
