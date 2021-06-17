@@ -26,9 +26,4 @@ D = [
     ("zz", "bcaaca"),
 ]
 
-T_f = si2dla(D,["w","x","y","z"],["a","b","c"])
-
-print(T_f.Q)
-print(T_f.E)
-print(T_f.qe)
-print(T_f.stout)
+si2dla(D,["w","x","y","z"],["a","b","c"])
