@@ -156,6 +156,7 @@ def si2dla(D,Rho,Sigma):
 
     print("Merging...\n")
 
+    T_f.Q = [corr["qd"]]
     T_f.qe = corr["qd"]
     T_f.stout = {corr["qd"]:T_f.stout[corr["qe"]]}
 
