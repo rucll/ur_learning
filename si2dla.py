@@ -111,9 +111,6 @@ def si2dla(D,Rho,Sigma):
             tau = s
             w_tau = w_s
 
-        # print(w_d," ",w_e)
-
-    # print("o_g:\t"+str(o_g))
 
     # Translate transitions into fst_object FST format
     E_g = []
