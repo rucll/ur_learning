@@ -32,13 +32,15 @@ def lncat(w,v):
 def si2dla(D,Rho,Sigma):
     """Implements SI2LDA from Hua & Jardine 2021"""
 
+    print("Learning from "+str(D)+"\n")
+
     T_f = ostia(D,Rho,Sigma)
 
     print("Initial hypothesis for T_f:")
     print("  Q:\t"+str(T_f.Q))
     print("  E:\t"+str(T_f.E))
     print("  q0:\t"+str(T_f.qe))
-    print("  stout:\t"+str(T_f.stout))
+    print("  stout:\t"+str(T_f.stout)+"\n")
 
     q1 = T_f.Q[0]
     q2 = T_f.Q[1]
@@ -49,7 +51,7 @@ def si2dla(D,Rho,Sigma):
 
     print("OSs for T_f:\t"+str(OS))
 
-    #*** construct T_g
+    #*** construct_T_g
 
     Q_g = ["qe","qd"]
 
@@ -78,7 +80,7 @@ def si2dla(D,Rho,Sigma):
         IS["qe"] = IS["qe"] - (IS["qe"] & IS["qd"])
     IS["qd"] = IS["qd"] - (IS["qe"] & IS["qd"])
 
-    print("ISs for T_g:\t"+str(IS))
+    print("ISs for T_g:\t"+str(IS)+"\n")
 
     d_g = {}
 
@@ -101,7 +103,13 @@ def si2dla(D,Rho,Sigma):
 
         w_e = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]][0]
 
-        o_g[("qe",s)] = lncat(w_e,w_d[1:])
+        w_s = lncat(w_e,w_d[1:])
+
+        o_g[("qe",s)] = w_s
+
+        if s != w_s: #This is lns 2-3 from Alg 3
+            tau = s
+            w_tau = w_s
 
         # print(w_d," ",w_e)
 
@@ -125,6 +133,36 @@ def si2dla(D,Rho,Sigma):
     print("  Q:\t"+str(T_g.Q))
     print("  E:\t"+str(T_g.E))
     print("  q0:\t"+str(T_g.qe))
-    print("  stout:\t"+str(T_g.stout))
+    print("  stout:\t"+str(T_g.stout)+"\n")
+
+
+    #*** modify_T_f
+
+    T_f.E = [ d for d in T_f.E if not d[0]==corr["qe"]]
+
+    print("E_f after deletions: "+str(T_f.E)+"\n")
+
+    new_E = []
+
+    for (q,rho,w,r) in T_f.E:
+        if q == corr["qd"]:
+            if suff_1(w) not in IS[rroc[r]]:
+                w = lncat(w,w_tau)+tau
+        new_E.append((q,rho,w,q)) #Step 1 of merging is here too
+
+    T_f.E = new_E
+
+    print("E_f after opacity adjustment: "+str(T_f.E)+"\n")
+
+    print("Merging...\n")
+
+    T_f.qe = corr["qd"]
+    T_f.stout = {corr["qd"]:T_f.stout[corr["qe"]]}
+
+    print("Final hypothesis for T_f:")
+    print("  Q:\t"+str(T_f.Q))
+    print("  E:\t"+str(T_f.E))
+    print("  q0:\t"+str(T_f.qe))
+    print("  stout:\t"+str(T_f.stout)+"\n")
 
     return (T_f,T_g)
