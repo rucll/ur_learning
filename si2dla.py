@@ -23,7 +23,9 @@ def get_OS(T,q):
 
 def lncat(w,v):
     """Returns wv^-1; i.e. v removed from the end of w"""
-    if w.endswith(v):
+    if v == "":
+        return w
+    elif w.endswith(v):
         return w[0:-len(v)]
 
 
@@ -102,6 +104,9 @@ def si2dla(D,Rho,Sigma):
         w_d = d_tr[2]
 
         w_e = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]][0]
+
+        print("w_d for "+s+":\t"+w_d)
+        print("w_e for "+s+":\t"+w_e+"\n")
 
         w_s = lncat(w_e,w_d[1:])
 
