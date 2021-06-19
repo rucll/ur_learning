@@ -2,7 +2,7 @@ from si2dla import *
 
 # Example 1 from Hua & Jardine 2021
 
-D = [
+D1 = [
     ("",""),
     ("w","aa"),
     ("x","cbcb"),
@@ -26,11 +26,12 @@ D = [
     ("zz", "bcaaca"),
 ]
 
-T_f, T_g = si2dla(D,["w","x","y","z"],["a","b","c"])
+R1 = ["w","x","y","z"]
+S1 = ["a","b","c"]
 
 
 # Assimilation
-D = [
+D2 = [
     ("1", "tat"),
     ("2", "a"),
     ("3", "tad"),
@@ -76,4 +77,43 @@ D = [
 ]
 
 
-T_f, T_g = si2dla(D,["1","2","3","4","A","B"],["a","d","t"])
+R2 = ["1","2","3","4","A","B"]
+S2 = ["a","d","t"]
+
+
+# Deletion (t -> 0 / t _ )
+D3 = [
+    ("1", "tat"),
+    ("2", "a"),
+    ("3", "tad"),
+    ("A", "ta"),
+    ("B", "da"),
+    ("11", "tatat"),
+    ("12", "tata"),
+    ("13", "tatad"),
+    ("1A", "tata"),
+    ("1B", "tatda"),
+    ("21", "atat"),
+    ("22", "aa"),
+    ("23", "atad"),
+    ("2A", "ata"),
+    ("2B", "ada"),
+    ("31", "tadtat"),
+    ("32", "tada"),
+    ("33", "tadtad"),
+    ("3A", "tadta"),
+    ("3B", "tadda"),
+    ("A1", "tatat"),
+    ("A2", "taa"),
+    ("A3", "tatad"),
+    ("AA", "tata"),
+    ("AB", "tada"),
+    ("B1", "datat"),
+    ("B2", "daa"),
+    ("B3", "datad"),
+    ("BA", "data"),
+    ("BB", "dada"),
+]
+
+
+T_f, T_g = si2dla(D3,R2,S2)
