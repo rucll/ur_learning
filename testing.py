@@ -1,6 +1,8 @@
 from si2dla import *
 from experimental import * 
 
+## ISL data
+
 # Example 1 from Hua & Jardine 2021
 
 D1 = [
@@ -75,6 +77,8 @@ D2 = [
     ("B4", "datadd"),
     ("BA", "data"),
     ("BB", "dada"),
+    ("333", "taddaddad"), #This appears necessary to get 3 to go to state 3 instead of state ''
+    ("444", "taddtaddtadd"),
 ]
 
 
@@ -166,4 +170,43 @@ D4 = [
     # ("BB", "dada"),
 ]
 
-T_f, T_g = si2dla_ex(D2,R2,S2)
+
+## OSL data
+
+# Assimilation
+D5 = [
+    ("1", "tat"),
+    ("2", "a"),
+    ("3", "tad"),
+    ("A", "ta"),
+    ("B", "da"),
+    ("11", "tattat"),
+    ("12", "tata"),
+    ("13", "tattad"),
+    ("1A", "tatta"),
+    ("1B", "tatda"),
+    ("21", "atat"),
+    ("22", "aa"),
+    ("23", "atad"),
+    ("2A", "ata"),
+    ("2B", "ada"),
+    ("31", "taddat"),
+    ("32", "tada"),
+    ("33", "taddad"),
+    ("3A", "tadda"),
+    ("3B", "tadda"),
+    ("A1", "tatat"),
+    ("A2", "taa"),
+    ("A3", "tatad"),
+    ("AA", "tata"),
+    ("AB", "tada"),
+    ("B1", "datat"),
+    ("B2", "daa"),
+    ("B3", "datad"),
+    ("BA", "data"),
+    ("BB", "dada"),
+    ("333", "taddaddad"), #This appears necessary to get 3 to go to state 3 instead of state ''
+]
+
+iT_f, iT_g = si2dla_ex(D2,R2,S2)
+oT_f, oT_g = so2dla_ex(D5,R2,S2)
