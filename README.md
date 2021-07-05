@@ -5,6 +5,12 @@ Algorithms based on subregular hypothesis for induction of phonological grammars
 
 The Simplex Input Strictly 2-Local Decomposition Learning Algorithm of [Hua & Jardine 2021](https://github.com/rucll/ur_learning/blob/main/papers/huajardine2021si2dla.pdf) is implemented in `si2dla.py`.
 
-Experimental versions of the algorithm are in `experimental.py`. 
+Other files are experimental variations on this algorithm:
+
+File  | Description 
+-- | --
+`so2dla.py` | An Output Strictly 2-local version of the SI2DLA
+`fsi2dla.py` | A featural version of the SI2DLA 
+`features.py` | Some code to work with features
 
 The file `testing.py` contains some test data sets; this can be run from the command line to see how the algorithms perform.

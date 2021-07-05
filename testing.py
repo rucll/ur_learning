@@ -1,5 +1,6 @@
 from si2dla import *
-from experimental import * 
+from so2dla import *
+from fsi2dla import *
 
 ## ISL data
 
@@ -210,3 +211,25 @@ D5 = [
 
 iT_f, iT_g = si2dla_ex(D2,R2,S2)
 oT_f, oT_g = so2dla_ex(D5,R2,S2)
+
+
+
+S3 = ["t","k","a","d","g"]
+F3 = { 't': frozenset({"-s","-v","-b"}),
+       'd': frozenset({"-s","+v","-b"}),
+       'a': frozenset({"+s","+b"}),
+       'k': frozenset({"-s","-v","+b"}),
+       'g': frozenset({"-s","+v","+b"}),
+}
+
+T3 = FFST()
+T3.Q = ["0","1"]
+T3.qe = "0"
+T3.E = [("0",{"-v"},{"-v"},"0"),
+        ("0",{"+s"},{"+s"},"0"),
+        ("0",{"-s","+v"},{"-s","+v"},"1"),
+        ("1",{"-v"},{"+v"},"0"),
+        ("1",{"+s","+v"},{"+s","+v"},"0"),
+        ("1",{"-s","+v"},{"-s","+v"},"1"),
+        ]
+T3.stout = {"0":set([]),"1":set([])}
