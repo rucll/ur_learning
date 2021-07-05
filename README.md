@@ -9,7 +9,7 @@ Other files are experimental variations on this algorithm:
 
 File  | Description 
 -- | --
-`so2dla.py` | An Output Strictly 2-local version of the SI2DLA
+`so2dla.py` | An [Output Strictly 2-Local](https://aclanthology.org/W15-2310/) version of the SI2DLA
 `fsi2dla.py` | A featural version of the SI2DLA 
 `features.py` | Some code to work with features
 
