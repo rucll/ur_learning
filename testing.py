@@ -209,10 +209,11 @@ D5 = [
     ("333", "taddaddad"), #This appears necessary to get 3 to go to state 3 instead of state ''
 ]
 
-iT_f, iT_g = si2dla_ex(D2,R2,S2)
-oT_f, oT_g = so2dla_ex(D5,R2,S2)
+# iT_f, iT_g = si2dla_ex(D2,R2,S2)
+# oT_f, oT_g = so2dla_ex(D5,R2,S2)
 
 
+## For testing FSI2DLA
 
 S3 = ["t","k","a","d","g"]
 F3 = { 't': frozenset({"-s","-v","-b"}),
@@ -220,6 +221,7 @@ F3 = { 't': frozenset({"-s","-v","-b"}),
        'a': frozenset({"+s","+b"}),
        'k': frozenset({"-s","-v","+b"}),
        'g': frozenset({"-s","+v","+b"}),
+       '': frozenset({"#"}),
 }
 
 T3 = FFST()
@@ -233,3 +235,65 @@ T3.E = [("0",{"-v"},{"-v"},"0"),
         ("1",{"-s","+v"},{"-s","+v"},"1"),
         ]
 T3.stout = {"0":set([]),"1":set([])}
+
+D6 = [
+    ("1", "tat"),
+    ("2", "a"),
+    ("3", "tad"),
+    ("4", "tag"),
+    ("A", "ta"),
+    ("B", "da"),
+    ("C", "ka"),
+    ("11", "tattat"),
+    ("12", "tata"),
+    ("13", "tattad"),
+    ("14", "tattag"),
+    ("1A", "tatta"),
+    ("1B", "tatda"),
+    ("1C", "tatka"),
+    ("21", "atat"),
+    ("22", "aa"),
+    ("23", "atad"),
+    ("24", "atag"),
+    ("2A", "ata"),
+    ("2B", "ada"),
+    ("2C", "aka"),
+    ("31", "taddat"),
+    ("32", "tada"),
+    ("33", "taddad"),
+    ("34", "taddag"),
+    ("3A", "tadda"),
+    ("3B", "tadda"),
+    ("3C", "tadga"),
+    ("41", "tagdat"),
+    ("42", "taga"),
+    ("43", "tagdad"),
+    ("44", "tagdag"),
+    ("4A", "tagda"),
+    ("4B", "tagda"),
+    ("4C", "tagga"),
+    ("A1", "tatat"),
+    ("A2", "taa"),
+    ("A3", "tatad"),
+    ("A4", "tatag"),
+    ("AA", "tata"),
+    ("AB", "tada"),
+    ("AC", "taka"),
+    ("B1", "datat"),
+    ("B2", "daa"),
+    ("B3", "datad"),
+    ("B4", "datag"),
+    ("BA", "data"),
+    ("BB", "dada"),
+    ("BC", "daka"),
+    ("C1", "katat"),
+    ("C2", "kaa"),
+    ("C3", "katad"),
+    ("C4", "katag"),
+    ("CA", "kata"),
+    ("CB", "kada"),
+    ("CC", "kaka"),
+]
+
+# FT_f, FT_g = fsi2dla(D6,R2,S3,F3)
+T_f, T_g = si2dla(D1,R1,S1)
