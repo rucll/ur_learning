@@ -7,10 +7,11 @@ The Simplex Input Strictly 2-Local Decomposition Learning Algorithm of [Hua & Ja
 
 Other files are experimental variations on this algorithm:
 
-File  | Description 
+File  | Description
 -- | --
 `so2dla.py` | An [Output Strictly 2-Local](https://aclanthology.org/W15-2310/) version of the SI2DLA
-`fsi2dla.py` | A featural version of the SI2DLA 
+`fsi2dla.py` | A featural version of the SI2DLA
 `features.py` | Some code to work with features
+`kcxt.py` | Classify PBase pattern data by k-contexts
 
 The file `testing.py` contains some test data sets; this can be run from the command line to see how the algorithms perform.
