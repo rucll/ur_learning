@@ -20,8 +20,8 @@ def suff_1(w):
 
 def get_OS(T,q):
     """Gets output 1-suffixes of state q in FST T"""
-    incoming = { tr for tr in T.E if tr[3] == q}
-    outs = { tr[2] for tr in incoming}
+    incoming = { tr for tr in T.E if tr[3] == q}    # n: tr[3] is the ending state of the edge
+    outs = { tr[2] for tr in incoming}  # n: tr[2] is the output string of the edge
     suffs = { suff_1(w) for w in outs}
     return suffs
 
@@ -44,15 +44,15 @@ def si2dla(D,Rho,Sigma):
     T_f = ostia(D,Rho,Sigma)
 
     print("Initial hypothesis for T_f:")
-    print("  Q:\t"+str(T_f.Q))
-    print("  E:\t"+str(T_f.E))
-    print("  q0:\t"+str(T_f.qe))
-    print("  stout:\t"+str(T_f.stout)+"\n")
+    print("  Q:\t"+str(T_f.Q))  # n: set of states
+    print("  E:\t"+str(T_f.E))  # n: set of edges (starting state, input char, output string, ending state)
+    print("  q0:\t"+str(T_f.qe))    # n: initial state
+    print("  stout:\t"+str(T_f.stout)+"\n") # n: state outputs (state, output)
 
-    q1 = T_f.Q[0]
-    q2 = T_f.Q[1]
+    q1 = T_f.Q[0]   # n: state 1
+    q2 = T_f.Q[1]   # n: state 2
 
-    OS = { q1 : get_OS(T_f,q1) | {""},
+    OS = { q1 : get_OS(T_f,q1) | {""},  # n: list of incoming output strings' suffixes per state
            q2 : get_OS(T_f,q2)
     }
 
@@ -65,8 +65,8 @@ def si2dla(D,Rho,Sigma):
     corr = {}
     rroc = {}
 
-    if len(OS[q1]) < len(OS[q2]):
-        corr["qe"] = q1
+    if len(OS[q1]) < len(OS[q2]): # n: if first state has more possible incoming suffixes, it is the the definition state, otherwise it is the environment state
+        corr["qe"] = q1           # n: (essentially deciding which state is based on environment)
         corr["qd"] = q2
         rroc[q1] = "qe"
         rroc[q2] = "qd"
@@ -79,12 +79,12 @@ def si2dla(D,Rho,Sigma):
     print("corr:\t\t"+str(corr))
     # print("rroc:\t\t"+str(rroc))
 
-    IS = { "qe" : OS[corr["qe"]],
+    IS = { "qe" : OS[corr["qe"]], # n: (essentially deciding which suffixes are based on environment)
            "qd" : OS[corr["qd"]]
     }
 
     if len(IS["qe"]) > 1:
-        IS["qe"] = IS["qe"] - (IS["qe"] & IS["qd"])
+        IS["qe"] = IS["qe"] - (IS["qe"] & IS["qd"])  # n: removing duplicates from both def and env state
     IS["qd"] = IS["qd"] - (IS["qe"] & IS["qd"])
 
     print("ISs for T_g:\t"+str(IS)+"\n")
@@ -97,11 +97,11 @@ def si2dla(D,Rho,Sigma):
                 if s in IS[r]:
                     d_g[(q,s)] = r
 
-    # print("d_g:\t"+str(d_g))
+    print("d_g:\t"+str(d_g))    # n: (start state, suffix) : end state based on suffix
 
     o_g = {}
 
-    for s in Sigma:
+    for s in Sigma:   # check for no change
         o_g[("qd",s)] = s
 
         d_tr = [ tr for tr in T_f.E if tr[0] == corr["qd"] and tr[2][0] == s ][0]

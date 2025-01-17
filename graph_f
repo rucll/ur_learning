@@ -1,0 +1,7 @@
+digraph graph_f {
+	graph [center=true rankdir=LR]
+	node [fillcolor=gray90 fontname="Times-Roman" fontsize="12pt" shape=circle]
+	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
+	""
+	"" -> "" [label="2: ia\nA: olo\nB: lafo\nC: ana\nD: usu\nE: tau\nF: lele\nG: su?e\nH: tafe\n"]
+}

@@ -1,0 +1,11 @@
+digraph graph_g {
+	graph [center=true rankdir=LR]
+	node [fillcolor=gray90 fontname="Times-Roman" fontsize="12pt" shape=circle]
+	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
+	qe
+	qd
+	qe -> qd [label="o: o\nl: l\na: a\nf: f\nn: n\nu: u\ns: s\nt: t\n?: ?\ni: i\n\n"]
+	qe -> qe [label="e: e\n\n"]
+	qd -> qd [label="o: o\nl: l\na: a\nf: f\nn: n\nu: u\ns: s\nt: t\n?: ?\ni: i\n\n"]
+	qd -> qe [label="e: e\n\n"]
+}
