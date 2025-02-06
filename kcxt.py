@@ -2,7 +2,7 @@
 import csv, sys
 
 # cxt   3 2 1 0 _ 0 1 2 3
-# k       2 3 4 5 6 7 8 9
+# k     _ 2 3 4 5 6 7 8 9
 kcxt = [0,0,0,0,0,0,0,0,0]; # max size is 9
 
 t = 0;

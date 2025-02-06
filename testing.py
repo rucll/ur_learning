@@ -1,6 +1,8 @@
 from si2dla import *
 from so2dla import *
 from fsi2dla import *
+from idla import *
+from data import flap,yawelmani
 
 ## ISL data
 
@@ -296,4 +298,10 @@ D6 = [
 ]
 
 # FT_f, FT_g = fsi2dla(D6,R2,S3,F3)
-T_f, T_g = si2dla(D1,R1,S1)
+#T_f, T_g = si2dla(D1,R1,S1)
+
+f,g = idla(yawelmani.Data, yawelmani.Sigma, yawelmani.Gamma);
+#f,g = idla(flap.Data, flap.Sigma, flap.Gamma);
+#f,g = idla(D1, R1, S1);
+print(f.E);
+print(g.E);
