@@ -3,9 +3,9 @@ Algorithms based on subregular hypothesis for induction of phonological grammars
 
 `ostia.py`, `fst_object.py`, and `helper.py` courtesy of [@alenaks](https://github.com/alenaks)'s SigmaPie package.
 
-The Simplex Input Strictly 2-Local Decomposition Learning Algorithm of [Hua & Jardine 2021](https://github.com/rucll/ur_learning/blob/main/papers/huajardine2021si2dla.pdf) is implemented in `si2dla.py`.
+The Simplex Input Strictly 2-Local Decomposition Learning Algorithm of [Hua & Jardine 2021](https://github.com/rucll/ur_learning/blob/main/papers/huajardine2021si2dla.pdf) is implemented in [si2dla.py](si2dla.py).
 
-The Input (Strictly Local) Decomposition Learning Algorithm (To Appear) is implemented in `idla.py`.
+The Input (Strictly Local) Decomposition Learning Algorithm (To Appear) is implemented in [idla.py](idla.py).
 
 Other files are experimental variations on this algorithm:
 
