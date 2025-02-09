@@ -9,7 +9,6 @@ option) any later version.
 
 from copy import deepcopy
 
-
 class FST:
     """A class representing finite state transducers.
 

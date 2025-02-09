@@ -2,38 +2,10 @@ from si2dla import *
 from so2dla import *
 from fsi2dla import *
 from idla import *
-from data import flap,yawelmani
+from data import flap, yawelmani, huajardine, zapotec
 
 ## ISL data
 
-# Example 1 from Hua & Jardine 2021
-
-D1 = [
-    ("",""),
-    ("w","aa"),
-    ("x","cbcb"),
-    ("y","bc"),
-    ("z","bca"),
-    ("ww","aaaa"),
-    ("wx", "aacbcb"),
-    ("wy", "aabc"),
-    ("wz", "aabca"),
-    ("xw", "cbcbaa"),
-    ("xx", "cbcbcbcb"),
-    ("xy", "cbcbbc"),
-    ("xz", "cbcbbca"),
-    ("yw", "bcaa"),
-    ("yx", "bccbcb"),
-    ("yy", "bcbc"),
-    ("yz", "bcbca"),
-    ("zw", "bcaaa"),
-    ("zx", "bcacbcb"),
-    ("zy", "bcaac"),
-    ("zz", "bcaaca"),
-]
-
-R1 = ["w","x","y","z"]
-S1 = ["a","b","c"]
 
 
 # Assimilation
@@ -299,9 +271,17 @@ D6 = [
 
 # FT_f, FT_g = fsi2dla(D6,R2,S3,F3)
 #T_f, T_g = si2dla(D1,R1,S1)
+def print_edge(E, name):
+	print("="*12, name, "="*12);
+	for e in E:
+		print(f"\t{e}");
 
-f,g = idla(yawelmani.Data, yawelmani.Sigma, yawelmani.Gamma);
-#f,g = idla(flap.Data, flap.Sigma, flap.Gamma);
-#f,g = idla(D1, R1, S1);
-print(f.E);
-print(g.E);
+for x in [yawelmani, flap, huajardine]:
+	f, g = idla(x.Data, x.Sigma, x.Gamma);
+	print_edge(f.E, "f");
+	print_edge(g.E, "g");
+
+	for i, o in x.Data:
+		print(f"checking: {i} -> {o}");
+		assert(g.rewrite(f.rewrite(i)) == o);
+	print("All checks passed!");
