@@ -46,15 +46,15 @@ def si2dla(D,Rho,Sigma):
     T_f = ostia(D,Rho,Sigma)
 
     print("Initial hypothesis for T_f:")
-    print("  Q:\t"+str(T_f.Q))
-    print("  E:\t"+str(T_f.E))
-    print("  q0:\t"+str(T_f.qe))
-    print("  stout:\t"+str(T_f.stout)+"\n")
+    print("  Q:\t"+str(T_f.Q))  # n: set of states
+    print("  E:\t"+str(T_f.E))  # n: set of edges (starting state, input char, output string, ending state)
+    print("  q0:\t"+str(T_f.qe))    # n: initial state
+    print("  stout:\t"+str(T_f.stout)+"\n") # n: state outputs (state, output)
+    
+    q1 = T_f.Q[0]   # n: state 1
+    q2 = T_f.Q[1]   # n: state 2
 
-    q1 = T_f.Q[0]
-    q2 = T_f.Q[1]
-
-    OS = { q1 : get_OS(T_f,q1) | {""},
+    OS = { q1 : get_OS(T_f,q1) | {""},  # n: list of incoming output strings' suffixes per state
            q2 : get_OS(T_f,q2)
     }
 
@@ -67,8 +67,8 @@ def si2dla(D,Rho,Sigma):
     corr = {}
     rroc = {}
 
-    if len(OS[q1]) < len(OS[q2]):
-        corr["qe"] = q1
+    if len(OS[q1]) < len(OS[q2]): # n: if first state has more possible incoming suffixes, it is the the definition state, otherwise it is the environment state
+        corr["qe"] = q1           # n: (essentially deciding which state is based on environment)
         corr["qd"] = q2
         rroc[q1] = "qe"
         rroc[q2] = "qd"
@@ -81,11 +81,11 @@ def si2dla(D,Rho,Sigma):
     print("corr:\t\t"+str(corr))
     # print("rroc:\t\t"+str(rroc))
 
-    IS = { "qe" : OS[corr["qe"]],
+    IS = { "qe" : OS[corr["qe"]], # n: (essentially deciding which suffixes are based on environment)
            "qd" : OS[corr["qd"]]
     }
 
-    if len(IS["qe"]) > 1:
+    if len(IS["qe"]) > 1:   # n: removing duplicates from both def and env state suffixes
         IS["qe"] = IS["qe"] - (IS["qe"] & IS["qd"])
     IS["qd"] = IS["qd"] - (IS["qe"] & IS["qd"])
 
@@ -107,14 +107,14 @@ def si2dla(D,Rho,Sigma):
             #    if s in IS[r]:
             #        d_g[(q,s)] = r
 
-    print("d_g:\t"+str(d_g))
+    print("d_g:\t"+str(d_g)+"\n")
 
     o_g = {}
 
     for s in Sigma:
         o_g[("qd",s)] = s
 
-        print 's',s
+        #print('s',s)
 
         # Second modification: first check whether a transition on s even exists... 
         find_tran = [ tr for tr in T_f.E if tr[0] == corr["qd"] and tr[2][0] == s ]
@@ -122,7 +122,7 @@ def si2dla(D,Rho,Sigma):
 
             #...if it does, follow original code
             d_tr = find_tran[0]
-            print 'd_tr',d_tr
+            #print('d_tr',d_tr)
 
             w_d = d_tr[2]
 
@@ -141,7 +141,7 @@ def si2dla(D,Rho,Sigma):
             w_s = lncat(w_e,w_d[1:])
             if not w_s:
                 w_s = s
-            print 'w_s',w_s
+            #print('w_s', w_s)
 
             o_g[("qe",s)] = w_s
 
@@ -204,7 +204,7 @@ def si2dla(D,Rho,Sigma):
     print("  q0:\t"+str(T_f.qe))
     print("  stout:\t"+str(T_f.stout)+"\n")
 
-    return (T_f,T_g)
+    return (T_f,T_g) 
 
 
 
