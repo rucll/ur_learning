@@ -161,12 +161,14 @@ def execute_algorithm(D_list, R_value, S_value):
         graph_f.render(directory='gui_files', filename='graph_f').replace('\\', '/')
         graph_g.render(directory='gui_files', filename='graph_g').replace('\\', '/')
 
-        img_f = ImageTk.PhotoImage(Image.open("graph_f.png"))
+        root_dir = pathlib.Path(__file__).resolve().parent
+
+        img_f = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_f.png"))
         global_image_list.append(img_f)
         imglabel_f = Label(mainframe, image=img_f)
         imglabel_f.grid(column=2, row=2, padx=16)
         
-        img_g = ImageTk.PhotoImage(Image.open("graph_g.png"))
+        img_g = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_g.png"))
         global_image_list.append(img_g)
         imglabel_g = Label(mainframe, image=img_g)
         imglabel_g.grid(column=3, row=2, padx=16)
