@@ -13,9 +13,9 @@ Data = [
 	("AA", "tara"),
 	#("AB", "tat"), #*
 	#("AC", "taa"), #*
-	("AD", "taara"),
+	#("AD", "taara"),
 
-	("BA", "tta"),
+	#("BA", "tta"),
 	#("BB", "tt"), #*
 	#("BC", "ta"), #*
 	#("BD", "tara"), #*
@@ -25,15 +25,15 @@ Data = [
 	#("CC", "aa"), #*
 	#("CD", "aara"), #*
 
-	("DA", "arara"),
+	#("DA", "arara"),
 	#("DB", "arat"), #*
 	#("DC", "araa"), #*
 	#("DD", "araara"), #*
 # 4^3
 	("CBC", "ara"),
-	("CBA", "atta"),
-	("CBB", "att"),
-	("AAA", "tarara"),
+	#("CBA", "atta"),
+	#("CBB", "att"),
+	#("AAA", "tarara"),
 	#("ABA", "tatta"),
 	#("ACA", "taara"),
 	#("ADA", "taarara"),

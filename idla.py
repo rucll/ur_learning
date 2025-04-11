@@ -19,8 +19,8 @@ def pref(w):
 def suff(w):
 	return {w[j:] for j in range(len(w) + 1)};
 
-# wedge
-def wedge(S):
+# supp
+def supp(S):
 	s = "";
 	for sp in S:
 		if len(sp) > len(s):
@@ -37,7 +37,7 @@ def lcp(S):
 		Sp = Sp | pref(w);
 	for w in S: # common set of prefixes
 		Sp = Sp & pref(w);
-	return wedge(Sp);
+	return supp(Sp);
 
 # Longest Common Suffix
 #     S: set of strings
@@ -49,7 +49,7 @@ def lcs(S):
 		Sp = Sp | suff(w);
 	for w in S: # common set of suffixes
 		Sp = Sp & suff(w);
-	return wedge(Sp);
+	return supp(Sp);
 
 
 ### BEGIN extending FST ###
@@ -174,10 +174,14 @@ def construct_Tf(genv, ggenv, fh):
 	Q = {""};
 	sigma = {"": ""};
 	E = set();
+	kp = len(ggenv); # k'
 	for u in Sigma:
 		v = fh[u];
-		if v == ggenv:
-			v = genv;
+		for i in range(0, (len(v) - kp) + 1):
+			j = i + kp;
+			if v[i:j] == ggenv:
+				v = v[:i] + genv + v[j:];
+				break;
 		E.add(("", u, v, ""));
 
 
