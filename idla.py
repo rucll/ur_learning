@@ -173,14 +173,15 @@ def construct_Tf(p, s, t, fh):
 	Q = {""};
 	sigma = {"": ""};
 	E = set();
-	kp = len(p + s); # k'
+	v = p + t;
+	kp = len(v); # k'
 	for a in Sigma:
 		i = kp;
 		while i <= len(fh[a]):
-			if (fh[a])[(i - kp):i] == p + t:
-				#print(f"{i}: fh[{a}]{fh[a]}");
-				fh[a] = fh[a][:(i - kp)] + p + s + fh[a][i:];
-				#print(f"{i}': fh[{a}]{fh[a]}");
+			u = fh[a][:i - kp];
+			w = fh[a][:i];
+			if w.removeprefix(u) == v:
+				fh[a] = u + p + s + fh[a][i:];
 				i = i + kp;
 			else:
 				i = i + 1;
