@@ -276,7 +276,12 @@ def print_edge(E, name):
 	for e in E:
 		print(f"\t{e}");
 
-for x in [yawelmani, flap, huajardine, opacity]:
+for x in [
+	yawelmani,
+	flap,
+	huajardine,
+	opacity
+	]:
 	f, g = idla(x.Data, x.Sigma, x.Gamma);
 	print_edge(f.E, "f");
 	print_edge(g.E, "g");
