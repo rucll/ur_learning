@@ -2,7 +2,7 @@ from si2dla import *
 from so2dla import *
 from fsi2dla import *
 from idla import *
-from data import flap, yawelmani, huajardine, zapotec, opacity
+from data import flap, yawelmani, huajardine, zapotec, opacity, kisd
 
 ## ISL data
 
@@ -277,10 +277,11 @@ def print_edge(E, name):
 		print(f"\t{e}");
 
 for x in [
-	yawelmani,
+	#yawelmani,
 	flap,
 	huajardine,
-	opacity
+	opacity,
+	kisd
 	]:
 	f, g = idla(x.Data, x.Sigma, x.Gamma);
 	print_edge(f.E, "f");

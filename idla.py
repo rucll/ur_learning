@@ -138,17 +138,12 @@ def construct_Tg(p, s, t, Tgf, fh):
 	print(Q); # DEBUG
 	for q_i in Tg.Q:
 		sigma = "";
-		if p in pref(q_i):
+		if len(q_i) > len(p):
 			sigma = q_i.removeprefix(p);
 		Tg.stout[q_i] = sigma;
+	print(Tg.stout);
 
 	for q_i in Tg.Q:
-		## fill in state output
-		#sigma = "";
-		#if p in pref(q_i):
-		#	sigma = q_i.removeprefix(p);
-		#Tg.stout[q_i] = sigma;
-
 		# construct edges
 		for a in Sigma:
 			q_j = q_i + a; # target state
@@ -158,7 +153,8 @@ def construct_Tg(p, s, t, Tgf, fh):
 					u = t;
 				else: # non-alternating
 					u = Tg.stout[q_i] + a;
-				q_j = lcp({p + s, a});
+				q_j = lcp({ p + s, a });
+				u = u.removesuffix(Tg.stout[q_j]);
 			else: # non-terminal (target state exists)
 				if Tg.stout[q_j] != "": # are we working on the d-suffix?
 					u = ""; # delay output
