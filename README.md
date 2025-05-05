@@ -17,3 +17,5 @@ File		| Description
 `kcxt.py`	| Classify PBase pattern data by k-contexts
 
 The file `testing.py` contains some test data sets; this can be run from the command line to see how the algorithms perform.
+
+This work is supported by [NSF Grant #2416184](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2416184).
