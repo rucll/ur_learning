@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter import filedialog
 from ast import literal_eval
-from si2dla_mod import *
+from si2dla_robust import *
 import graphviz
 from PIL import ImageTk, Image
 import re
@@ -17,7 +17,7 @@ global_image_list = []
 # check for invalid input
 
 def read_data(D_value):
-    if bool(re.match(r"\[(\s*\(\s*(\"|\')[^\"\'\[\]]+(\"|\')\s*,\s*(\"|\')[^\"\'\[\]]+(\"|\')\s*\)\s*,)*\s*(\s*\(\s*(\"|\')[^\"\'\[\]]+(\"|\')\s*,\s*(\"|\')[^\"\'\[\]]+(\"|\')\s*\)\s*,?)\]\s*", D_value)):
+    if bool(re.match(r"\[(\s*\(\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*,\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*\)\s*,)*\s*(\s*\(\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*,\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*\)\s*,?)\]\s*", D_value)):
         D_list = literal_eval(D_value)
     elif bool(re.match(r"(([^,\s])+,(\s*[^,\s])+\n)*(([^,\s])+,(\s*[^,\s])+)\s*", D_value)):
         lines = D_value.splitlines()
@@ -50,7 +50,7 @@ def read_alphabet(value, D_list):
     return return_list
 
 def execute():
-    D_value= D_entry.get("1.0", "end-1c")
+    D_value = D_entry.get("1.0", "end-1c")
     R_value = R_entry.get("1.0", "end-1c")
     S_value = S_entry.get("1.0", "end-1c")
 
@@ -89,7 +89,7 @@ def execute_algorithm(D_list, R_value, S_value):
         print("error reading alphabets.")
         return
 
-    (T_f, T_g) = si2dla(D_list, R_list, S_list)
+    (T_f, T_g) = si2dla_ex(D_list, R_list, S_list)
 
     graph_f = graphviz.Digraph('graph_f', node_attr={'shape': 'circle', 'fontname': 'Times-Roman', 'fontsize': '12pt', 'fillcolor': 'gray90'}, edge_attr={'fontname': 'Times-Roman', 'fontsize': '12pt', 'penwidth': '0.6', 'arrowsize': '0.6'}, graph_attr={'rankdir': 'LR', 'center': 'true'})
     graph_g = graphviz.Digraph('graph_g', node_attr={'shape': 'circle', 'fontname': 'Times-Roman', 'fontsize': '12pt', 'fillcolor': 'gray90'}, edge_attr={'fontname': 'Times-Roman', 'fontsize': '12pt', 'penwidth': '0.6', 'arrowsize': '0.6'}, graph_attr={'rankdir': 'LR', 'center': 'true'})
@@ -103,6 +103,7 @@ def execute_algorithm(D_list, R_value, S_value):
     if len(T_f.Q) == 1:
         e1 = None
         for e in T_f.E:
+            print(e)
             if e1 is None:
                 e1 = (e[0], e[3])
                 e1_label = e[1] + ": " + e[2] + "\\n"
@@ -150,10 +151,14 @@ def execute_algorithm(D_list, R_value, S_value):
                 return
 
 
+
         graph_g.edge(e1[0], e1[1], label=e1_label+"\\n")
         graph_g.edge(e2[0], e2[1], label=e2_label+"\\n")
-        graph_g.edge(e3[0], e3[1], label=e3_label+"\\n")
-        graph_g.edge(e4[0], e4[1], label=e4_label+"\\n")
+
+        if e3:
+            graph_g.edge(e3[0], e3[1], label=e3_label+"\\n")
+        if e4:
+            graph_g.edge(e4[0], e4[1], label=e4_label+"\\n")
 
         graph_f.format = 'png'
         graph_g.format = 'png'
@@ -172,6 +177,7 @@ def execute_algorithm(D_list, R_value, S_value):
         global_image_list.append(img_g)
         imglabel_g = Label(mainframe, image=img_g)
         imglabel_g.grid(column=3, row=2, padx=16)
+
 
 
         

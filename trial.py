@@ -115,24 +115,24 @@ D1 = [
 R1 = ["A", "B", "C", "D", "E", "F", "G", "H", "2"]
 S1 = ["o", "l", "a", "f", "n", "u", "s", "t", "e", "?", "i"]
 
-# D1 = [
-#     ("",""),
-#     ("A1","olo"),
-#     ("B1","lafo"),
-#     ("C1","ana"),
-#     ("D1","usu"),
-#     ("E1","tau"),
-#     ("F1", "lele"),
-#     ("G1", "su?e"),
-#     ("H1", "tafe"),
-#     ("A2","oloia"),
-#     ("B2","lafoia"),
-#     ("C2","anaia"),
-#     ("D2","usuia"),
-#     ("E2","tauia"),
-#     ("F2", "lelea"),
-#     ("G2", "su?ea"),
-#     ("H2", "tafea"),
-# ]
+D1 = [
+    ("",""),
+    ("A","olo"),
+    ("B","lafo"),
+    ("C","ana"),
+    ("D","usu"),
+    ("E","tau"),
+    ("F", "lele"),
+    ("G", "su?e"),
+    ("H", "tafe"),
+    ("A2","oloia"),
+    ("B2","lafoia"),
+    ("C2","anaia"),
+    ("D2","usuia"),
+    ("E2","tauia"),
+    ("F2", "lelea"),
+    ("G2", "su?ea"),
+    ("H2", "tafea"),
+]
 
 T_f, T_g = si2dla(D1,R1,S1)
