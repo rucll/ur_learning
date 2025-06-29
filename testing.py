@@ -183,6 +183,18 @@ D5 = [
     ("333", "taddaddad"), #This appears necessary to get 3 to go to state 3 instead of state ''
 ]
 
+
+D6 = [("1", "tad"),
+    ("2", "tat"),
+    ("3", "tada"),
+    ("1A", "tadda"),
+    ("2A", "tatta"),
+    ("3A", "tadata"),
+    ("1B", "tadda"),
+    ("2B", "tatda"),
+    ("3B", "tadada")
+	]
+
 # iT_f, iT_g = si2dla_ex(D2,R2,S2)
 # oT_f, oT_g = so2dla_ex(D5,R2,S2)
 

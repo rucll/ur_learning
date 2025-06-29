@@ -34,6 +34,9 @@ def lncat(w,v):
         return w
     elif w.endswith(v):
         return w[0:-len(v)]
+    else: 
+        print ("using fake lncat")
+        return w
         
 
 
@@ -80,7 +83,7 @@ def si2dla(D,Rho,Sigma):
         rroc[q1] = "qd"
 
     print("corr:\t\t"+str(corr))
-    # print("rroc:\t\t"+str(rroc))
+    print("rroc:\t\t"+str(rroc))
 
     IS = { "qe" : OS[corr["qe"]], # n: (essentially deciding which suffixes are based on environment)
            "qd" : OS[corr["qd"]]
@@ -115,23 +118,27 @@ def si2dla(D,Rho,Sigma):
     for s in Sigma:
         o_g[("qd",s)] = s
 
-        #print('s',s)
+        print('s',s)
 
         # Second modification: first check whether a transition on s even exists... 
         find_tran = [ tr for tr in T_f.E if tr[0] == corr["qd"] and tr[2][0] == s ]
+        print('find_tran', find_tran)
         if find_tran:        
 
             #...if it does, follow original code
             d_tr = find_tran[0]
-            #print('d_tr',d_tr)
+            print('d_tr',d_tr)
 
             w_d = d_tr[2]
 
             # (likewise here)
-            find_other_tran = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]]
+            find_other_tran = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]]  ## issue is that it's not finding backwards transition but this can be traced back to ostia
+            print('find_other_tran', find_other_tran)
             if find_other_tran:
                 w_e = find_other_tran[0]
             
+           
+           ##### error section ####
             # if no transition exists, assume the output is identity
             else:
                 w_e = s
@@ -139,7 +146,7 @@ def si2dla(D,Rho,Sigma):
             print("w_d for "+s+":\t"+w_d)
             print("w_e for "+s+":\t"+w_e+"\n")
             
-            w_s = lncat(w_e,w_d[1:])
+            w_s = lncat(w_e,w_d[1:]) ## all leads back to the lncat issue!!
             if not w_s:
                 w_s = s
             #print('w_s', w_s)
@@ -149,6 +156,12 @@ def si2dla(D,Rho,Sigma):
             if s != w_s: #This is lns 2-3 from Alg 3
                 tau = s
                 w_tau = w_s
+            else:
+                tau = ''
+                w_tau = '' 
+                        ##### ATTEMPT###
+            
+            ##### error section ####
                 
         # if no transition exists, assume the output is identity
         else:
@@ -186,7 +199,7 @@ def si2dla(D,Rho,Sigma):
     for (q,rho,w,r) in T_f.E:
         if q == corr["qd"]:
             if suff_1(w) not in IS[rroc[r]]:
-                w = lncat(w,w_tau)+tau
+                w = lncat(w,w_tau)+tau   ## another error section : basically just lncat
         new_E.append((q,rho,w,q)) #Step 1 of merging is here too
 
     T_f.E = new_E
@@ -224,7 +237,8 @@ def si2dla_ex(D,Rho,Sigma):
 
     q1 = T_f.Q[0]
     q2 = T_f.Q[1]
-
+    
+    # error check in here
     OS = { q1 : get_OS(T_f,q1) | {""},
            q2 : get_OS(T_f,q2)
     }
@@ -266,9 +280,13 @@ def si2dla_ex(D,Rho,Sigma):
 
     for q in Q_g:
         for s in Sigma:
-            for r in Q_g:
-                if s in IS[r]:
-                    d_g[(q,s)] = r
+            if s in IS["qe"]:
+                d_g[(q,s)] = "qe"
+            else:
+                d_g[(q,s)] = "qd"
+            # for r in Q_g:
+            #     if s in IS[r]:
+            #         d_g[(q,s)] = r
 
     # print("d_g:\t"+str(d_g))
 
