@@ -1,4 +1,4 @@
-from si2dla_mod import *
+from si2dla_new import *
 
 # rub - A
 # cast - B
@@ -135,4 +135,24 @@ D1 = [
     ("H2", "tafea"),
 ]
 
-T_f, T_g = si2dla(D1,R1,S1)
+
+D = FST(["1", "2", "3", "A", "B"])
+D.Q = ["0", "1", "2"]
+D.qe = "0"
+D.E = [("0", "1", "x", "1"), ("0", "2", "x", "1"), ("0", "3", "x", "1"), ("1", "A", "x", "2"), ("1", "B", "x", "2")]
+
+D3 = [("1", "tad"),
+    ("2", "tat"),
+    ("3", "tada"),
+    ("1A", "tadda"),
+    ("2A", "tatta"),
+    ("3A", "tadata"),
+    ("1B", "tadda"),
+    ("2B", "tatda"),
+    ("3B", "tadada")
+	]
+
+R3 = ["1", "2", "3", "A", "B"]
+S3 = ["t", "a", "d"]
+
+T_f, T_g = si2dla_ex(D,D3,R3,S3)

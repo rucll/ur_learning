@@ -4,8 +4,8 @@ digraph graph_g {
 	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
 	qe
 	qd
-	qe -> qe [label="t: t\n\n"]
-	qe -> qd [label="d: d\na: a\n\n"]
-	qd -> qe [label="t: t\n\n"]
-	qd -> qd [label="d: d\na: a\n\n"]
+	qe -> qd [label="a: a\nt: d\n\n"]
+	qe -> qe [label="d: d\n\n"]
+	qd -> qd [label="a: a\nt: t\n\n"]
+	qd -> qe [label="d: d\n\n"]
 }
