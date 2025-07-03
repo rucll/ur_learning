@@ -11,6 +11,8 @@ option) any later version.
 # from sigmapie.helper import *
 from fst_object import *
 from helper import *
+from queue import Queue
+from itertools import product
 
 
 def ostia_d(D, S, Sigma, Gamma):
@@ -32,6 +34,9 @@ def ostia_d(D, S, Sigma, Gamma):
     # color the nodes
     red = [""]
     blue = [tr[3] for tr in T.E if tr[0] == "" and len(tr[1]) == 1]
+    labels = label_assign(D, T)
+    print("labels:", labels)
+
 
     # choose a blue state
     while len(blue) != 0:
@@ -47,8 +52,11 @@ def ostia_d(D, S, Sigma, Gamma):
 
             # try to merge these two states
 
-            if ostia_merge(T, red_state, blue_state) and (get_transition(D, D.qe, input_prefix(D, blue_state)) == get_transition(D, D.qe, input_prefix(D, red_state))):
+            print(label_get(labels, blue_state), blue_state, label_get(labels, red_state), red_state)
+                  
+            if ostia_merge(T, red_state, blue_state) and label_get(labels, red_state) is not None and (label_get(labels, blue_state) is label_get(labels, red_state)):
                 T = ostia_merge(T, red_state, blue_state)
+                print("merging:", red_state, blue_state)
                 exists = True
 
         # if it is not possible, color that blue state red
@@ -168,22 +176,75 @@ def ostia_outputs(w1, w2):
         return False
 
 
-def get_transition(T, q, input):
-    for tr in T.E:
-        if tr[0] == q and tr[1] == input:
-            return tr[3]
+# def get_transition(T, q, input):
+#     for tr in T.E:
+#         if tr[0] == q and tr[1] == input:
+#             return tr[3]
+
+def get_end_state_from_input_string(string, T):
+    current_state = T.qe
+    moved = False
+    for i in range(len(string)):
+        # print("curr:", current_state)
+        for tr in T.E:
+            if tr[0] == current_state and tr[1] == string[i]:
+                current_state, moved = tr[3], True
+                break
+        if moved == False:
+            return None
+    return current_state
+
+def label_assign(Dom, T):
+
+    labels = []
+    # while len(labels) < len(T.Q):
+    for i in range(1, len(T.Sigma)): 
+        strings = []
+        strings.extend(product(T.Sigma, repeat=i))
+        strings = [''.join(p) for p in strings]
+        print("strings:", strings)
+        for str in strings:
+            label = get_end_state_from_input_string(str, Dom) 
+            state = get_end_state_from_input_string(str, T)
+            if label != None and state != None:
+                labels.append((label, state))
+            if len(labels) > len(T.Q) * 4: # need to decide appropriate limit for this
+                return list(set(labels))
+                
+        if len(labels) > len(T.Q) * 4:
+                return list(set(labels))
+    
+            
+def label_get(labels, q):
+    for l in labels:
+        if l[1] == q:
+            return l[0]
+
+# def input_prefix(T, q):
+#     smallest = None
+
+#     for tr in T.E:
+#         if tr[3] == q:
+#             if smallest == None or len(tr[1]) < len(smallest):
+#                 smallest = tr[1]
+
+#     return smallest
+
+# def input_prefix_recursive(T, q, string, visited):
+#     queue = Queue(0)
+#     queue.put(T.qe)
+#     visited[T.qe]
 
 
+#     while queue.empty() is False:
+#         next = queue.get()
+#         if next is q:
+#             return string
+#         for 
 
-def input_prefix(T, q):
-    smallest = None
 
-    for tr in T.E:
-        if tr[3] == q:
-            if smallest == None or len(tr[1]) < len(smallest):
-                smallest = tr[1]
+        
 
-    return smallest
 
     
 
