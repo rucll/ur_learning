@@ -11,8 +11,7 @@ option) any later version.
 # from sigmapie.helper import *
 from fst_object import *
 from helper import *
-from queue import Queue
-from itertools import product
+from collections import deque
 
 
 def ostia_d(D, S, Sigma, Gamma):
@@ -34,8 +33,8 @@ def ostia_d(D, S, Sigma, Gamma):
     # color the nodes
     red = [""]
     blue = [tr[3] for tr in T.E if tr[0] == "" and len(tr[1]) == 1]
-    labels = label_assign(D, T)
-    print("labels:", labels)
+    labels = label_assign(D, T) #assign a corresponding domain state to each state in OSTIA
+    # print("labels:", labels)
 
 
     # choose a blue state
@@ -50,13 +49,12 @@ def ostia_d(D, S, Sigma, Gamma):
             if exists == True:
                 break
 
-            # try to merge these two states
+            # try to merge these two states if the domain labels match
 
-            print(label_get(labels, blue_state), blue_state, label_get(labels, red_state), red_state)
-                  
-            if ostia_merge(T, red_state, blue_state) and label_get(labels, red_state) is not None and (label_get(labels, blue_state) is label_get(labels, red_state)):
+            # print(label_get(labels, blue_state), blue_state, label_get(labels, red_state), red_state)
+            if ostia_merge(T, red_state, blue_state) and label_get(labels, blue_state) == label_get(labels, red_state):
                 T = ostia_merge(T, red_state, blue_state)
-                print("merging:", red_state, blue_state)
+                # print("merging:", red_state, blue_state)
                 exists = True
 
         # if it is not possible, color that blue state red
@@ -175,76 +173,119 @@ def ostia_outputs(w1, w2):
     else:
         return False
 
+# a BFS function that finds a path between a start state and the goal state
+def bfs(T, start, goal):
+    q = deque()
+    explored = set()
+    q.append((start, [])) # (state, path of states)
 
-# def get_transition(T, q, input):
-#     for tr in T.E:
-#         if tr[0] == q and tr[1] == input:
-#             return tr[3]
+    # iterate until queue is empty
+    while q:
+        state, path = q.popleft()
 
-def get_end_state_from_input_string(string, T):
-    current_state = T.qe
-    moved = False
-    for i in range(len(string)):
-        # print("curr:", current_state)
-        for tr in T.E:
-            if tr[0] == current_state and tr[1] == string[i]:
-                current_state, moved = tr[3], True
-                break
-        if moved == False:
-            return None
-    return current_state
+        # goal state found
+        if state == goal:
+            # print("found")
+            return path
+        
+        # if state not previously explored
+        if state not in explored:
+            explored.add(state)
 
+            # get all adjacent states
+            for tr in T.E:
+                if tr[0] == state:
+                    input_symbol = tr[1]
+                    output_symbol = tr[2]
+                    next_state = tr[3]
+                    
+                    # add adjacent state to queue
+                    if next_state not in explored:
+                        updated_path = path + [(state, input_symbol, output_symbol, next_state)]
+                        q.append((next_state, updated_path))
+    return None
+
+# label each state in OSTIA with its corresponding domain state  
 def label_assign(Dom, T):
+    labels = [] # (domain state, ostia state)
 
-    labels = []
-    # while len(labels) < len(T.Q):
-    for i in range(1, len(T.Sigma)): 
-        strings = []
-        strings.extend(product(T.Sigma, repeat=i))
-        strings = [''.join(p) for p in strings]
-        print("strings:", strings)
-        for str in strings:
-            label = get_end_state_from_input_string(str, Dom) 
-            state = get_end_state_from_input_string(str, T)
-            if label != None and state != None:
-                labels.append((label, state))
-            if len(labels) > len(T.Q) * 4: # need to decide appropriate limit for this
-                return list(set(labels))
+    # iterate through each state in OSTIA FST
+    for state in T.Q:
+        t_path = bfs(T, T.qe, state) # perform BST from inital state to current state
+        input_string = ""
+
+        # gather input strings
+        for step in t_path:
+            input_string += step[1]
+        
+        # trace the domain FST using the input string
+        corr_d_state = get_end_state_from_input_string(input_string, Dom)
+        labels.append((corr_d_state, state))
+        
+    return labels
+
+
+
+# return the ending state from the input string
+def get_end_state_from_input_string(string, T):
+    curr_state = T.qe
+    for i in range(len(string)):
+        input_symbol = string[i]
+        
+        # simulate transitioning through each state
+        for tr in T.E:
+            tr_state = tr[0]
+            tr_input_symbol = tr[1]
+
+            # get the transition state from the current state and input symbol
+            if tr_state == curr_state and tr_input_symbol == input_symbol:
+                next_state = tr[3]
+                curr_state = next_state
+                break
+        
+    return curr_state
+
+
+# Old FST trace function
+# def get_end_state_from_input_string(string, T):
+#     current_state = T.qe
+#     moved = False
+#     for i in range(len(string)):
+#         # print("curr:", current_state)
+#         for tr in T.E:
+#             if tr[0] == current_state and tr[1] == string[i]:
+#                 current_state, moved = tr[3], True
+#                 break
+#         if moved == False:
+#             return None
+#     return current_state
+
+# Old label_assign
+# def label_assign(Dom, T):
+
+#     labels = []
+#     # while len(labels) < len(T.Q):
+#     for i in range(1, len(T.Sigma)): 
+#         strings = []
+#         strings.extend(product(T.Sigma, repeat=i))
+#         strings = [''.join(p) for p in strings]
+#         print("strings:", strings)
+#         for str in strings:
+#             label = get_end_state_from_input_string(str, Dom) 
+#             state = get_end_state_from_input_string(str, T)
+#             if label != None and state != None:
+#                 labels.append((label, state))
+#             if len(labels) > len(T.Q) * 4: # need to decide appropriate limit for this
+#                 return list(set(labels))
                 
-        if len(labels) > len(T.Q) * 4:
-                return list(set(labels))
+#         if len(labels) > len(T.Q) * 4:
+#                 return list(set(labels))
     
-            
+  
 def label_get(labels, q):
     for l in labels:
         if l[1] == q:
             return l[0]
-
-# def input_prefix(T, q):
-#     smallest = None
-
-#     for tr in T.E:
-#         if tr[3] == q:
-#             if smallest == None or len(tr[1]) < len(smallest):
-#                 smallest = tr[1]
-
-#     return smallest
-
-# def input_prefix_recursive(T, q, string, visited):
-#     queue = Queue(0)
-#     queue.put(T.qe)
-#     visited[T.qe]
-
-
-#     while queue.empty() is False:
-#         next = queue.get()
-#         if next is q:
-#             return string
-#         for 
-
-
-        
-
 
     
 
