@@ -1,5 +1,6 @@
 from si2dla_new import *
-# from k_tssi import *
+from k_tssi import *
+from domain_inference import *
 
 # rub - A
 # cast - B
@@ -141,19 +142,35 @@ from si2dla_new import *
 # T_f, T_g = si2dla_ex(T,D1,R1,S1)
 
 
-D3 = [(["1"], ["tad"]),
-    (["2"], ["tat"]),
-    (["3"], ["tada"]),
-    (["1A"], ["tadda"]),
-    (["2A"], ["tatta"]),
-    (["3A"], ["tadata"]),
-    (["1B"], ["tadda"]),
-    (["2B"], ["tatda"]),
-    ("3B", ["tadada"])
+# D3 = [(["1"], ["tad"]),
+#     (["2"], ["tat"]),
+#     (["3"], ["tada"]),
+#     (["1A"], ["tadda"]),
+#     (["2A"], ["tatta"]),
+#     (["3A"], ["tadata"]),
+#     (["1B"], ["tadda"]),
+#     (["2B"], ["tatda"]),
+#     ("3B", ["tadada"])
+# 	]
+
+# R3 = ["1", "2", "3", "A", "B"]
+# S3 = ["t", "a", "d"]
+
+# k_tssi(2, D3)
+
+D3 = [("1", "tad"),
+    ("2", "tat"),
+    ("3", "tada"),
+    ("1A", "tadda"),
+    ("2A", "tatta"),
+    ("3A", "tadata"),
+    ("1B", "tadda"),
+    ("2B", "tatda"),
+    ("3B", "tadada")
 	]
 
 R3 = ["1", "2", "3", "A", "B"]
 S3 = ["t", "a", "d"]
 
-k_tssi(2, D3)
-# T_f, T_g = si2dla_ex(T,D3,R3,S3)
+T = infer_domain(D3)
+T_f, T_g = si2dla_ex(T,D3,R3,S3)

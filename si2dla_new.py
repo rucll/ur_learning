@@ -49,9 +49,68 @@ def si2dla_ex(Dom,D,Rho,Sigma):
     q1 = T_f.Q[0]
     q2 = T_f.Q[1]
     
+    # get alternation
+    alternations = []
+    for alphabet in T_f.Sigma:
+        outputs = set()
+        for tr in T_f.E:
+            if tr[1] == alphabet:
+                outputs.add(tr[2])
+        if len(outputs) > 1:
+            alternations.append(alphabet)
+
+    # get states that lead into the alternations
+    states_leading = []
+    for var in alternations:
+        for tr in T_f.E:
+            if tr[1] == var:
+                states_leading.append(tr[0])
+        
+
+    q1 = states_leading[0]
+    q2 = states_leading[1]
+
+    print(q1)
+    print(q2)
+
+
+    startandend_count = {q: [0, 0] for q in T_f.Q}
+    total_count = {q: 0 for q in T_f.Q}
+    for tr in T_f.E:
+        startandend_count[tr[0]][0] += 1
+        total_count[tr[0]] += 1
+        startandend_count[tr[3]][1] += 1
+        total_count[tr[3]] += 1
+
+    for q in T_f.Q:
+        if startandend_count[q][0] == 0:
+           total_count[q] = -1
+           print(q)
+        if startandend_count[q][1] == 0:
+           total_count[q] = -1
+           print(q)
+
+    
+    
+    q_def = max(total_count, key=total_count.get)
+    e_list = [list(tr) for tr in T_f.E]
+    for tr in e_list:
+        if total_count[tr[0]] == -1:
+            print("pp")
+            tr[0] = q_def
+        if total_count[tr[3]] == -1:
+            tr[3] = q_def
+
+    T_f.E = []
+    for tr in e_list:
+        T_f.E.append(tuple(tr))
+        
+
+    print(T_f.E)
     # error check in here
-    OS = { q1 : get_OS(T_f,q1) | {""},
-           q2 : get_OS(T_f,q2)
+    OS = {
+        q1: get_OS(T_f, q1),
+        q2: get_OS(T_f, q2)
     }
 
     print("OSs for T_f:\t"+str(OS))
@@ -170,8 +229,12 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
     for (q,rho,w,r) in T_f.E:
         if q == corr["qd"]:
-            if suff_1(w) not in IS[rroc[r]]:
-                w = lncat(w,w_tau)+tau
+            print(r)
+            print(rroc)
+            if r in rroc:
+                if rroc[r] in IS:
+                    if suff_1(w) not in IS[rroc[r]]:
+                      w = lncat(w,w_tau)+tau
         new_E.append((q,rho,w,q)) #Step 1 of merging is here too
 
     T_f.E = new_E
