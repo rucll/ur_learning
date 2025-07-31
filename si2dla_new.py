@@ -18,6 +18,7 @@ def get_OS(T,q):
     incoming = { tr for tr in T.E if tr[3] == q}
     outs = { tr[2] for tr in incoming}
     suffs = { suff_1(w) for w in outs}
+    # print(f"{q}: {suffs}")
     return suffs
 
 
@@ -46,9 +47,6 @@ def si2dla_ex(Dom,D,Rho,Sigma):
     print("  q0:\t"+str(T_f.qe))
     print("  stout:\t"+str(T_f.stout)+"\n")
 
-    q1 = T_f.Q[0]
-    q2 = T_f.Q[1]
-    
     # get alternation
     alternations = []
     for alphabet in T_f.Sigma:
@@ -59,63 +57,27 @@ def si2dla_ex(Dom,D,Rho,Sigma):
         if len(outputs) > 1:
             alternations.append(alphabet)
 
+    print("alternations", alternations)
+
     # get states that lead into the alternations
     states_leading = []
     for var in alternations:
         for tr in T_f.E:
             if tr[1] == var:
                 states_leading.append(tr[0])
-        
+
+    print(f"states leading into alternations: {states_leading}")
+
 
     q1 = states_leading[0]
     q2 = states_leading[1]
 
-    print(q1)
-    print(q2)
-
-
-    startandend_count = {q: [0, 0] for q in T_f.Q}
-    total_count = {q: 0 for q in T_f.Q}
-    for tr in T_f.E:
-        startandend_count[tr[0]][0] += 1
-        total_count[tr[0]] += 1
-        startandend_count[tr[3]][1] += 1
-        total_count[tr[3]] += 1
-
-    for q in T_f.Q:
-        if startandend_count[q][0] == 0:
-           total_count[q] = -1
-           print(q)
-        if startandend_count[q][1] == 0:
-           total_count[q] = -1
-           print(q)
-
-    
-    
-    q_def = max(total_count, key=total_count.get)
-    e_list = [list(tr) for tr in T_f.E]
-    for tr in e_list:
-        if total_count[tr[0]] == -1:
-            print("pp")
-            tr[0] = q_def
-        if total_count[tr[3]] == -1:
-            tr[3] = q_def
-
-    T_f.E = []
-    for tr in e_list:
-        T_f.E.append(tuple(tr))
-        
-
-    print(T_f.E)
     # error check in here
     OS = {
         q1: get_OS(T_f, q1),
         q2: get_OS(T_f, q2)
     }
 
-    print("OSs for T_f:\t"+str(OS))
-
-    #*** construct_T_g
 
     Q_g = ["qe","qd"]
 
@@ -134,7 +96,102 @@ def si2dla_ex(Dom,D,Rho,Sigma):
         rroc[q1] = "qd"
 
     print("corr:\t\t"+str(corr))
-    # print("rroc:\t\t"+str(rroc))
+
+
+    # startandend_count: [# of states that lead out, # of states that lead in]
+    # total_count: total number of times a state appears in the list of transitions
+    startandend_count = {q: [0, 0] for q in T_f.Q} # [goes out, comes in]
+    total_count = {q: 0 for q in T_f.Q}
+    for tr in T_f.E:
+        startandend_count[tr[0]][0] += 1
+        total_count[tr[0]] += 1
+        startandend_count[tr[3]][1] += 1
+        total_count[tr[3]] += 1
+
+    for q in T_f.Q:
+        print(f"{q}: {startandend_count[q]}")
+        print(f"{q}: {total_count[q]}")
+        if startandend_count[q][0] == 0 or startandend_count[q][1] == 0:
+           total_count[q] = -1
+           print(q)
+        # if startandend_count[q][1] == 0:
+        #    total_count[q] = -1
+        #    print(q)
+
+   
+   
+    # assign definition to a state based on # of times it appears
+    # q_def = max(total_count, key=total_count.get)
+
+    # assign q_def based on earlier decision b/w alternations
+    q_def = corr["qd"]
+    print(f"q_def {q_def}")
+
+    # collapse all states that don't have input prefixes or suffixes to definition state
+    for idx, tr in enumerate(T_f.E):
+        tr = list(tr) # to allow for assignment
+        if total_count[tr[0]] == -1:
+            print("pp")
+            tr[0] = q_def
+        if total_count[tr[3]] == -1:
+            tr[3] = q_def
+        tr = tuple(tr)
+        T_f.E[idx] = tr
+
+    
+    # add in missing transitions
+    for input_alphabet in T_f.Sigma:
+        exist_in_state = set()
+        for tr in T_f.E:
+            if tr[1] == input_alphabet:
+                exist_in_state.add(tr[0])
+        print(f"Alphabet {input_alphabet}: {exist_in_state}")
+        if len(exist_in_state) != 2:
+            print(f"Missing: {input_alphabet}")
+            output = None
+            exists = exist_in_state.pop()
+
+            add_to_state = None
+            if exists == corr["qd"]:
+                add_to_state = corr["qe"]
+            else:
+                add_to_state = corr["qd"]
+
+            for tr in T_f.E:
+                if tr[1] == input_alphabet:
+                    output = tr[2]
+                    break
+            T_f.E.append((add_to_state, input_alphabet, output, add_to_state))
+        
+    # e_list = [list(tr) for tr in T_f.E]
+    # print(f"e_list: {e_list}")
+    # for tr in e_list:
+    #     if total_count[tr[0]] == -1:
+    #         print("pp")
+    #         tr[0] = q_def
+    #     if total_count[tr[3]] == -1:
+    #         tr[3] = q_def
+
+    # T_f.E = []
+    # for tr in e_list:
+    #     T_f.E.append(tuple(tr))
+        
+
+    print(T_f.E)
+
+    print(T_f.Q)
+
+    # update T_f.Q
+    new_Q = set()
+    for tr in T_f.E:
+        new_Q.add(tr[0])
+        new_Q.add(tr[3])
+    
+    T_f.Q = list(new_Q)
+
+    
+
+    print("OSs for T_f:\t"+str(OS))
 
     IS = { "qe" : OS[corr["qe"]],
            "qd" : OS[corr["qd"]]
@@ -231,10 +288,11 @@ def si2dla_ex(Dom,D,Rho,Sigma):
         if q == corr["qd"]:
             print(r)
             print(rroc)
-            if r in rroc:
-                if rroc[r] in IS:
-                    if suff_1(w) not in IS[rroc[r]]:
-                      w = lncat(w,w_tau)+tau
+            # if suff_1(w) not in IS[rroc[r]]:
+            #     w = lncat(w,w_tau)+tau
+            if r in rroc and rroc[r] in IS:
+                if suff_1(w) not in IS[rroc[r]]:
+                    w = lncat(w,w_tau)+tau
         new_E.append((q,rho,w,q)) #Step 1 of merging is here too
 
     T_f.E = new_E
