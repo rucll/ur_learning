@@ -13,14 +13,14 @@ def infer_domain(data, k=2):
 
     return domain
 
-# minimize the dfa and convert it into an fst
+# minimize the dfa and convert it into an fst; this is probably not even needed for ostia_d
 def minimize_dfa_to_fst(T):
     P = minimize_dfa(T)
     if frozenset() in P: # empty set = lambda so it can be removed from P
         P.remove(frozenset())
 
     # initialize FST object
-    new_T = FST()
+    new_T = FST()   
     new_T.Q = [0]
     new_T.Sigma = list(T.Sigma)
     new_T.Gamma = ['x']
@@ -33,12 +33,13 @@ def minimize_dfa_to_fst(T):
     merged_states[''] = new_T.qe # map lambda state to start state
     for eq_state in P:
         for state in eq_state:
-            merged_states[state] = state_name
+            if state != '':
+                merged_states[state] = state_name
         new_T.Q.append(state_name)
         state_name += 1
 
     # create new state transitions by using representative state mappings
-    for tr in T.E:    
+    for tr in T.E: 
         source_state = tr[0]
         input_symbol = tr[1]
         dest_state = tr[3]

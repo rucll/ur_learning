@@ -60,11 +60,11 @@ def si2dla_ex(Dom,D,Rho,Sigma):
     print("alternations", alternations)
 
     # get states that lead into the alternations
-    states_leading = []
+    states_leading = set()
     for var in alternations:
         for tr in T_f.E:
             if tr[1] == var:
-                states_leading.append(tr[0])
+                states_leading.add(tr[0])
 
     print(f"states leading into alternations: {states_leading}")
 
@@ -76,174 +76,90 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
     largest_os = None
     for key, value in OS.items():
+        if len(value) == 0:
+            largest_os = key
+            # print(f"q_def: {largest_os}" )
+            break
         if largest_os == None or len(value) > len(OS[largest_os]):
             largest_os = key
     
-
-    temp_corr = {"qe": []} 
+    temp_corr = {"qe": [], 'qd': []} 
 
     for state, value in OS.items():
         if state == largest_os:
-            temp_corr["qd"] = state
-        else:
-            temp_corr["qe"].append(state) # allow for multiple environment states
+            temp_corr["qd"].append(state)
 
-    # build a new 2 state FST
-    n_t_f = FST()
-    n_t_f.E = set()
-
-
-    q_def = "def"
-    q_env = "env"
+    urs = {}
 
     for tr in T_f.E:
-        # if the state is in q_env
-        if tr[0] in temp_corr["qe"]:
-            if tr[3] == temp_corr["qd"]:
-                n_t_f.E.add((q_env, tr[1], tr[2], q_def))
-            else:
-                n_t_f.E.add((q_env, tr[1], tr[2], q_env))
-        
-        # if the state is in q_def
-        elif tr[0] == temp_corr["qd"]:
-            if tr[3] in temp_corr["qe"]:
-                n_t_f.E.add((q_env, tr[1], tr[2], q_def))
-            else:
-                n_t_f.E.add((q_def, tr[1], tr[2], q_def))
+        morph = tr[1]
 
-        # if the state is neither 
+        # if the morph alternates, the UR is the one thats in qd
+        if morph in alternations:
+            if tr[0] in temp_corr['qd']:
+                urs[morph] = tr[2]
+
         else:
-            if tr[3] in temp_corr["qe"]:
-                n_t_f.E.add((q_def, tr[1], tr[2], q_env))
-            else:
-                n_t_f.E.add((q_def, tr[1], tr[2], q_def))
+            urs[morph] = tr[2]
             
-    temp_set = set()
-    for tr in n_t_f.E:
-        if tr[0] == q_env and tr[3] == q_def:
-            # print("hi")
-            temp_set.add((q_def, tr[1], tr[2], q_def))
-    # print(temp_set)
-    n_t_f.E = n_t_f.E | temp_set 
+    print(urs)
 
-    T_f.E = list(n_t_f.E)
-    print(T_f.E)
+
+    
+    n_t_f = set()
+
+    for tr in T_f.E:
+        if tr[2] != urs[tr[1]] and tr[0] not in temp_corr['qe']:
+            temp_corr['qe'].append(tr[0])
+
+        if tr[2] == urs[tr[1]] and tr[0] not in temp_corr["qd"]:
+            temp_corr['qd'].append(tr[0])
+    
+    for state in T_f.Q:
+        if state not in temp_corr['qd'] and state not in temp_corr['qe']:
+            temp_corr['qd'].append(state)
+
+    both = set(temp_corr['qd']) & set(temp_corr['qe'])
+
+    for state in both:
+        temp_corr['qd'].remove(state)
+
+
+    print('def stuff', temp_corr['qd'])
+    print('env stuff', temp_corr['qe'])
+
+
+    for tr in T_f.E:
+        if tr[0] in temp_corr['qd'] and tr[3] in temp_corr["qe"]:
+            n_t_f.add(("def", tr[1], tr[2], "env"))
+        elif tr[0] in temp_corr['qd'] and tr[3] in temp_corr['qd']:
+            print(tr)
+            n_t_f.add(("def", tr[1], tr[2], "def"))
+        elif tr[0] in temp_corr['qe'] and tr[3] in temp_corr['qe']:
+            n_t_f.add(('env', tr[1], tr[2], 'env'))
+        elif tr[0] in temp_corr['qe'] and tr[3] in temp_corr['qd']:
+            n_t_f.add(('env', tr[1], tr[2], 'def'))
+    
 
     T_f.Q = ["def", "env"]
+
+    T_f.E = list(n_t_f)
     
     print(T_f.Q)
 
-    T_f.stout = {'def': get_OS(T_f, 'def'), 'env': get_OS(T_f, 'env')}
+    print(T_f.E)
 
+    q_env = 'env'
+    q_def = 'def'
 
-    # update T_f.Q
-    # new_Q = set()
-    # for tr in T_f.E:
-    #     new_Q.add(tr[0])
-    #     new_Q.add(tr[3])
-    
-    
-
-
+    T_f.stout = {'def': '', 'env': ''}
 
     Q_g = ["qe","qd"]
 
     corr = {"qe": q_env, "qd": q_def}
     rroc = {q_env: "qe", q_def: "qd"}
 
-    # if len(OS[q1]) < len(OS[q2]):
-    #     corr["qe"] = q1
-    #     corr["qd"] = q2
-    #     rroc[q1] = "qe"
-    #     rroc[q2] = "qd"
-    # else:
-    #     corr["qe"] = q2
-    #     corr["qd"] = q1
-    #     rroc[q2] = "qe"
-    #     rroc[q1] = "qd"
-
     print("corr:\t\t"+str(corr))
-
-
-    # # startandend_count: [# of states that lead out, # of states that lead in]
-    # # total_count: total number of times a state appears in the list of transitions
-    # startandend_count = {q: [0, 0] for q in T_f.Q} # [goes out, comes in]
-    # total_count = {q: 0 for q in T_f.Q}
-    # for tr in T_f.E:
-    #     startandend_count[tr[0]][0] += 1
-    #     total_count[tr[0]] += 1
-    #     startandend_count[tr[3]][1] += 1
-    #     total_count[tr[3]] += 1
-
-    # for q in T_f.Q:
-    #     print(f"{q}: {startandend_count[q]}")
-    #     print(f"{q}: {total_count[q]}")
-    #     if startandend_count[q][0] == 0 or startandend_count[q][1] == 0:
-    #        total_count[q] = -1
-    #        print(q)
-    #     # if startandend_count[q][1] == 0:
-    #     #    total_count[q] = -1
-    #     #    print(q)
-
-   
-   
-    # # assign definition to a state based on # of times it appears
-    # # q_def = max(total_count, key=total_count.get)
-
-    # # assign q_def based on earlier decision b/w alternations
-    # q_def = corr["qd"]
-    # print(f"q_def {q_def}")
-
-    # # collapse all states that don't have input prefixes or suffixes to definition state
-    # for idx, tr in enumerate(T_f.E):
-    #     tr = list(tr) # to allow for assignment
-    #     if total_count[tr[0]] == -1:
-    #         print("pp")
-    #         tr[0] = q_def
-    #     if total_count[tr[3]] == -1:
-    #         tr[3] = q_def
-    #     tr = tuple(tr)
-    #     T_f.E[idx] = tr
-
-    
-    # # add in missing transitions
-    # for input_alphabet in T_f.Sigma:
-    #     exist_in_state = set()
-    #     for tr in T_f.E:
-    #         if tr[1] == input_alphabet:
-    #             exist_in_state.add(tr[0])
-    #     print(f"Alphabet {input_alphabet}: {exist_in_state}")
-    #     if len(exist_in_state) != 2:
-    #         print(f"Missing: {input_alphabet}")
-    #         output = None
-    #         exists = exist_in_state.pop()
-
-    #         add_to_state = None
-    #         if exists == corr["qd"]:
-    #             add_to_state = corr["qe"]
-    #         else:
-    #             add_to_state = corr["qd"]
-
-    #         for tr in T_f.E:
-    #             if tr[1] == input_alphabet:
-    #                 output = tr[2]
-    #                 break
-    #         T_f.E.append((add_to_state, input_alphabet, output, add_to_state))
-        
-    # # e_list = [list(tr) for tr in T_f.E]
-    # # print(f"e_list: {e_list}")
-    # # for tr in e_list:
-    # #     if total_count[tr[0]] == -1:
-    # #         print("pp")
-    # #         tr[0] = q_def
-    # #     if total_count[tr[3]] == -1:
-    # #         tr[3] = q_def
-
-    # # T_f.E = []
-    # # for tr in e_list:
-    # #     T_f.E.append(tuple(tr))
-    
-    
 
     print("OSs for T_f:\t"+str(OS))
 
@@ -345,12 +261,15 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
     for (q,rho,w,r) in T_f.E:
         if q == corr["qd"]:
-            print(r)
-            print(rroc)
+            # print(r)
+            # print(rroc)
             # if suff_1(w) not in IS[rroc[r]]:
             #     w = lncat(w,w_tau)+tau
             if r in rroc and rroc[r] in IS:
                 if suff_1(w) not in IS[rroc[r]]:
+                    print("opaque: ", rho)
+                    print(w_tau)
+                    print(tau)
                     w = lncat(w,w_tau)+tau
         new_E.append((q,rho,w,q)) #Step 1 of merging is here too
 
