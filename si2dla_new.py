@@ -41,13 +41,15 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
     T_f = ostia_d(Dom,D,Rho,Sigma)
 
-    print("Initial hypothesis for T_f:")
+    print("Initial hypothesis for OSTIA D T_f:")
+    print("  Sigma:\t"+str(T_f.Sigma))
     print("  Q:\t"+str(T_f.Q))
     print("  E:\t"+str(T_f.E))
     print("  q0:\t"+str(T_f.qe))
     print("  stout:\t"+str(T_f.stout)+"\n")
 
-   # get alternation
+
+   # get which morphemes alternate by checking number of different SRs
     alternations = []
     for alphabet in T_f.Sigma:
         outputs = set()
@@ -68,12 +70,13 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
     print(f"states leading into alternations: {states_leading}")
 
-    # assign q_def to the largest OS
+    # gather OSes of each state that leads into alternation
     OS = {}
     for state in states_leading:
         OS[state] = get_OS(T_f, state)
         print(f"State: {OS[state]}")
 
+    # assign q_def to the largest OS or if the state is lambda in states_leading
     largest_os = None
     for key, value in OS.items():
         if len(value) == 0:
@@ -83,85 +86,95 @@ def si2dla_ex(Dom,D,Rho,Sigma):
         if largest_os == None or len(value) > len(OS[largest_os]):
             largest_os = key
     
-    temp_corr = {"qe": [], 'qd': []} 
+    temp_corr = {"qe": [], "qd": []} 
 
     for state, value in OS.items():
         if state == largest_os:
             temp_corr["qd"].append(state)
 
+    # store initial UR hypothesis
     urs = {}
 
     for tr in T_f.E:
         morph = tr[1]
-
-        # if the morph alternates, the UR is the one thats in qd
+        # if the morpheme alternates, the UR is the one thats in q_def
         if morph in alternations:
             if tr[0] in temp_corr['qd']:
-                urs[morph] = tr[2]
-
+                urs[morph] = tr[2]      
         else:
             urs[morph] = tr[2]
-            
+
     print(urs)
-
-
     
     n_t_f = set()
 
+    # mark each transition in ostia-d T_f as either q_def or q_env
     for tr in T_f.E:
+        # if a UR has not been stored yet, store it
+        if tr[1] not in urs:
+            urs[tr[1]] = tr[2]
+
+
+        # if the morpheme's SR doesn't match the UR, mark the state q_env
         if tr[2] != urs[tr[1]] and tr[0] not in temp_corr['qe']:
             temp_corr['qe'].append(tr[0])
 
+        # if the morpheme's SR matches the UR, mark the state q_def
         if tr[2] == urs[tr[1]] and tr[0] not in temp_corr["qd"]:
             temp_corr['qd'].append(tr[0])
     
+    # for any state not labelled, mark them q_def
     for state in T_f.Q:
         if state not in temp_corr['qd'] and state not in temp_corr['qe']:
             temp_corr['qd'].append(state)
 
+    # remove any overlapping states from q_def
     both = set(temp_corr['qd']) & set(temp_corr['qe'])
 
     for state in both:
         temp_corr['qd'].remove(state)
 
 
-    print('def stuff', temp_corr['qd'])
-    print('env stuff', temp_corr['qe'])
+    print('def states', temp_corr['qd'])
+    print('env states', temp_corr['qe'])
 
 
+    # construct 2 state T_f using state correspondences in temp_corr
     for tr in T_f.E:
         if tr[0] in temp_corr['qd'] and tr[3] in temp_corr["qe"]:
             n_t_f.add(("def", tr[1], tr[2], "env"))
         elif tr[0] in temp_corr['qd'] and tr[3] in temp_corr['qd']:
-            print(tr)
+            # print(tr)
             n_t_f.add(("def", tr[1], tr[2], "def"))
         elif tr[0] in temp_corr['qe'] and tr[3] in temp_corr['qe']:
             n_t_f.add(('env', tr[1], tr[2], 'env'))
         elif tr[0] in temp_corr['qe'] and tr[3] in temp_corr['qd']:
-            n_t_f.add(('env', tr[1], tr[2], 'def'))
-    
+            n_t_f.add(('env', tr[1], tr[2], 'def'))        
 
     T_f.Q = ["def", "env"]
-
+    T_f.qe = 'def'
     T_f.E = list(n_t_f)
+    T_f.stout = {'def': '', 'env': ''}
+
+    print("Initial hypothesis for 2 state T_f:")
+    print("  Sigma:\t"+str(T_f.Sigma))
+    print("  Q:\t"+str(T_f.Q))
+    print("  E:\t"+str(T_f.E))
+    print("  q0:\t"+str(T_f.qe))
+    print("  stout:\t"+str(T_f.stout)+"\n")
     
-    print(T_f.Q)
-
-    print(T_f.E)
-
     q_env = 'env'
     q_def = 'def'
 
-    T_f.stout = {'def': '', 'env': ''}
 
     Q_g = ["qe","qd"]
 
     corr = {"qe": q_env, "qd": q_def}
     rroc = {q_env: "qe", q_def: "qd"}
 
-    print("corr:\t\t"+str(corr))
+    # print("corr:\t\t"+str(corr))
 
-    print("OSs for T_f:\t"+str(OS))
+    # print("OSs for T_f:\t"+str(OS))
 
     # IS = { "qe" : OS[corr["qe"]],
     #        "qd" : OS[corr["qd"]]
@@ -251,9 +264,23 @@ def si2dla_ex(Dom,D,Rho,Sigma):
     print("  stout:\t"+str(T_g.stout)+"\n")
 
 
-    #*** modify_T_f
+    #*** modify_T_f    
+    mod_e = []
+    T_f.Sigma = set()
 
-    T_f.E = [ d for d in T_f.E if not d[0]==corr["qe"]]
+    # T_f.E = [ d for d in T_f.E if not d[0]==corr["qe"]]
+    for tr in T_f.E:
+        if tr[0] != corr['qe']:
+            mod_e.append(tr)
+            T_f.Sigma.add(tr[1])
+
+    T_f.E = mod_e
+
+    # add in missing URs
+    for morph, ur in urs.items():
+        if morph not in T_f.Sigma:
+            T_f.E.append(("def", morph, ur, "def"))
+    
 
     print("E_f after deletions: "+str(T_f.E)+"\n")
 
@@ -270,7 +297,7 @@ def si2dla_ex(Dom,D,Rho,Sigma):
                     print("opaque: ", rho)
                     print(w_tau)
                     print(tau)
-                    w = lncat(w,w_tau)+tau
+                    w = lncat(w,w_tau)+tau # tau -> w_tau / env _
         new_E.append((q,rho,w,q)) #Step 1 of merging is here too
 
     T_f.E = new_E
