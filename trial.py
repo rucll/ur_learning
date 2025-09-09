@@ -6,7 +6,7 @@ from ostia import ostia
 from k_tssi import *
 from domain_inference import *
 from helper import *
-from data import flap, chandleejardine, huajardine, kisd, opacity, sri_lanka_creole, yawelmani, zapotec
+from data import assimilation, flap, chandleejardine, huajardine, kisd, opacity, sri_lanka_creole, yawelmani, zapotec, deletion
 
 
 Data = [
