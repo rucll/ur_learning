@@ -27,7 +27,7 @@ def ostia(S, Sigma, Gamma):
     """
     # create a template of the onward PTT
     T = build_ptt(S, Sigma, Gamma)
-    T = onward_ptt(T, "", "")[0]
+    T = onward_ptt(T, "[]", "[]")[0] # error rn
 
     # color the nodes
     red = [""]
@@ -69,6 +69,12 @@ def ostia(S, Sigma, Gamma):
     T = ostia_clean(T)
     T.E = [tuple(i) for i in T.E]
 
+    T_f = T
+    print("Initial hypothesis for T_f:")
+    print("  Q:\t"+str(T_f.Q))
+    print("  E:\t"+str(T_f.E))
+    print("  q0:\t"+str(T_f.qe))
+    print("  stout:\t"+str(T_f.stout)+"\n")
     return T
 
 
@@ -96,16 +102,18 @@ def build_ptt(S, Sigma, Gamma):
     T.E = []
     for i in T.Q:
         if len(i) >= 1:
-            T.E.append([i[:-1], i[-1], "", i])
+            T.E.append([i[:-1], i[-1], "[]", i])
 
     # fill in state outputs
     T.stout = {}
     for i in T.Q:
         for j in S:
+            print(i)
+            print(j)
             if i == j[0]:
-                T.stout[i] = j[1]
-        if i not in T.stout:
-            T.stout[i] = "*"
+                T.stout[str(i)] = j[1]
+        if str(i) not in T.stout:
+            T.stout[str(i)] = "*"
 
     return T
 
@@ -133,6 +141,8 @@ def onward_ptt(T, q, u):
 
     # find lcp of all ways of leaving state 1 or stopping in it
     t = [tr[2] for tr in T.E if tr[0] == q]
+    print(T.stout)
+    print("Q:", q)
     f = lcp(T.stout[q], *t)
 
     # remove from the prefix unless it's the initial state

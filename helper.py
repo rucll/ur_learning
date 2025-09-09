@@ -56,7 +56,7 @@ def lcp(*string):
     Returns:
         str: a longest common prefix of the input strings.
     """
-    w = list(set(i for i in string if i != "*"))
+    w = list(set(i for i in str(string) if i != "*"))
     if not w:
         raise IndexError("At least one non-unknown string needs to be provided.")
 
