@@ -11,6 +11,17 @@ def infer_domain(data, k=2):
 
     domain = minimize_dfa_to_fst(init_dfa)
 
+     # if there are 2 states in domain inference, then the domain is Sigma star
+    if len(domain.Q) == 2:
+        sigma_star = []
+
+        for tr in domain.E:
+            if tr[0] != 0:
+                sigma_star.append(tr)
+
+        domain.E = sigma_star
+        domain.Q.remove(0)
+
     return domain
 
 # minimize the dfa and convert it into an fst; this is probably not even needed for ostia_d

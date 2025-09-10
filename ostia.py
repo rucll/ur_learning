@@ -27,11 +27,19 @@ def ostia(S, Sigma, Gamma):
     """
     # create a template of the onward PTT
     T = build_ptt(S, Sigma, Gamma)
-    T = onward_ptt(T, "[]", "[]")[0] # error rn
+    T = onward_ptt(T, [], [])[0] 
+
+    # note: debugging prints
+    print("T.Q after", T.Q)
+    print("T.E after", T.E)
+    print("T.stout after", T.stout)
+    print("T.Sigma after", T.Sigma)
 
     # color the nodes
-    red = [""]
-    blue = [tr[3] for tr in T.E if tr[0] == "" and len(tr[1]) == 1]
+    red = [[]]
+    # blue = [tr[3] for tr in T.E if tr[0] == [] and len(tr[1]) == 1]
+    blue = [tr[3] for tr in T.E if tr[0] == []] # len(tr[1]) is not always 1
+
 
     # choose a blue state
     while len(blue) != 0:
@@ -57,7 +65,7 @@ def ostia(S, Sigma, Gamma):
         # if possible, remove the folded state from the list of states
         else:
             T.Q.remove(blue_state)
-            del T.stout[blue_state]
+            del T.stout[str(blue_state)] # debug
 
         # add in blue list other states accessible from the red ones that are not red
         blue = []
@@ -102,14 +110,12 @@ def build_ptt(S, Sigma, Gamma):
     T.E = []
     for i in T.Q:
         if len(i) >= 1:
-            T.E.append([i[:-1], i[-1], "[]", i])
+            T.E.append([i[:-1], i[-1], [], i])
 
     # fill in state outputs
     T.stout = {}
     for i in T.Q:
-        for j in S:
-            print(i)
-            print(j)
+        for j in S:            
             if i == j[0]:
                 T.stout[str(i)] = j[1]
         if str(i) not in T.stout:
@@ -141,16 +147,15 @@ def onward_ptt(T, q, u):
 
     # find lcp of all ways of leaving state 1 or stopping in it
     t = [tr[2] for tr in T.E if tr[0] == q]
-    print(T.stout)
-    print("Q:", q)
-    f = lcp(T.stout[q], *t)
+  
+    f = lcp_list(T.stout[str(q)], *t)
 
     # remove from the prefix unless it's the initial state
-    if f != "" and q != "":
+    if f != [] and q != []:
         for tr in T.E:
             if tr[0] == q:
-                tr[2] = remove_from_prefix(tr[2], f)
-        T.stout[q] = remove_from_prefix(T.stout[q], f)
+                tr[2] = remove_from_prefix_list(tr[2], f)
+        T.stout[str(q)] = remove_from_prefix_list(T.stout[str(q)], f)
 
     return T, q, f
 
@@ -255,10 +260,10 @@ def ostia_merge(T_orig, q1, q2):
             tr[3] = q1
 
     # save the state output of the q1 originally
-    changed_stout = T.stout[q1]
+    changed_stout = T.stout[str(q1)] # debug
 
     # check if we can merge the states
-    can_do = ostia_fold(T, q1, q2)
+    can_do = ostia_fold(T, str(q1), str(q2)) # debug
 
     # if cannot, revert the change
     if can_do == False:
