@@ -1,6 +1,6 @@
 from dfa_object import *
 from helper import *
-from itertools import product
+from itertools import product, permutations
 
 # implementation of GOV, 90
 # builds a DFA that can recognize the language of R based on
@@ -27,14 +27,12 @@ def k_tssi(k, R):
         for j in range(0, len(prefix_substring)):
             T.Q.add(prefix_substring[0: j+1])
             if j == 0:
-                T.E.add(("", prefix_substring[j], "", prefix_substring[j]))
+                T.E.add(((), prefix_substring[j], "", (prefix_substring[j],)))
             else:
-                T.E.add((prefix_substring[0:j], prefix_substring[j], "", prefix_substring[0: j+1]))
+                T.E.add(((prefix_substring[0:j],), prefix_substring[j], "", (prefix_substring[0: j+1]),))
 
 
-    combined_alphabet = "".join(alphabets)
-
-    k_permutations = get_k_alphabet_combinations(k, combined_alphabet)
+    k_permutations = set(permutations(alphabets, k))
 
     difference = k_permutations - prohibted
 
@@ -67,19 +65,17 @@ def get_k_suffixes(k, R):
     return suffixes
 
 
-# get all possible substrings with given symbols of length k
-def get_k_alphabet_combinations(k, combined_alphabet):
-    return set([''.join(x) for x in product(combined_alphabet, repeat=k)])
+# # get all possible substrings with given symbols of length k
+# def get_k_alphabet_combinations(k, combined_alphabet):
+#     return set([''.join(x) for x in product(combined_alphabet, repeat=k)])
 
 # get all prohibited substrings
 def non_appearing(k, R):
 
     r_alphabet = set(alphabetize(R))
 
-    combined_alphabet = "".join(r_alphabet)
-
-    # get all possible substrings of length k over the alphabet of R (thx stackoverflow)
-    all_k_alphabet_substrings = get_k_alphabet_combinations(k, combined_alphabet)
+    # get all permutations of length k over the alphabet of R
+    all_k_alphabet_substrings =  set(permutations(r_alphabet, k))
 
     # get all substrings of length k in R
     all_k_R_substrings = set()

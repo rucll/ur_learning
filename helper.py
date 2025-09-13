@@ -70,7 +70,8 @@ def lcp_list(*string):
             result.append(w[0][i])
         else:
             break
-    
+    result = tuple(result)
+
     return result
 
 
@@ -98,7 +99,7 @@ def lcp(*string):
 
 # list specific remove function for testing purposes
 def remove_from_prefix_list(w, pref):
-
+    
     if w[:len(pref)] == pref:
         return w[len(pref) :]
     

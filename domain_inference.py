@@ -6,7 +6,6 @@ def infer_domain(data, k=2):
     morphemes = []
     for morphs, _ in data:
         morphemes.append(morphs)
-    
     init_dfa = k_tssi(k, morphemes)
 
     domain = minimize_dfa_to_fst(init_dfa)
@@ -41,10 +40,10 @@ def minimize_dfa_to_fst(T):
     # group each equivalent state to one representative state
     state_name = 1
     merged_states = {}
-    merged_states[''] = new_T.qe # map lambda state to start state
+    merged_states[()] = new_T.qe # map lambda state to start state
     for eq_state in P:
         for state in eq_state:
-            if state != '':
+            if state != ():
                 merged_states[state] = state_name
         new_T.Q.append(state_name)
         state_name += 1

@@ -28,13 +28,14 @@ def ostia_d(D, S, Sigma, Gamma):
     """
     # create a template of the onward PTT
     T = build_ptt(S, Sigma, Gamma)
-    T = onward_ptt(T, "", "")[0]
-
+    T = onward_ptt(T, (), ())[0]
+    T.qe = ()
+    
     # color the nodes
-    red = [""]
-    blue = [tr[3] for tr in T.E if tr[0] == "" and len(tr[1]) == 1]
+    red = [()]
+    # blue = [tr[3] for tr in T.E if tr[0] == "" and len(tr[1]) == 1]
+    blue = [tr[3] for tr in T.E if tr[0] == ()]
     labels = label_assign(D, T) #assign a corresponding domain state to each state in OSTIA
-    # print("labels:", labels)
 
 
     # choose a blue state
@@ -50,8 +51,6 @@ def ostia_d(D, S, Sigma, Gamma):
                 break
 
             # try to merge these two states if the domain labels match
-
-            # print(label_get(labels, blue_state), blue_state, label_get(labels, red_state), red_state)
             if ostia_merge(T, red_state, blue_state) and label_get(labels, blue_state) == label_get(labels, red_state):
                 T = ostia_merge(T, red_state, blue_state)
                 # print("merging:", red_state, blue_state)
@@ -103,7 +102,7 @@ def build_ptt(S, Sigma, Gamma):
     T.E = []
     for i in T.Q:
         if len(i) >= 1:
-            T.E.append([i[:-1], i[-1], "", i])
+            T.E.append([i[:-1], i[-1], (), i])
 
     # fill in state outputs
     T.stout = {}
@@ -140,14 +139,15 @@ def onward_ptt(T, q, u):
 
     # find lcp of all ways of leaving state 1 or stopping in it
     t = [tr[2] for tr in T.E if tr[0] == q]
-    f = lcp(T.stout[q], *t)
+    f = lcp_list(T.stout[q], *t)
+
 
     # remove from the prefix unless it's the initial state
-    if f != "" and q != "":
+    if f != () and q != ():
         for tr in T.E:
             if tr[0] == q:
-                tr[2] = remove_from_prefix(tr[2], f)
-        T.stout[q] = remove_from_prefix(T.stout[q], f)
+                tr[2] = remove_from_prefix_list(tr[2], f)
+        T.stout[q] = remove_from_prefix_list(T.stout[q], f)
 
     return T, q, f
 
@@ -185,7 +185,6 @@ def bfs(T, start, goal):
 
         # goal state found
         if state == goal:
-            # print("found")
             return path
         
         # if state not previously explored
@@ -212,15 +211,17 @@ def label_assign(Dom, T):
     # iterate through each state in OSTIA FST
     for state in T.Q:
         t_path = bfs(T, T.qe, state) # perform BST from inital state to current state
-        input_string = ""
+        # [((), 'root1', ('t', 'a', 'd'), ('root1',)), (('root1',), 'suff1', ('d', 'a'), ('root1', 'suff1'))]
+        input_strings = []
 
         # gather input strings
         for step in t_path:
-            input_string += step[1]
+            input_strings.append(step[1])
         
         # trace the domain FST using the input string
-        corr_d_state = get_end_state_from_input_string(input_string, Dom)
+        corr_d_state = get_end_state_from_input_string(input_strings, Dom)
         labels.append((corr_d_state, state))
+    
         
     return labels
 
@@ -229,8 +230,8 @@ def label_assign(Dom, T):
 # return the ending state from the input string
 def get_end_state_from_input_string(string, T):
     curr_state = T.qe
-    for i in range(len(string)):
-        input_symbol = string[i]
+    for i in string:
+        input_symbol = i
         
         # simulate transitioning through each state
         for tr in T.E:
@@ -320,7 +321,7 @@ def ostia_pushback(T_orig, q1, q2, a):
         raise ValueError("One of the states cannot be found.")
 
     # find the part after longest common prefix
-    u = lcp(from_q1, from_q2)
+    u = lcp_list(from_q1, from_q2)
     remains_q1 = from_q1[len(u) :]
     remains_q2 = from_q2[len(u) :]
 
@@ -436,7 +437,6 @@ def ostia_fold(T_orig, q1, q2):
         # if the new transition was constructed, add it to the list of transitions
         if add_new:
             T.E.append(add_new)
-
     return T
 
 
@@ -453,7 +453,7 @@ def ostia_clean(T_orig):
     T = T_orig.copy_fst()
 
     # determine which states are reachable, i.e. accessible from the initial state
-    reachable_states = [""]
+    reachable_states = [()]
     add = []
     change_made = True
     while change_made == True:

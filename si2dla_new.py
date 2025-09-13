@@ -15,11 +15,26 @@ def suff_1(w):
 
 def get_OS(T,q):
     """Gets output 1-suffixes of state q in FST T"""
-    incoming = { tr for tr in T.E if tr[3] == q}
+    # print(tuple(T.E[1]))
+    incoming = { tuple(tr) for tr in T.E if tr[3] == q}
     outs = { tr[2] for tr in incoming}
     suffs = { suff_1(w) for w in outs}
     # print(f"{q}: {suffs}")
     return suffs
+
+# lncat function handling tuples/list (the original function can be deleted later)
+def lncat_format(w, v):
+    
+    # print(f"LNCAT: {w}, {v}")
+    if len(v) == 0:
+        return w
+
+    elif w[-len(v): ] == v:
+        return w[0:-len(v)]
+    
+    else: 
+        print ("using fake lncat")
+        return w
 
 
 def lncat(w,v):
@@ -104,7 +119,7 @@ def si2dla_ex(Dom,D,Rho,Sigma):
         else:
             urs[morph] = tr[2]
 
-    print(urs)
+    print("URS:", urs)
     
     n_t_f = set()
 
@@ -228,15 +243,15 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
                 w_e = w_trs[0][2]
 
-                print("w_d for "+s+":\t"+w_d)
-                print("w_e for "+s+":\t"+w_e+"\n")
+                print("w_d for "+s+":\t"+str(w_d))
+                print("w_e for "+s+":\t"+str(w_e)+"\n")
 
-                w_s = lncat(w_e,w_d[1:])
+                w_s = lncat_format(w_e,w_d[1:])
 
-                o_g[("qe",s)] = w_s
+                o_g[("qe",s)] = w_s[0]
 
-                if s != w_s: #This is lns 2-3 from Alg 3
-                    tau = s
+                if tuple(s) != w_s: #This is lns 2-3 from Alg 3
+                    tau = tuple(s)
                     w_tau = w_s
 
         if found == False:
@@ -297,7 +312,7 @@ def si2dla_ex(Dom,D,Rho,Sigma):
                     print("opaque: ", rho)
                     print(w_tau)
                     print(tau)
-                    w = lncat(w,w_tau)+tau # tau -> w_tau / env _
+                    w = lncat_format(w,w_tau)+tau # tau -> w_tau / env _
         new_E.append((q,rho,w,q)) #Step 1 of merging is here too
 
     T_f.E = new_E
