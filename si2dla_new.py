@@ -41,7 +41,7 @@ def lncat(w,v):
     """Returns wv^-1; i.e. v removed from the end of w"""
     if v == "":
         return w
-    elif w.endswith(v):
+    elif str(w).endswith(str(v)):
         return w[0:-len(v)]
     else: 
         print ("using fake lncat")
@@ -54,7 +54,21 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
     print("Learning from "+str(D)+"\n")
 
-    T_f = ostia_d(Dom,D,Rho,Sigma)
+    # T_f = ostia_d(Dom,D,Rho,Sigma)
+
+    T_f = FST(['root1', 'root2', 'root3', 'suff1', 'suff2'], ['t', 'a', 'd1'])
+    T_f.Q = [(), ('root1'), ('root2'), ('root1', 'suff1')]
+    T_f.qe = ()
+    T_f.E = [
+        [(), 'root1', ('t', 'a', 'd1'), ('root1')], 
+        [(), 'root2', ('t', 'a', 't'), ('root2')], 
+        [(), 'root3', ('t', 'a', 'd1', 'a'), ('root2')], 
+        [('root1'), 'suff1', ('d1', 'a'), ('root1', 'suff1')], 
+        [('root2'), 'suff1', ('t', 'a'), ('root1', 'suff1')], 
+        [('root1'), 'suff2', ('d1', 'a'), ('root1', 'suff1')], 
+        [('root2'), 'suff2', ('d1', 'a'), ('root1', 'suff1')],
+        ]
+    
 
     print("Initial hypothesis for OSTIA D T_f:")
     print("  Sigma:\t"+str(T_f.Sigma))
@@ -243,8 +257,8 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
                 w_e = w_trs[0][2]
 
-                print("w_d for "+s+":\t"+str(w_d))
-                print("w_e for "+s+":\t"+str(w_e)+"\n")
+                print("w_d for "+str(s)+":\t"+str(w_d))
+                print("w_e for "+str(s)+":\t"+str(w_e)+"\n")
 
                 w_s = lncat_format(w_e,w_d[1:])
 
