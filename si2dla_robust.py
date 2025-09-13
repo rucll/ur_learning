@@ -48,20 +48,8 @@ def si2dla(D,Rho,Sigma):
 
     print("Learning from "+str(D)+"\n")
 
-    # T_f = ostia(D,Rho,Sigma)
+    T_f = ostia(D,Rho,Sigma)
 
-    T_f = FST(['root1', 'root2', 'root3', 'suff1', 'suff2'], ['t', 'a', 'd'])
-    T_f.Q = [[], ['root1'], ['root2'], ['root1', 'suff1']]
-    T_f.qe = []
-    T_f.E = [
-        [[], 'root1', ['t', 'a', 'd'], ['root1']], 
-        [[], 'root2', ['t', 'a', 't'], ['root2']], 
-        [[], 'root3', ['t', 'a', 'd', 'a'], ['root2']], 
-        [['root1'], 'suff1', ['d', 'a'], ['root1', 'suff1']], 
-        [['root2'], 'suff1', ['t', 'a'], ['root1', 'suff1']], 
-        [['root1'], 'suff2', ['d', 'a'], ['root1', 'suff1']], 
-        [['root2'], 'suff2', [' d', 'a'], ['root1', 'suff1']],
-        ]
 
     print("Initial hypothesis for T_f:")
     print("  Q:\t"+str(T_f.Q))  # n: set of states
