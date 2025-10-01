@@ -54,20 +54,7 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
     print("Learning from "+str(D)+"\n")
 
-    # T_f = ostia_d(Dom,D,Rho,Sigma)
-
-    T_f = FST(['root1', 'root2', 'root3', 'suff1', 'suff2'], ['t', 'a', 'd1'])
-    T_f.Q = [(), ('root1'), ('root2'), ('root1', 'suff1')]
-    T_f.qe = ()
-    T_f.E = [
-        [(), 'root1', ('t', 'a', 'd1'), ('root1')], 
-        [(), 'root2', ('t', 'a', 't'), ('root2')], 
-        [(), 'root3', ('t', 'a', 'd1', 'a'), ('root2')], 
-        [('root1'), 'suff1', ('d1', 'a'), ('root1', 'suff1')], 
-        [('root2'), 'suff1', ('t', 'a'), ('root1', 'suff1')], 
-        [('root1'), 'suff2', ('d1', 'a'), ('root1', 'suff1')], 
-        [('root2'), 'suff2', ('d1', 'a'), ('root1', 'suff1')],
-        ]
+    T_f = ostia_d(Dom,D,Rho,Sigma)
     
 
     print("Initial hypothesis for OSTIA D T_f:")
