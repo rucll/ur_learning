@@ -9,6 +9,7 @@ import graphviz
 from PIL import ImageTk, Image
 import re
 from data import chandleejardine, huajardine, opacity, deletion
+from parser import parse_csv
 import os
 import pathlib
 
@@ -17,71 +18,75 @@ os.environ["PATH"] += os.pathsep + f"{pathlib.Path(__file__).parent.resolve()}/g
 global_image_list = []
 # check for invalid input
 
-def read_data(D_value):
-    if bool(re.match(r"\[(\s*\(\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*,\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*\)\s*,)*\s*(\s*\(\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*,\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*\)\s*,?)\]\s*", D_value)):
-        D_list = literal_eval(D_value)
-    elif bool(re.match(r"(([^,\s])+,(\s*[^,\s])+\n)*(([^,\s])+,(\s*[^,\s])+)\s*", D_value)):
-        lines = D_value.splitlines()
-        D_list = []
-        for l in lines:
-            D_list.append(tuple(l.replace(" ", "").split(",")))
-    else:
-        return []
+# def read_data(D_value):
+#     if bool(re.match(r"\[(\s*\(\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*,\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*\)\s*,)*\s*(\s*\(\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*,\s*(\"|\')[^\"\'\[\]]*(\"|\')\s*\)\s*,?)\]\s*", D_value)):
+#         D_list = literal_eval(D_value)
+#     elif bool(re.match(r"(([^,\s])+,(\s*[^,\s])+\n)*(([^,\s])+,(\s*[^,\s])+)\s*", D_value)):
+#         lines = D_value.splitlines()
+#         D_list = []
+#         for l in lines:
+#             D_list.append(tuple(l.replace(" ", "").split(",")))
+#     else:
+#         return []
     
-    return D_list
+#     return D_list
 
-def read_alphabet(value, D_list):   
-    if value == "r_empty":
-        strs = []
-        for tup in D_list:
-            strs.append(tup[0])
-        return_list = list(set("".join(strs)))
-    elif value == "s_empty":
-        strs = []
-        for tup in D_list:
-            strs.append(tup[1])
-        return_list = list(set("".join(strs)))
-    elif bool(re.match(r"\[(\s*[\"|\']([^\'\"\[\]])+[\"|\'],)*\s*(\s*[\"|\']([^\'\"\[\]])+[\"|\'])\s*\]\s*", value)):
-        return_list = literal_eval(value)
-    elif bool(re.match(r"(\s*([^\'\"\[\]\s])+\s*,)*\s*([^\'\"\[\]\s])+\s*", value)):
-        return_list = value.replace(" ", "").split(",")
-    else: 
-        return []
+def read_alphabet(D_list):   
+    R_list = []
+    S_list = []
+    for data_pair in D_list:
+        R_list.extend(data_pair[0])
+        S_list.extend(data_pair[1])
 
-    return return_list
+    R_list = list(set(R_list))
+    S_list = list(set(S_list))
+    return (R_list, S_list)
 
-def execute():
-    D_value = D_entry.get("1.0", "end-1c")
-    R_value = R_entry.get("1.0", "end-1c")
-    S_value = S_entry.get("1.0", "end-1c")
+# def read_alphabet(value, D_list):   
+#     if value == "r_empty":
+#         strs = []
+#         for tup in D_list:
+#             strs.append(tup[0])
+#         return_list = list(set("".join(strs)))
+#     elif value == "s_empty":
+#         strs = []
+#         for tup in D_list:
+#             strs.append(tup[1])
+#         return_list = list(set("".join(strs)))
+#     elif bool(re.match(r"\[(\s*[\"|\']([^\'\"\[\]])+[\"|\'],)*\s*(\s*[\"|\']([^\'\"\[\]])+[\"|\'])\s*\]\s*", value)):
+#         return_list = literal_eval(value)
+#     elif bool(re.match(r"(\s*([^\'\"\[\]\s])+\s*,)*\s*([^\'\"\[\]\s])+\s*", value)):
+#         return_list = value.replace(" ", "").split(",")
+#     else: 
+#         return []
 
-    D_list = read_data(D_value)
+#     return return_list
+
+# def execute():
+#     D_value = D_entry.get("1.0", "end-1c")
+#     R_value = R_entry.get("1.0", "end-1c")
+#     S_value = S_entry.get("1.0", "end-1c")
+
+#     D_list = read_data(D_value)
     
-    if D_list == []:
-        print("error reading data.")
-        return
+#     if D_list == []:
+#         print("error reading data.")
+#         return
 
-    execute_algorithm(D_list, R_value, S_value)
+#     execute_algorithm(D_list, R_value, S_value)
 
 def file_execute():
-    file_path = filedialog.askopenfilename(title="Select a file:", filetypes=[("Text file", "*.txt")])
-    if file_path:
-        with open(file_path, "r") as file:
-            file_data = file.read()
-            D_list = read_data(file_data)
-            if D_list == []:
-                print("error reading data.")
-                return
-        execute_algorithm(D_list, "r_empty", "s_empty")
+    file_path = filedialog.askopenfilename(title="Select a file:", filetypes=[("Text file", "*.csv")])
+    D_list = parse_csv(file_path)
+    execute_algorithm(D_list)
 
-def execute_algorithm(D_list, R_value, S_value):
-    if R_value == "":
-        R_value = "r_empty"
-    if S_value == "":
-        S_value = "s_empty"
+def execute_algorithm(D_list):
+    # if R_value == "":
+    #     R_value = "r_empty"
+    # if S_value == "":
+    #     S_value = "s_empty"
 
-    R_list = read_alphabet(R_value, D_list)
-    S_list = read_alphabet(S_value, D_list)
+    (R_list, S_list) = read_alphabet(D_list)
 
     if D_list == []:
         print("error reading data.")
@@ -271,7 +276,7 @@ S_label.grid(column=1, row=5)
 S_entry = Text(mainframe, width=50, height=3)
 S_entry.grid(column=1, row=6, pady=16)
 
-button = Button(mainframe, text="execute", command=execute)
+button = Button(mainframe, text="execute", command=file_execute)
 button.grid(column=1, row=9, pady=16)
 
 file_button = Button(mainframe, text="upload text file", command=file_execute)
