@@ -3,11 +3,12 @@ from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter import filedialog
 from ast import literal_eval
-from si2dla_robust import *
+from si2dla_new import *
+from domain_inference import infer_domain
 import graphviz
 from PIL import ImageTk, Image
 import re
-
+from data import chandleejardine, huajardine, opacity, deletion
 import os
 import pathlib
 
@@ -88,83 +89,140 @@ def execute_algorithm(D_list, R_value, S_value):
     if R_list == [] or S_list == []:
         print("error reading alphabets.")
         return
+    
+    # D_list = opacity.data_new_format
+    # R_list = opacity.sigma_new_format
+    # S_list = opacity.gamma_new_format
 
-    (T_f, T_g) = si2dla_ex(D_list, R_list, S_list)
+    T = infer_domain(D_list)
+
+    (T_f, T_g) = si2dla_ex(T, D_list, R_list, S_list)
 
     graph_f = graphviz.Digraph('graph_f', node_attr={'shape': 'circle', 'fontname': 'Times-Roman', 'fontsize': '12pt', 'fillcolor': 'gray90'}, edge_attr={'fontname': 'Times-Roman', 'fontsize': '12pt', 'penwidth': '0.6', 'arrowsize': '0.6'}, graph_attr={'rankdir': 'LR', 'center': 'true'})
     graph_g = graphviz.Digraph('graph_g', node_attr={'shape': 'circle', 'fontname': 'Times-Roman', 'fontsize': '12pt', 'fillcolor': 'gray90'}, edge_attr={'fontname': 'Times-Roman', 'fontsize': '12pt', 'penwidth': '0.6', 'arrowsize': '0.6'}, graph_attr={'rankdir': 'LR', 'center': 'true'})
+    graph_d = graphviz.Digraph('graph_d', node_attr={'shape': 'circle', 'fontname': 'Times-Roman', 'fontsize': '12pt', 'fillcolor': 'gray90'}, edge_attr={'fontname': 'Times-Roman', 'fontsize': '12pt', 'penwidth': '0.6', 'arrowsize': '0.6'}, graph_attr={'rankdir': 'LR', 'center': 'true'})
+
 
     for s in T_f.Q:
         graph_f.node(s)
     for s in T_g.Q:
         graph_g.node(s)
-
+    for s in T.Q:
+        s = str(s)
+        print(s)
+        graph_d.node(s)
+        
 
     if len(T_f.Q) == 1:
-        e1 = None
-        for e in T_f.E:
-            print(e)
-            if e1 is None:
-                e1 = (e[0], e[3])
-                e1_label = e[1] + ": " + e[2] + "\\n"
-            elif (e[0], e[3]) == e1:
-                e1_label = e1_label + e[1] + ": " + e[2] + "\\n"
-            else: 
-                print("error edge drawing T_f.")
-                return
+        tr_label = ''
+        for tr in T_f.E:
+            tr_label = tr_label + tr[1] + ": " + ''.join(tr[2]) + '\\n'
+        
+        graph_f.edge(T_f.Q[0], T_f.Q[0], label=tr_label)
 
-        graph_f.edge(e1[0], e1[1], label=e1_label)
+    # if len(T_f.Q) == 1:
+    #     e1 = None
+    #     for e in T_f.E:
+    #         print(e)
+    #         e = (e[0], e[1], ''.join(e[2]), e[3])
+    #         if e1 is None:
+    #             e1 = (e[0], e[3])
+    #             e1_label = e[1] + ": " + e[2] + "\\n"
+    #         elif (e[0], e[3]) == e1:
+    #             e1_label = e1_label + e[1] + ": " + e[2] + "\\n"
+    #         else: 
+    #             print("error edge drawing T_f.")
+    #             return
+
+    #     graph_f.edge(e1[0], e1[1], label=e1_label)
+
+    state_mappings = {}
 
 
+    for tr in T.E:
+        if (tr[0], tr[3]) not in state_mappings:
+            state_mappings[(tr[0], tr[3])] = [tr[1]]
+        else:
+            state_mappings[(tr[0], tr[3])].append(tr[1]) 
+
+    for states, inputs in state_mappings.items():
+        tr_label = ''
+        for inp in inputs:
+            tr_label = tr_label + inp + '\\n'
+        
+        graph_d.edge(str(states[0]), str(states[1]), label=tr_label)
+
+    state_mappings.clear()
+
+ 
     if len(T_g.Q) == 2:
-        e1 = None
-        e1_label = ""
-        e2 = None
-        e2_label = ""
-        e3 = None
-        e3_label = ""
-        e4 = None
-        e4_label = ""
-        for e in T_g.E:
-            if (e[0], e[3]) == e1:
-                e1_label = e1_label + e[1] + ": " + e[2] + "\\n"
-            elif (e[0], e[3]) == e2:
-                e2_label = e2_label + e[1] + ": " + e[2] + "\\n"
-            elif (e[0], e[3]) == e3:
-                e3_label = e3_label + e[1] + ": " + e[2] + "\\n"
-            elif (e[0], e[3]) == e4:
-                e4_label = e4_label + e[1] + ": " + e[2] + "\\n"
-            elif e1 is None:
-                e1 = (e[0], e[3])
-                e1_label = e[1] + ": " + e[2] + "\\n"
-            elif e2 is None:
-                e2 = (e[0], e[3])
-                e2_label = e[1] + ": " + e[2] + "\\n"
-            elif e3 is None:
-                e3 = (e[0], e[3])
-                e3_label = e[1] + ": " + e[2] + "\\n"
-            elif e4 is None:
-                e4 = (e[0], e[3])
-                e4_label = e[1] + ": " + e[2] + "\\n"
-            else: 
-                print("error edge drawing T_g.")
-                return
+        for tr in T_g.E:
+            if (tr[0], tr[3]) not in state_mappings:
+                state_mappings[(tr[0], tr[3])] = [tr[1] + ': ' + tr[2]]
+            else:
+                 state_mappings[(tr[0], tr[3])].append(tr[1] + ': ' + tr[2])
+        
+        for states, inputs in state_mappings.items():
+            tr_label = ''
+            for inp in inputs:
+                tr_label = tr_label + inp + '\\n'
+                
+            graph_g.edge(str(states[0]), str(states[1]), label=tr_label)
+
+        state_mappings.clear()
 
 
 
-        graph_g.edge(e1[0], e1[1], label=e1_label+"\\n")
-        graph_g.edge(e2[0], e2[1], label=e2_label+"\\n")
+    # if len(T_g.Q) == 2:
+    #     e1 = None
+    #     e1_label = ""
+    #     e2 = None
+    #     e2_label = ""
+    #     e3 = None
+    #     e3_label = ""
+    #     e4 = None
+    #     e4_label = ""
+    #     for e in T_g.E:
+    #         if (e[0], e[3]) == e1:
+    #             e1_label = e1_label + e[1] + ": " + e[2] + "\\n"
+    #         elif (e[0], e[3]) == e2:
+    #             e2_label = e2_label + e[1] + ": " + e[2] + "\\n"
+    #         elif (e[0], e[3]) == e3:
+    #             e3_label = e3_label + e[1] + ": " + e[2] + "\\n"
+    #         elif (e[0], e[3]) == e4:
+    #             e4_label = e4_label + e[1] + ": " + e[2] + "\\n"
+    #         elif e1 is None:
+    #             e1 = (e[0], e[3])
+    #             e1_label = e[1] + ": " + e[2] + "\\n"
+    #         elif e2 is None:
+    #             e2 = (e[0], e[3])
+    #             e2_label = e[1] + ": " + e[2] + "\\n"
+    #         elif e3 is None:
+    #             e3 = (e[0], e[3])
+    #             e3_label = e[1] + ": " + e[2] + "\\n"
+    #         elif e4 is None:
+    #             e4 = (e[0], e[3])
+    #             e4_label = e[1] + ": " + e[2] + "\\n"
+    #         else: 
+    #             print("error edge drawing T_g.")
+    #             return
 
-        if e3:
-            graph_g.edge(e3[0], e3[1], label=e3_label+"\\n")
-        if e4:
-            graph_g.edge(e4[0], e4[1], label=e4_label+"\\n")
+
+    #     graph_g.edge(e1[0], e1[1], label=e1_label+"\\n")
+    #     graph_g.edge(e2[0], e2[1], label=e2_label+"\\n")
+
+    #     if e3:
+    #         graph_g.edge(e3[0], e3[1], label=e3_label+"\\n")
+    #     if e4:
+    #         graph_g.edge(e4[0], e4[1], label=e4_label+"\\n")
 
         graph_f.format = 'png'
         graph_g.format = 'png'
+        graph_d.format = 'png'
         
         graph_f.render(directory='gui_files', filename='graph_f').replace('\\', '/')
         graph_g.render(directory='gui_files', filename='graph_g').replace('\\', '/')
+        graph_d.render(directory='gui_files', filename='graph_d').replace('\\', '/')
 
         root_dir = pathlib.Path(__file__).resolve().parent
 
@@ -178,6 +236,10 @@ def execute_algorithm(D_list, R_value, S_value):
         imglabel_g = Label(mainframe, image=img_g)
         imglabel_g.grid(column=3, row=2, padx=16)
 
+        img_d = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_d.png"))
+        global_image_list.append(img_d)
+        imglabel_d = Label(mainframe, image=img_d)
+        imglabel_d.grid(column=2, row=3, padx=16)
 
 
         

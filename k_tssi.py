@@ -32,7 +32,7 @@ def k_tssi(k, R):
                 T.E.add(((prefix_substring[0:j],), prefix_substring[j], "", (prefix_substring[0: j+1]),))
 
 
-    k_permutations = set(permutations(alphabets, k))
+    k_permutations = set(product(alphabets, repeat=k))
 
     difference = k_permutations - prohibted
 
@@ -75,7 +75,7 @@ def non_appearing(k, R):
     r_alphabet = set(alphabetize(R))
 
     # get all permutations of length k over the alphabet of R
-    all_k_alphabet_substrings =  set(permutations(r_alphabet, k))
+    all_k_alphabet_substrings =  set(product(r_alphabet, repeat=k))
 
     # get all substrings of length k in R
     all_k_R_substrings = set()
