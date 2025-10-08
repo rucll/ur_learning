@@ -77,7 +77,9 @@ def read_alphabet(D_list):
 
 def file_execute():
     file_path = filedialog.askopenfilename(title="Select a file:", filetypes=[("Text file", "*.csv")])
+    print(file_path)
     D_list = parse_csv(file_path)
+    print("starr", D_list, "end")
     execute_algorithm(D_list)
 
 def execute_algorithm(D_list):
@@ -85,6 +87,8 @@ def execute_algorithm(D_list):
     #     R_value = "r_empty"
     # if S_value == "":
     #     S_value = "s_empty"
+
+
 
     (R_list, S_list) = read_alphabet(D_list)
 
@@ -95,9 +99,11 @@ def execute_algorithm(D_list):
         print("error reading alphabets.")
         return
     
-    # D_list = opacity.data_new_format
-    # R_list = opacity.sigma_new_format
-    # S_list = opacity.gamma_new_format
+    root.image_frame.pack(pady=20)
+
+    D_list = opacity.data_new_format
+    R_list = opacity.sigma_new_format
+    S_list = opacity.gamma_new_format
 
     T = infer_domain(D_list)
 
@@ -233,53 +239,82 @@ def execute_algorithm(D_list):
 
         img_f = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_f.png"))
         global_image_list.append(img_f)
-        imglabel_f = Label(mainframe, image=img_f)
-        imglabel_f.grid(column=2, row=2, padx=16)
         
         img_g = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_g.png"))
         global_image_list.append(img_g)
-        imglabel_g = Label(mainframe, image=img_g)
-        imglabel_g.grid(column=3, row=2, padx=16)
 
         img_d = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_d.png"))
         global_image_list.append(img_d)
-        imglabel_d = Label(mainframe, image=img_d)
-        imglabel_d.grid(column=2, row=3, padx=16)
+
+        subframe = ttk.Frame(root.image_frame)
+        subframe.pack(side="left", padx=10)
+
+        imglabel_f = Label(subframe, image=img_f, background="#ddd")
+        imglabel_f.pack()
+
+        label = ttk.Label(subframe, text=f"T_f:")
+        label.pack(pady=5)
+
+        subframe = ttk.Frame(root.image_frame)
+        subframe.pack(side="left", padx=10)
+
+        imglabel_g = Label(subframe, image=img_g, background="#ddd")
+        imglabel_g.pack()
+
+
+        label = ttk.Label(subframe, text=f"T_g:")
+        label.pack(pady=5)
+
+        subframe = ttk.Frame(root.image_frame)
+        subframe.pack(side="left", padx=10)
+
+        imglabel_d = Label(subframe, image=img_d, background="#ddd")
+        imglabel_d.pack()
+
+        label = ttk.Label(subframe, text=f"Inferred Domain:")
+        label.pack(pady=5)
 
 
         
 
 root = Tk()
-root.title("Si2dla Algorithm")
+root.title("SI2DLA Visualization Tool")
 root.resizable(False, False)
 
-mainframe = ttk.Frame(root, padding="25 25 25 20")
-mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
+outer_frame = ttk.Frame(root, padding="40 40 40 40")
+outer_frame.pack(fill="both", expand=True)
 
-D_label=Label(mainframe, text="insert data here (D):", anchor='sw', width=58)
-D_label.grid(column=1, row=1)
+root.title_label = ttk.Label(outer_frame, text="SI2DLA Visualization Tool", font=("Calibri", 18, "bold"))
+root.title_label.pack(pady=20)
 
-D_entry = scrolledtext.ScrolledText(mainframe, width=48, height=15)
-D_entry.grid(column=1, row=2, pady=16)
+root.execute_button = ttk.Button(outer_frame, text="Upload CSV", command=file_execute)
+root.execute_button.pack()
 
-R_label=Label(mainframe, text="insert input alphabet here (Rho):", anchor='sw', width=58)
-R_label.grid(column=1, row=3)
+       
+root.image_frame = ttk.Frame(outer_frame)
+root.image_frame.pack(pady=20)
+root.image_frame.pack_forget()
 
-R_entry = Text(mainframe, width=50, height=3)
-R_entry.grid(column=1, row=4, pady=16)
 
-S_label=Label(mainframe, text="insert output alphabet here (Sigma):", anchor='sw', width=58)
-S_label.grid(column=1, row=5)
+# D_entry = scrolledtext.ScrolledText(mainframe, width=48, height=15)
+# D_entry.grid(column=1, row=2, pady=16)
 
-S_entry = Text(mainframe, width=50, height=3)
-S_entry.grid(column=1, row=6, pady=16)
+# R_label=Label(mainframe, text="insert input alphabet here (Rho):", anchor='sw', width=58)
+# R_label.grid(column=1, row=3)
 
-button = Button(mainframe, text="execute", command=file_execute)
-button.grid(column=1, row=9, pady=16)
+# R_entry = Text(mainframe, width=50, height=3)
+# R_entry.grid(column=1, row=4, pady=16)
 
-file_button = Button(mainframe, text="upload text file", command=file_execute)
-file_button.grid(column=1, row=10, pady=32)
+# S_label=Label(mainframe, text="insert output alphabet here (Sigma):", anchor='sw', width=58)
+# S_label.grid(column=1, row=5)
+
+# S_entry = Text(mainframe, width=50, height=3)
+# S_entry.grid(column=1, row=6, pady=16)
+
+# button = Button(mainframe, text="execute", command=file_execute)
+# button.grid(column=1, row=9, pady=16)
+
+# file_button = Button(mainframe, text="Upload CSV", command=file_execute)
+# file_button.grid(column=3, row=1, pady=32)
 
 root.mainloop()

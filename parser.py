@@ -17,7 +17,8 @@ def parse_csv(filepath):
     with open(filepath, 'r', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
-            
+
+            print(row)
             row1 = str(row[0])
             row2 = str(row[1])
 
