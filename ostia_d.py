@@ -73,6 +73,10 @@ def ostia_d(D, S, Sigma, Gamma):
 
     # clean the transducer from non-reachable states
     T = ostia_clean(T)
+    for idx, tr in enumerate(T.E):
+        if len(tr[2]) == 0:
+            T.E[idx] = [tr[0], tr[1], ('',), tr[3]]
+
     T.E = [tuple(i) for i in T.E]
 
     return T

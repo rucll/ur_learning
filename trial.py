@@ -1,15 +1,31 @@
 from si2dla_new import *
 # from si2dla_test import *
 from ostia_d import ostia_d
-from ostia import ostia
-# from si2dla import *
 from k_tssi import *
 from domain_inference import *
 from helper import *
-from data import assimilation, flap, chandleejardine, huajardine, kisd, opacity, sri_lanka_creole, yawelmani, zapotec, deletion
+from parser import parse_csv
 
 
-def run_test(d, r, s):
+def read_alphabet(D_list):   
+    R_list = []
+    S_list = []
+    for data_pair in D_list:
+        R_list.extend(data_pair[0])
+        S_list.extend(data_pair[1])
+
+    R_list = list(set(R_list))
+    S_list = list(set(S_list))
+    return (R_list, S_list)
+
+def run_test(data_csv):
+
+    d = parse_csv(data_csv)
+
+    print(d)
+
+    (r, s) = read_alphabet(d)
+
 
     T = infer_domain(d)
 
@@ -28,4 +44,4 @@ def run_test(d, r, s):
 
     print("All checks passed!")
 
-run_test(opacity.data_new_format, opacity.sigma_new_format, opacity.gamma_new_format)
+run_test('data/demo_data/chandleejardine.csv')

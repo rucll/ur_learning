@@ -79,7 +79,6 @@ def file_execute():
     file_path = filedialog.askopenfilename(title="Select a file:", filetypes=[("Text file", "*.csv")])
     print(file_path)
     D_list = parse_csv(file_path)
-    print("starr", D_list, "end")
     execute_algorithm(D_list)
 
 def execute_algorithm(D_list):
@@ -101,9 +100,6 @@ def execute_algorithm(D_list):
     
     root.image_frame.pack(pady=20)
 
-    D_list = opacity.data_new_format
-    R_list = opacity.sigma_new_format
-    S_list = opacity.gamma_new_format
 
     T = infer_domain(D_list)
 
@@ -120,7 +116,6 @@ def execute_algorithm(D_list):
         graph_g.node(s)
     for s in T.Q:
         s = str(s)
-        print(s)
         graph_d.node(s)
         
 
@@ -131,21 +126,6 @@ def execute_algorithm(D_list):
         
         graph_f.edge(T_f.Q[0], T_f.Q[0], label=tr_label)
 
-    # if len(T_f.Q) == 1:
-    #     e1 = None
-    #     for e in T_f.E:
-    #         print(e)
-    #         e = (e[0], e[1], ''.join(e[2]), e[3])
-    #         if e1 is None:
-    #             e1 = (e[0], e[3])
-    #             e1_label = e[1] + ": " + e[2] + "\\n"
-    #         elif (e[0], e[3]) == e1:
-    #             e1_label = e1_label + e[1] + ": " + e[2] + "\\n"
-    #         else: 
-    #             print("error edge drawing T_f.")
-    #             return
-
-    #     graph_f.edge(e1[0], e1[1], label=e1_label)
 
     state_mappings = {}
 
@@ -181,51 +161,6 @@ def execute_algorithm(D_list):
             graph_g.edge(str(states[0]), str(states[1]), label=tr_label)
 
         state_mappings.clear()
-
-
-
-    # if len(T_g.Q) == 2:
-    #     e1 = None
-    #     e1_label = ""
-    #     e2 = None
-    #     e2_label = ""
-    #     e3 = None
-    #     e3_label = ""
-    #     e4 = None
-    #     e4_label = ""
-    #     for e in T_g.E:
-    #         if (e[0], e[3]) == e1:
-    #             e1_label = e1_label + e[1] + ": " + e[2] + "\\n"
-    #         elif (e[0], e[3]) == e2:
-    #             e2_label = e2_label + e[1] + ": " + e[2] + "\\n"
-    #         elif (e[0], e[3]) == e3:
-    #             e3_label = e3_label + e[1] + ": " + e[2] + "\\n"
-    #         elif (e[0], e[3]) == e4:
-    #             e4_label = e4_label + e[1] + ": " + e[2] + "\\n"
-    #         elif e1 is None:
-    #             e1 = (e[0], e[3])
-    #             e1_label = e[1] + ": " + e[2] + "\\n"
-    #         elif e2 is None:
-    #             e2 = (e[0], e[3])
-    #             e2_label = e[1] + ": " + e[2] + "\\n"
-    #         elif e3 is None:
-    #             e3 = (e[0], e[3])
-    #             e3_label = e[1] + ": " + e[2] + "\\n"
-    #         elif e4 is None:
-    #             e4 = (e[0], e[3])
-    #             e4_label = e[1] + ": " + e[2] + "\\n"
-    #         else: 
-    #             print("error edge drawing T_g.")
-    #             return
-
-
-    #     graph_g.edge(e1[0], e1[1], label=e1_label+"\\n")
-    #     graph_g.edge(e2[0], e2[1], label=e2_label+"\\n")
-
-    #     if e3:
-    #         graph_g.edge(e3[0], e3[1], label=e3_label+"\\n")
-    #     if e4:
-    #         graph_g.edge(e4[0], e4[1], label=e4_label+"\\n")
 
         graph_f.format = 'png'
         graph_g.format = 'png'

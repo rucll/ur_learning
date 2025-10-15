@@ -7,8 +7,8 @@ from helper import *
 
 def suff_1(w):
     """Returns 1-suffix of w"""
-    if w == "":
-        return ""
+    if w == ():
+        return ''
     else:
         return w[-1]
 
@@ -75,8 +75,6 @@ def si2dla_ex(Dom,D,Rho,Sigma):
         if len(outputs) > 1:
             alternations.append(alphabet)
 
-    print("alternations", alternations)
-
     # get states that lead into the alternations
     states_leading = set()
     for var in alternations:
@@ -84,13 +82,11 @@ def si2dla_ex(Dom,D,Rho,Sigma):
             if tr[1] == var:
                 states_leading.add(tr[0])
 
-    print(f"states leading into alternations: {states_leading}")
 
     # gather OSes of each state that leads into alternation
     OS = {}
     for state in states_leading:
         OS[state] = get_OS(T_f, state)
-        print(f"State: {OS[state]}")
 
     # assign q_def to the largest OS or if the state is lambda in states_leading
     largest_os = None
@@ -119,8 +115,6 @@ def si2dla_ex(Dom,D,Rho,Sigma):
                 urs[morph] = tr[2]      
         else:
             urs[morph] = tr[2]
-
-    print("URS:", urs)
     
     n_t_f = set()
 
@@ -150,9 +144,6 @@ def si2dla_ex(Dom,D,Rho,Sigma):
     for state in both:
         temp_corr['qd'].remove(state)
 
-
-    print('def states', temp_corr['qd'])
-    print('env states', temp_corr['qe'])
 
 
     # construct 2 state T_f using state correspondences in temp_corr
@@ -249,7 +240,10 @@ def si2dla_ex(Dom,D,Rho,Sigma):
 
                 w_s = lncat_format(w_e,w_d[1:])
 
-                o_g[("qe",s)] = w_s[0]
+                if w_s == ():
+                    w_s = ('',)
+
+                o_g[("qe",s)] = ''.join(w_s)
 
                 if tuple(s) != w_s: #This is lns 2-3 from Alg 3
                     tau = tuple(s)
