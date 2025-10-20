@@ -5,14 +5,7 @@ digraph graph_d {
 	0
 	1
 	2
-	3
-	4
-	1 -> 3 [label="b\n"]
-	0 -> 3 [label="x\nz\nb\ny\n"]
-	0 -> 1 [label="a\n"]
-	4 -> 1 [label="a\n"]
-	2 -> 3 [label="b\n"]
-	1 -> 1 [label="a\n"]
-	0 -> 2 [label="w\n"]
-	0 -> 4 [label="c\n"]
+	0 -> 2 [label="read\ncheat\nwrite\nkick\nlight\nprep\ngreet\nride\n"]
+	0 -> 1 [label="NMLZ\n"]
+	1 -> 2 [label="kick\nprep\nread\nlight\nride\ncheat\nwrite\ngreet\n"]
 }

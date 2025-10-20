@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from k_tssi import k_tssi
 from fst_object import FST
 

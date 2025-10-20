@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from si2dla_new import *
 # from si2dla_test import *
 from ostia_d import ostia_d

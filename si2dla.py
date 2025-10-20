@@ -3,7 +3,7 @@
   Written by Adam Jardine.
 """
 
-from fst_object import *
+from ur_learning.fst_object import *
 from ostia import *
 from helper import *
 

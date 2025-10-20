@@ -9,6 +9,8 @@ option) any later version.
 
 # from sigmapie.fst_object import *
 # from sigmapie.helper import *
+import sys
+sys.path.append('..')
 from fst_object import *
 from helper import *
 from collections import deque
@@ -325,10 +327,6 @@ def ostia_pushback(T_orig, q1, q2, a):
         raise ValueError("One of the states cannot be found.")
 
     # find the part after longest common prefix
-    if from_q1 == ():
-        from_q1 = ('',)
-    if from_q2 == ():
-        from_q2 = ('',)
     u = lcp_list(from_q1, from_q2)
     remains_q1 = from_q1[len(u) :]
     remains_q2 = from_q2[len(u) :]

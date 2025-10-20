@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from dfa_object import *
 from helper import *
 from itertools import product, permutations

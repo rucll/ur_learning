@@ -1,7 +1,0 @@
-digraph graph_f {
-	graph [center=true rankdir=LR]
-	node [fillcolor=gray90 fontname="Times-Roman" fontsize="12pt" shape=circle]
-	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
-	def
-	def -> def [label="w: ab\nx: cab\ny: aac\na: a\nz: caac\nb: b\nc: c\n"]
-}

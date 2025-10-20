@@ -1,11 +1,7 @@
-digraph graph_g {
+digraph graph_f {
 	graph [center=true rankdir=LR]
 	node [fillcolor=gray90 fontname="Times-Roman" fontsize="12pt" shape=circle]
 	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
-	qe
-	qd
-	qe -> qe [label="a: a\n"]
-	qe -> qd [label="b: a\nc: c\n"]
-	qd -> qe [label="a: a\n"]
-	qd -> qd [label="b: b\nc: c\n"]
+	def
+	def -> def [label="greet: tiɹg\ncheat: titʃ\nread: diɹ\nlight: taɪl\nride: daɪɹ\nkick: kɪk\nNMLZ: ɹə\nwrite: taɪɹ\nprep: pɛɹp\n"]
 }

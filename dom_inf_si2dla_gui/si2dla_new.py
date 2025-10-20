@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from fst_object import *
 from ostia_d import *
 from helper import *
