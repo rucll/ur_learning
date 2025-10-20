@@ -3,7 +3,7 @@
 
 from utility.fst_object import FST
 from ostia import *
-from helper import *
+from utility.helper import *
 import types
 
 # prefixes of a string

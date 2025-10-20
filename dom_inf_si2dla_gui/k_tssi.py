@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 from utility.dfa_object import *
-from helper import *
+from utility.helper import *
 from itertools import product, permutations
 
 # implementation of GOV, 90

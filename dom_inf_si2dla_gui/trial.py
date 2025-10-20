@@ -5,7 +5,7 @@ from si2dla_new import *
 from ostia_d import ostia_d
 from k_tssi import *
 from domain_inference import *
-from helper import *
+from utility.helper import *
 from parser import parse_csv
 
 

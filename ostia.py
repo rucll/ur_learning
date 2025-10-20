@@ -11,7 +11,7 @@ option) any later version.
 # from sigmapie.helper import *
 
 from utility.fst_object import *
-from helper import *
+from utility.helper import *
 
 
 def ostia(S, Sigma, Gamma):
