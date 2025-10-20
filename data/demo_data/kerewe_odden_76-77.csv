@@ -1,48 +1,48 @@
 k u p a a m b a,INF adorn
 m p a a m b a,1SGHAB adorn
 a p a a m b a,3SGHAB adorn
-p a a m b a,IMP adorn
+p a a m b a,adorn
 k u p a a ŋ g a,INF line_up
 m p a a ŋ g a,1SGHAB line_up
 a p a a ŋ g a,3SGHAB line_up
-p a a ŋ g a,IMP line_up
+p a a ŋ g a,line_up
 k u p i m a,INF measure
 m p i m a,1SGHAB measure
 a p i m a,3SGHAB measure
-p i m a,IMP measure
+p i m a,measure
 k u p u u p a,INF be_light
 m p u u p a,1SGHAB be_light
 a p u u p a,3SGHAB be_light
-p u u p a,IMP be_light
+p u u p a,be_light
 k u p e k e č a,INF make_fire_with_stick
 m p e k e č a,1SGHAB make_fire_with_stick
 a p e k e č a,3SGHAB make_fire_with_stick
-p e k e č a,IMP make_fire_with_stick
+p e k e č a,make_fire_with_stick
 k u p i i n d a,INF be_bent
 m p i i n d a,1SGHAB be_bent
 a p i i n d a,3SGHAB be_bent
-p i i n d a,IMP be_bent
+p i i n d a,be_bent
 k u h i i g a,INF hunt
 m p i i g a,1SGHAB hunt
 a h i i g a,3SGHAB hunt
-h i i g a,IMP hunt
-k u h e e k a,INF carr
+h i i g a,hunt
+k u h e e k a,INF carry
 m p e e k a,1SGHAB carry
 a h e e k a,3SGHAB carry
-h e e k a,IMP carry
+h e e k a,carry
 k u h a a ŋ g a,INF create
 m p a a ŋ g a,1SGHAB create
 a h a a ŋ g a,3SGHAB create
-h a a ŋ g a,IMP create
+h a a ŋ g a,create
 k u h e e b a,INF guide
 m p e e b a,1SGHAB guide
 a h e e b a,3SGHAB guide
-h e e b a,IMP guide
+h e e b a,guide
 k u h i i m a,INF gasp
 m p i i m a,1SGHAB gasp
 a h i i m a,3SGHAB gasp
-h i i m a,IMP gasp
+h i i m a,gasp
 k u h u u h a,INF breath_into
 m p u u h a,1SGHAB breath_into
 a h u u h a,3SGHAB breath_into
-h u u h a,IMP breath_into
+h u u h a,breath_into

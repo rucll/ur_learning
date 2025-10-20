@@ -8,7 +8,6 @@ from domain_inference import infer_domain
 import graphviz
 from PIL import ImageTk, Image
 import re
-from data import chandleejardine, huajardine, opacity, deletion
 from parser import parse_csv
 import os
 import pathlib
