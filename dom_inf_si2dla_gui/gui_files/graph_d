@@ -2,10 +2,6 @@ digraph graph_d {
 	graph [center=true rankdir=LR]
 	node [fillcolor=gray90 fontname="Times-Roman" fontsize="12pt" shape=circle]
 	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
-	0
 	1
-	2
-	0 -> 2 [label="read\ncheat\nwrite\nkick\nlight\nprep\ngreet\nride\n"]
-	0 -> 1 [label="NMLZ\n"]
-	1 -> 2 [label="kick\nprep\nread\nlight\nride\ncheat\nwrite\ngreet\n"]
+	1 -> 1 [label="z\nx\ny\nw\n"]
 }

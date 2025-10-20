@@ -11,7 +11,7 @@ option) any later version.
 # from sigmapie.helper import *
 import sys
 sys.path.append('..')
-from fst_object import *
+from utility.fst_object import *
 from helper import *
 from collections import deque
 

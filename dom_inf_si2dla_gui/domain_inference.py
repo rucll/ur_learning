@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 from k_tssi import k_tssi
-from fst_object import FST
+from utility.fst_object import FST
 
 # main function for domain inference
 def infer_domain(data, k=2):

@@ -5,7 +5,7 @@
   Written by Adam Jardine.
 """
 
-from ur_learning.fst_object import *
+from utility.fst_object import *
 from ostia import *
 from helper import *
 from features import *

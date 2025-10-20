@@ -5,7 +5,7 @@
   Modified by Jane Chandlee (22 Oct. 2021)
 """
 
-from fst_object import *
+from utility.fst_object import *
 from ostia import *
 from helper import *
 

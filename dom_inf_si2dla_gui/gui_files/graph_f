@@ -3,5 +3,5 @@ digraph graph_f {
 	node [fillcolor=gray90 fontname="Times-Roman" fontsize="12pt" shape=circle]
 	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
 	def
-	def -> def [label="greet: tiɹg\ncheat: titʃ\nread: diɹ\nlight: taɪl\nride: daɪɹ\nkick: kɪk\nNMLZ: ɹə\nwrite: taɪɹ\nprep: pɛɹp\n"]
+	def -> def [label="x: cbcb\nz: bca\nw: ab\ny: bc\n"]
 }
