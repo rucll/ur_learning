@@ -1,0 +1,9 @@
+t a d,root1
+t a t,root2
+t a d a,root3
+t a d d a,root1 suff1
+t a t t a,root2 suff1
+t a d a t a,root3 suff1
+t a d d a,root1 suff2
+t a t d a,root2 suff2
+t a d a d a,root3 suff2

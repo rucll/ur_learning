@@ -1,0 +1,28 @@
+s,poss
+b e,3
+l u,2
+p a l u,stick
+k u b a,dough
+t a p a,flour
+g e t a,tortilla
+b e r e,chicken
+d o ? o,rope
+s p a l u,poss stick
+s k u b a,poss dough
+s t a p a,poss flour
+s k e t a,poss tortilla
+s p e r e,poss chicken
+s t o ? o,poss rope
+s p e,poss 3
+s p a l u b e,poss stick 3
+s k u b a b e,poss dough 3
+s t a p a b e,poss flour 3
+s k e t a b e,poss tortilla 3
+s p e r e b e,poss chicken 3
+s t o ? o b e,poss rope 3
+s p a l u l u,poss stick 2
+s k u b a l u,poss dough 2
+s t a p a l u,poss flour 2
+s k e t a l u,poss tortilla 2
+s p e r e l u,poss chicken 2
+s t o ? o l u,poss rope 2

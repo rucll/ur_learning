@@ -48,6 +48,33 @@ def prefix(w):
     return [w[:i] for i in range(len(w) + 1)]
 
 
+# list specific lcp function for testing purporse; we can probably make lcp_list and lcp into 1 function
+def lcp_list(*string):
+    #[t, a, d, d, a], [t, a, d]
+    w = []
+
+    # print(string)
+    for string_arg in string:
+        if string_arg not in w and string_arg != '*' and len(string_arg) != 0:
+            # print(string_arg)
+            w.append(string_arg)
+    
+
+    if not w:
+        raise IndexError("At least one non-unknown string needs to be provided.")
+    
+    n = min([len(x) for x in w])
+    result = []
+    for i in range(n):
+        if len(set(x[i] for x in w)) == 1:
+            result.append(w[0][i])
+        else:
+            break
+    result = tuple(result)
+
+    return result
+
+
 def lcp(*string):
     """
     Finds the longest common prefix of an unbounded number of strings.
@@ -69,6 +96,17 @@ def lcp(*string):
             break
 
     return result
+
+# list specific remove function for testing purposes
+def remove_from_prefix_list(w, pref):
+    
+    if w[:len(pref)] == pref:
+        return w[len(pref) :]
+    
+    elif w == "*":
+        return w
+
+    raise ValueError(pref + " is not a prefix of " + w)
 
 
 def remove_from_prefix(w, pref):

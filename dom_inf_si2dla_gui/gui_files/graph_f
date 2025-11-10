@@ -1,0 +1,7 @@
+digraph graph_f {
+	graph [center=true rankdir=LR]
+	node [fillcolor=gray90 fontname="Times-Roman" fontsize="12pt" shape=circle]
+	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
+	def
+	def -> def [label="be_waterless: naumati\nface: aŋa\nreach_a_destination: tau\nface_each_other: vaŋai\nrub: olo\nrepay: taui\nlook_for: sa:ʔili\nget_up_and_go_early: usu\ncast: lafo\ntouch: paʔi\nprepare: sa:uni\nPERF: ia\n"]
+}

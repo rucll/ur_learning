@@ -9,8 +9,9 @@ option) any later version.
 
 # from sigmapie.fst_object import *
 # from sigmapie.helper import *
-from fst_object import *
-from helper import *
+
+from utility.fst_object import *
+from utility.helper import *
 
 
 def ostia(S, Sigma, Gamma):
@@ -27,11 +28,19 @@ def ostia(S, Sigma, Gamma):
     """
     # create a template of the onward PTT
     T = build_ptt(S, Sigma, Gamma)
-    T = onward_ptt(T, "", "")[0]
+    T = onward_ptt(T, (), ())[0] 
+
+    # note: debugging prints
+    print("T.Q after", T.Q)
+    print("T.E after", T.E)
+    print("T.stout after", T.stout)
+    print("T.Sigma after", T.Sigma)
 
     # color the nodes
-    red = [""]
-    blue = [tr[3] for tr in T.E if tr[0] == "" and len(tr[1]) == 1]
+    red = [()]
+    # blue = [tr[3] for tr in T.E if tr[0] == [] and len(tr[1]) == 1]
+    blue = [tr[3] for tr in T.E if tr[0] == ()] # len(tr[1]) is not always 1
+
 
     # choose a blue state
     while len(blue) != 0:
@@ -57,7 +66,7 @@ def ostia(S, Sigma, Gamma):
         # if possible, remove the folded state from the list of states
         else:
             T.Q.remove(blue_state)
-            del T.stout[blue_state]
+            del T.stout[blue_state] # debug
 
         # add in blue list other states accessible from the red ones that are not red
         blue = []
@@ -69,6 +78,12 @@ def ostia(S, Sigma, Gamma):
     T = ostia_clean(T)
     T.E = [tuple(i) for i in T.E]
 
+    T_f = T
+    print("Initial hypothesis for T_f:")
+    print("  Q:\t"+str(T_f.Q))
+    print("  E:\t"+str(T_f.E))
+    print("  q0:\t"+str(T_f.qe))
+    print("  stout:\t"+str(T_f.stout)+"\n")
     return T
 
 
@@ -96,12 +111,12 @@ def build_ptt(S, Sigma, Gamma):
     T.E = []
     for i in T.Q:
         if len(i) >= 1:
-            T.E.append([i[:-1], i[-1], "", i])
+            T.E.append([i[:-1], i[-1], (), i])
 
     # fill in state outputs
     T.stout = {}
     for i in T.Q:
-        for j in S:
+        for j in S:            
             if i == j[0]:
                 T.stout[i] = j[1]
         if i not in T.stout:
@@ -133,14 +148,15 @@ def onward_ptt(T, q, u):
 
     # find lcp of all ways of leaving state 1 or stopping in it
     t = [tr[2] for tr in T.E if tr[0] == q]
-    f = lcp(T.stout[q], *t)
+  
+    f = lcp_list(T.stout[q], *t)
 
     # remove from the prefix unless it's the initial state
-    if f != "" and q != "":
+    if f != () and q != ():
         for tr in T.E:
             if tr[0] == q:
-                tr[2] = remove_from_prefix(tr[2], f)
-        T.stout[q] = remove_from_prefix(T.stout[q], f)
+                tr[2] = remove_from_prefix_list(tr[2], f)
+        T.stout[q] = remove_from_prefix_list(T.stout[q], f)
 
     return T, q, f
 
@@ -198,7 +214,7 @@ def ostia_pushback(T_orig, q1, q2, a):
         raise ValueError("One of the states cannot be found.")
 
     # find the part after longest common prefix
-    u = lcp(from_q1, from_q2)
+    u = lcp_list(from_q1, from_q2)
     remains_q1 = from_q1[len(u) :]
     remains_q2 = from_q2[len(u) :]
 
@@ -245,10 +261,10 @@ def ostia_merge(T_orig, q1, q2):
             tr[3] = q1
 
     # save the state output of the q1 originally
-    changed_stout = T.stout[q1]
+    changed_stout = T.stout[q1] # debug
 
     # check if we can merge the states
-    can_do = ostia_fold(T, q1, q2)
+    can_do = ostia_fold(T, q1, q2) # debug
 
     # if cannot, revert the change
     if can_do == False:
@@ -331,7 +347,7 @@ def ostia_clean(T_orig):
     T = T_orig.copy_fst()
 
     # determine which states are reachable, i.e. accessible from the initial state
-    reachable_states = [""]
+    reachable_states = [()]
     add = []
     change_made = True
     while change_made == True:

@@ -5,9 +5,9 @@
   Written by Adam Jardine.
 """
 
-from fst_object import *
+from utility.fst_object import *
 from ostia import *
-from helper import *
+from utility.helper import *
 from features import *
 
 

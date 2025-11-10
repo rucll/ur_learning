@@ -43,13 +43,16 @@ class FST:
             raise ValueError("The transducer needs to be constructed.")
 
         # move through the transducer and write the output
-        result = ""
+        result = []
         current_state = self.qe
         moved = False
         for i in range(len(w)):
             for tr in self.E:
                 if tr[0] == current_state and tr[1] == w[i]:
-                    result += tr[2]
+                    if type(tr[2]) is str:
+                        result.append(tr[2])
+                    else:
+                        result.extend(tr[2])
                     current_state, moved = tr[3], True
                     break
             if moved == False:
@@ -61,6 +64,7 @@ class FST:
         if self.stout[current_state] != "*":
             result += self.stout[current_state]
 
+        result = tuple(result)
         return result
 
     def copy_fst(self):

@@ -1,0 +1,11 @@
+a,a
+b,b
+c,c
+a a,w
+c a a,x
+a a c,y
+c a a c,z
+a a,a a
+a a,a b
+c a,c a
+a a b,w b

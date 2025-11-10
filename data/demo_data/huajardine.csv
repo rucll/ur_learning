@@ -1,0 +1,20 @@
+a a,w
+c b c b,x
+b c,y
+b c a,z
+a a a a,w w
+a a c b c b,w x
+a a b c,w y
+a a b c a,w z
+c b c b a a,x w
+c b c b c b c b,x x
+c b c b b c,x y
+c b c b b c a,x z
+b c a a,y w
+b c c b c b,y x
+b c b c,y y
+b c b c a,y z
+b c a a a,z w
+b c a c b c b,z x
+b c a a c,z y
+b c a a c a,z z

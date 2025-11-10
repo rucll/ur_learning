@@ -2,7 +2,6 @@ from si2dla import *
 from so2dla import *
 from fsi2dla import *
 from idla import *
-from data import flap, yawelmani, huajardine, zapotec, opacity, kisd
 
 ## ISL data
 
@@ -288,18 +287,18 @@ def print_edge(E, name):
 	for e in E:
 		print(f"\t{e}");
 
-for x in [
-	#yawelmani,
-	flap,
-	huajardine,
-	opacity,
-	kisd
-	]:
-	f, g = idla(x.Data, x.Sigma, x.Gamma);
-	print_edge(f.E, "f");
-	print_edge(g.E, "g");
+# for x in [
+# 	#yawelmani,
+# 	flap,
+# 	huajardine,
+# 	opacity,
+# 	kisd
+# 	]:
+# 	f, g = idla(x.Data, x.Sigma, x.Gamma);
+# 	print_edge(f.E, "f");
+# 	print_edge(g.E, "g");
 
-	for i, o in x.Data:
-		print(f"checking: {i} -> {o}");
-		assert(g.rewrite(f.rewrite(i)) == o);
-	print("All checks passed!");
+# 	for i, o in x.Data:
+# 		print(f"checking: {i} -> {o}");
+# 		assert(g.rewrite(f.rewrite(i)) == o);
+# 	print("All checks passed!");

@@ -9,8 +9,11 @@ option) any later version.
 
 # from sigmapie.fst_object import *
 # from sigmapie.helper import *
-from fst_object import *
-from helper import *
+import sys
+sys.path.append('..')
+from utility.fst_object import *
+from utility.helper import *
+from collections import deque
 
 
 def ostia_d(D, S, Sigma, Gamma):
@@ -27,11 +30,15 @@ def ostia_d(D, S, Sigma, Gamma):
     """
     # create a template of the onward PTT
     T = build_ptt(S, Sigma, Gamma)
-    T = onward_ptt(T, "", "")[0]
-
+    T = onward_ptt(T, (), ())[0]
+    T.qe = ()
+    
     # color the nodes
-    red = [""]
-    blue = [tr[3] for tr in T.E if tr[0] == "" and len(tr[1]) == 1]
+    red = [()]
+    # blue = [tr[3] for tr in T.E if tr[0] == "" and len(tr[1]) == 1]
+    blue = [tr[3] for tr in T.E if tr[0] == ()]
+    labels = label_assign(D, T) #assign a corresponding domain state to each state in OSTIA
+
 
     # choose a blue state
     while len(blue) != 0:
@@ -45,10 +52,10 @@ def ostia_d(D, S, Sigma, Gamma):
             if exists == True:
                 break
 
-            # try to merge these two states
-
-            if ostia_merge(T, red_state, blue_state) and (get_transition(D, D.qe, input_prefix(D, blue_state)) == get_transition(D, D.qe, input_prefix(D, red_state))):
+            # try to merge these two states if the domain labels match
+            if ostia_merge(T, red_state, blue_state) and label_get(labels, blue_state) == label_get(labels, red_state):
                 T = ostia_merge(T, red_state, blue_state)
+                # print("merging:", red_state, blue_state)
                 exists = True
 
         # if it is not possible, color that blue state red
@@ -68,6 +75,10 @@ def ostia_d(D, S, Sigma, Gamma):
 
     # clean the transducer from non-reachable states
     T = ostia_clean(T)
+    for idx, tr in enumerate(T.E):
+        if len(tr[2]) == 0:
+            T.E[idx] = [tr[0], tr[1], ('',), tr[3]]
+
     T.E = [tuple(i) for i in T.E]
 
     return T
@@ -97,7 +108,7 @@ def build_ptt(S, Sigma, Gamma):
     T.E = []
     for i in T.Q:
         if len(i) >= 1:
-            T.E.append([i[:-1], i[-1], "", i])
+            T.E.append([i[:-1], i[-1], (), i])
 
     # fill in state outputs
     T.stout = {}
@@ -134,14 +145,15 @@ def onward_ptt(T, q, u):
 
     # find lcp of all ways of leaving state 1 or stopping in it
     t = [tr[2] for tr in T.E if tr[0] == q]
-    f = lcp(T.stout[q], *t)
+    f = lcp_list(T.stout[q], *t)
+
 
     # remove from the prefix unless it's the initial state
-    if f != "" and q != "":
+    if f != () and q != ():
         for tr in T.E:
             if tr[0] == q:
-                tr[2] = remove_from_prefix(tr[2], f)
-        T.stout[q] = remove_from_prefix(T.stout[q], f)
+                tr[2] = remove_from_prefix_list(tr[2], f)
+        T.stout[q] = remove_from_prefix_list(T.stout[q], f)
 
     return T, q, f
 
@@ -167,23 +179,120 @@ def ostia_outputs(w1, w2):
     else:
         return False
 
+# a BFS function that finds a path between a start state and the goal state
+def bfs(T, start, goal):
+    q = deque()
+    explored = set()
+    q.append((start, [])) # (state, path of states)
 
-def get_transition(T, q, input):
-    for tr in T.E:
-        if tr[0] == q and tr[1] == input:
-            return tr[3]
+    # iterate until queue is empty
+    while q:
+        state, path = q.popleft()
+
+        # goal state found
+        if state == goal:
+            return path
+        
+        # if state not previously explored
+        if state not in explored:
+            explored.add(state)
+
+            # get all adjacent states
+            for tr in T.E:
+                if tr[0] == state:
+                    input_symbol = tr[1]
+                    output_symbol = tr[2]
+                    next_state = tr[3]
+                    
+                    # add adjacent state to queue
+                    if next_state not in explored:
+                        updated_path = path + [(state, input_symbol, output_symbol, next_state)]
+                        q.append((next_state, updated_path))
+    return None
+
+# label each state in OSTIA with its corresponding domain state  
+def label_assign(Dom, T):
+    labels = [] # (domain state, ostia state)
+
+    # iterate through each state in OSTIA FST
+    for state in T.Q:
+        t_path = bfs(T, T.qe, state) # perform BST from inital state to current state
+        # [((), 'root1', ('t', 'a', 'd'), ('root1',)), (('root1',), 'suff1', ('d', 'a'), ('root1', 'suff1'))]
+        input_strings = []
+
+        # gather input strings
+        for step in t_path:
+            input_strings.append(step[1])
+        
+        # trace the domain FST using the input string
+        corr_d_state = get_end_state_from_input_string(input_strings, Dom)
+        labels.append((corr_d_state, state))
+    
+        
+    return labels
 
 
 
-def input_prefix(T, q):
-    smallest = None
+# return the ending state from the input string
+def get_end_state_from_input_string(string, T):
+    curr_state = T.qe
+    for i in string:
+        input_symbol = i
+        
+        # simulate transitioning through each state
+        for tr in T.E:
+            tr_state = tr[0]
+            tr_input_symbol = tr[1]
 
-    for tr in T.E:
-        if tr[3] == q:
-            if smallest == None or len(tr[1]) < len(smallest):
-                smallest = tr[1]
+            # get the transition state from the current state and input symbol
+            if tr_state == curr_state and tr_input_symbol == input_symbol:
+                next_state = tr[3]
+                curr_state = next_state
+                break
+        
+    return curr_state
 
-    return smallest
+
+# Old FST trace function
+# def get_end_state_from_input_string(string, T):
+#     current_state = T.qe
+#     moved = False
+#     for i in range(len(string)):
+#         # print("curr:", current_state)
+#         for tr in T.E:
+#             if tr[0] == current_state and tr[1] == string[i]:
+#                 current_state, moved = tr[3], True
+#                 break
+#         if moved == False:
+#             return None
+#     return current_state
+
+# Old label_assign
+# def label_assign(Dom, T):
+
+#     labels = []
+#     # while len(labels) < len(T.Q):
+#     for i in range(1, len(T.Sigma)): 
+#         strings = []
+#         strings.extend(product(T.Sigma, repeat=i))
+#         strings = [''.join(p) for p in strings]
+#         print("strings:", strings)
+#         for str in strings:
+#             label = get_end_state_from_input_string(str, Dom) 
+#             state = get_end_state_from_input_string(str, T)
+#             if label != None and state != None:
+#                 labels.append((label, state))
+#             if len(labels) > len(T.Q) * 4: # need to decide appropriate limit for this
+#                 return list(set(labels))
+                
+#         if len(labels) > len(T.Q) * 4:
+#                 return list(set(labels))
+    
+  
+def label_get(labels, q):
+    for l in labels:
+        if l[1] == q:
+            return l[0]
 
     
 
@@ -218,7 +327,7 @@ def ostia_pushback(T_orig, q1, q2, a):
         raise ValueError("One of the states cannot be found.")
 
     # find the part after longest common prefix
-    u = lcp(from_q1, from_q2)
+    u = lcp_list(from_q1, from_q2)
     remains_q1 = from_q1[len(u) :]
     remains_q2 = from_q2[len(u) :]
 
@@ -334,7 +443,6 @@ def ostia_fold(T_orig, q1, q2):
         # if the new transition was constructed, add it to the list of transitions
         if add_new:
             T.E.append(add_new)
-
     return T
 
 
@@ -351,7 +459,7 @@ def ostia_clean(T_orig):
     T = T_orig.copy_fst()
 
     # determine which states are reachable, i.e. accessible from the initial state
-    reachable_states = [""]
+    reachable_states = [()]
     add = []
     change_made = True
     while change_made == True:

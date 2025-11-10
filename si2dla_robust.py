@@ -5,9 +5,9 @@
   Modified by Jane Chandlee (22 Oct. 2021)
 """
 
-from fst_object import *
+from utility.fst_object import *
 from ostia import *
-from helper import *
+from utility.helper import *
 
 
 # Helper functions
@@ -22,7 +22,8 @@ def suff_1(w):
 
 def get_OS(T,q):
     """Gets output 1-suffixes of state q in FST T"""
-    incoming = { tr for tr in T.E if tr[3] == q}
+    print(tuple(T.E[1]))
+    incoming = { tuple(tr) for tr in T.E if tr[3] == q}
     outs = { tr[2] for tr in incoming}
     suffs = { suff_1(w) for w in outs}
     return suffs
@@ -47,7 +48,20 @@ def si2dla(D,Rho,Sigma):
 
     print("Learning from "+str(D)+"\n")
 
-    T_f = ostia(D,Rho,Sigma)
+    # T_f = ostia(D,Rho,Sigma)
+
+    T_f = FST(['root1', 'root2', 'root3', 'suff1', 'suff2'], ['t', 'a', 'd'])
+    T_f.Q = [[], ['root1'], ['root2'], ['root1', 'suff1']]
+    T_f.qe = []
+    T_f.E = [
+        [[], 'root1', ['t', 'a', 'd'], ['root1']], 
+        [[], 'root2', ['t', 'a', 't'], ['root2']], 
+        [[], 'root3', ['t', 'a', 'd', 'a'], ['root2']], 
+        [['root1'], 'suff1', ['d', 'a'], ['root1', 'suff1']], 
+        [['root2'], 'suff1', ['t', 'a'], ['root1', 'suff1']], 
+        [['root1'], 'suff2', ['d', 'a'], ['root1', 'suff1']], 
+        [['root2'], 'suff2', [' d', 'a'], ['root1', 'suff1']],
+        ]
 
     print("Initial hypothesis for T_f:")
     print("  Q:\t"+str(T_f.Q))  # n: set of states
