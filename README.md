@@ -18,4 +18,6 @@ File		| Description
 
 The file `testing.py` contains some test data sets; this can be run from the command line to see how the algorithms perform.
 
+The folder `dom_inf_si2dla_gui` contains a domain inference version of SI2DLA and a corresponding GUI. To use, run `si2dla_gui.py` from the folder and upload a properly formatted .csv data set. Sample data sets are included in the `data` folder under `demo_data`.
+
 This work is supported by [NSF Grant #2416184](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2416184).
