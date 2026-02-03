@@ -30,12 +30,6 @@ def ostia(S, Sigma, Gamma):
     T = build_ptt(S, Sigma, Gamma)
     T = onward_ptt(T, (), ())[0] 
 
-    # note: debugging prints
-    print("T.Q after", T.Q)
-    print("T.E after", T.E)
-    print("T.stout after", T.stout)
-    print("T.Sigma after", T.Sigma)
-
     # color the nodes
     red = [()]
     # blue = [tr[3] for tr in T.E if tr[0] == [] and len(tr[1]) == 1]

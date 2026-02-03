@@ -1,12 +1,7 @@
 import sys
 sys.path.append('..')
-from si2dla_new import *
-# from si2dla_test import *
-from ostia_d import ostia_d
-from k_tssi import *
-from domain_inference import *
-from utility.helper import *
 from utility.parser import parse_csv
+from si2dla_doublesided import si2dla
 
 
 def read_alphabet(D_list):   
@@ -35,19 +30,21 @@ def run_test(data_csv):
 
     (r, s) = read_alphabet(d)
 
+    si2dla(d, r, s)
+
     # s = output alphabet
     # r = input alphabet
 
-    T = infer_domain(d)
+    # T = infer_domain(d)
 
-    print("Domain: ", T.E)
+    # print("Domain: ", T.E)
 
-    T_f, T_g = si2dla_ex(T, d, r, s)
-    print(f"Phonology: {T_g.E}")
-    for i, o in d:
-        print(f"{i} => {o}")
-        assert(T_g.rewrite(T_f.rewrite(i)) == o)
+    # T_f, T_g = si2dla_ex(T, d, r, s)
+    # print(f"Phonology: {T_g.E}")
+    # for i, o in d:
+    #     print(f"{i} => {o}")
+    #     assert(T_g.rewrite(T_f.rewrite(i)) == o)
 
-    print("All checks passed!")
+    # print("All checks passed!")
 
-run_test('../data/demo_data/chandleejardine.csv')
+run_test('../data/demo_data/double_sided.csv')

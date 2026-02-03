@@ -8,7 +8,7 @@ from domain_inference import infer_domain
 import graphviz
 from PIL import ImageTk, Image
 import re
-from parser import parse_csv
+from utility.parser import parse_csv
 import os
 import pathlib
 
@@ -102,7 +102,19 @@ def execute_algorithm(D_list):
 
     T = infer_domain(D_list)
 
-    (T_f, T_g) = si2dla_ex(T, D_list, R_list, S_list)
+    result = si2dla_ex(T, D_list, R_list, S_list)
+    if result != False:
+        (T_f, T_g) = result
+    else:
+        rev_D_list = []
+        for phons, morphs in D_list:
+            rev_phons = phons[::-1]
+            rev_morphs = morphs[::-1]
+            rev_D_list.append((rev_phons, rev_morphs))
+        rev_T = infer_domain(rev_D_list)
+        (T_f, T_g) = si2dla_ex(rev_T, rev_D_list, R_list, S_list, True)
+
+    # (T_f, T_g) = si2dla_ex(T, D_list, R_list, S_list)
 
     graph_f = graphviz.Digraph('graph_f', node_attr={'shape': 'circle', 'fontname': 'Times-Roman', 'fontsize': '12pt', 'fillcolor': 'gray90'}, edge_attr={'fontname': 'Times-Roman', 'fontsize': '12pt', 'penwidth': '0.6', 'arrowsize': '0.6'}, graph_attr={'rankdir': 'LR', 'center': 'true'})
     graph_g = graphviz.Digraph('graph_g', node_attr={'shape': 'circle', 'fontname': 'Times-Roman', 'fontsize': '12pt', 'fillcolor': 'gray90'}, edge_attr={'fontname': 'Times-Roman', 'fontsize': '12pt', 'penwidth': '0.6', 'arrowsize': '0.6'}, graph_attr={'rankdir': 'LR', 'center': 'true'})
