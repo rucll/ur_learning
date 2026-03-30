@@ -111,7 +111,7 @@ def si2dla(D,Rho,Sigma):
         rroc[remaining_states[1]] = 'qd'
         rroc[remaining_states[0]] = 'qe'
 
-    OS[corr['qe']] = {T_f.stout[corr['qt']][0]}
+    OS[corr['qt']] = {T_f.stout[corr['qt']][0]}
 
     print("OSs for T_f:\t"+str(OS))
 
@@ -133,22 +133,15 @@ def si2dla(D,Rho,Sigma):
     d_g = {}
 
     for q in Q_g:
-        if q != 'qt':
-            for s in Sigma:
-                if s in IS['qt']:
-                    d_g[(q, s)] = 'qt'
-                if s in IS['qe']:
-                    d_g[(q,s)] = 'qe'
-                if s in IS['qd']:
-                    d_g[(q,s)] = 'qd'
-    
-    for s in Sigma:
-        if s in IS['qe']:
-            d_g[('qt', s)] = 'qe'
-        elif s in IS['qt']:
-            d_g[('qt', s)] = 'qt'
-        elif s in IS['qd']:
-            d_g[('qt', s)] = 'qd'
+        for s in Sigma:
+            if s in IS['qe']:
+                d_g[(q,s)] = 'qe'
+            if s in IS['qd']:
+                d_g[(q,s)] = 'qd'
+            if s in IS['qt'] and q != 'qd' and q != 'qt':
+                d_g[(q,s)] = 'qt'
+            else:
+                d_g[(q,s)] = 'qd'
         
     
     
@@ -186,32 +179,45 @@ def si2dla(D,Rho,Sigma):
             w_e = env_tr[2]
             w_s = lncat_format(w_e, w_d[1:])
             
-            # if the initial phoneme changes, then it means this phoneme must wait until it sees the right context
+            # if the initial phoneme out of env changes, then it means that s is the target phoneme that must wait for right context
             if w_s != tuple(s) and w_s != ():
-                o_g[('qt', s)] = 'lambda'
+                o_g[('qe', s)] = 'lambda'
 
             else:
-                o_g[('qt', s)] = w_s
+                o_g[('qe', s)] = w_s
 
             # handle alternations coming from target state
             w_e = trg_tr[2]
 
-            # if the SR has the same length as initial UR, then deletion
-            if len(w_e) == len(w_d):
-                w_s = ''
-            
-            else:
-                # all alternations from target state have extra phonemes
-                w_s = w_e[0] + s
+
+            # a b c
+            # a b
+            # get longest common suffix, which is just the reverse of longest common prefix
+            w_e_reversed = w_e[::-1]
+            w_d_reversed = w_d[::-1]
+
+            lcp = lcp_list(w_e_reversed, w_d_reversed)
+
+            lcs = lcp[::-1]
+
+
+            # remove lcs from w_e and prepend it to s
+            w_s = lncat_format(w_e, lcs) + tuple(s)
+            print(w_s)
 
             
 
-            o_g[('qe', s)] = w_s
+            # remove the suffix
+            # w_s = tuple(char for char in w_e if char not in w_d) + tuple(s)
+
+            o_g[('qt', s)] = w_s
 
         
         if not d_trs:
-            o_g[('qe', s)] = ''.join(T_f.stout[corr['qt']]) + s
-            o_g[('qt', s)] = s
+            o_g[('qt', s)] = T_f.stout[corr['qt']] + tuple(s)
+            o_g[('qe', s)] = s
+        
+
 
 
     E_g = []
