@@ -123,6 +123,8 @@ def execute_algorithm(D_list):
         graph_f.node("T_f")
     for s in T_g.Q:
         graph_g.node("".join(s))
+
+    graph_g.node("qe", label = "qe \\n stout: " + T_g.stout["qe"][0])
         
 
     # if len(T_f.Q) == 1:
