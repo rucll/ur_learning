@@ -106,8 +106,6 @@ def write_to_csv(filename, dataset):
 
 
 
-
-
 my_morphemes = [('A', 't a t'), ('B', 't a d t'), ('C', 'a'), ('D', 't a d'), ('E', 't')]
 #print(dataset_generator('a', 'a', my_morphemes, 't', 'd'))
 
