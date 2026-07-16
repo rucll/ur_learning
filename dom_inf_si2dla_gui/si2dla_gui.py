@@ -157,68 +157,67 @@ def execute_algorithm(D_list):
     state_mappings.clear()
 
  
-    if len(T_g.Q) == 2:
-        for tr in T_g.E:
-            if (tr[0], tr[3]) not in state_mappings:
-                state_mappings[(tr[0], tr[3])] = [tr[1] + ': ' + tr[2]]
-            else:
-                 state_mappings[(tr[0], tr[3])].append(tr[1] + ': ' + tr[2])
-        
-        for states, inputs in state_mappings.items():
-            tr_label = ''
-            for inp in inputs:
-                tr_label = tr_label + inp + '\\n'
-                
-            graph_g.edge(str(states[0]), str(states[1]), label=tr_label)
+    for tr in T_g.E:
+        if (tr[0], tr[3]) not in state_mappings:
+            state_mappings[(tr[0], tr[3])] = [tr[1] + ': ' + tr[2]]
+        else:
+                state_mappings[(tr[0], tr[3])].append(tr[1] + ': ' + tr[2])
+    
+    for states, inputs in state_mappings.items():
+        tr_label = ''
+        for inp in inputs:
+            tr_label = tr_label + inp + '\\n'
+            
+        graph_g.edge(str(states[0]), str(states[1]), label=tr_label)
 
-        state_mappings.clear()
+    state_mappings.clear()
 
-        graph_f.format = 'png'
-        graph_g.format = 'png'
-        graph_d.format = 'png'
-        
-        graph_f.render(directory='gui_files', filename='graph_f').replace('\\', '/')
-        graph_g.render(directory='gui_files', filename='graph_g').replace('\\', '/')
-        graph_d.render(directory='gui_files', filename='graph_d').replace('\\', '/')
+    graph_f.format = 'png'
+    graph_g.format = 'png'
+    graph_d.format = 'png'
+    
+    graph_f.render(directory='gui_files', filename='graph_f').replace('\\', '/')
+    graph_g.render(directory='gui_files', filename='graph_g').replace('\\', '/')
+    graph_d.render(directory='gui_files', filename='graph_d').replace('\\', '/')
 
-        root_dir = pathlib.Path(__file__).resolve().parent
+    root_dir = pathlib.Path(__file__).resolve().parent
 
-        img_f = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_f.png"))
-        global_image_list.append(img_f)
-        
-        img_g = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_g.png"))
-        global_image_list.append(img_g)
+    img_f = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_f.png"))
+    global_image_list.append(img_f)
+    
+    img_g = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_g.png"))
+    global_image_list.append(img_g)
 
-        img_d = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_d.png"))
-        global_image_list.append(img_d)
+    img_d = ImageTk.PhotoImage(Image.open(root_dir / "gui_files/graph_d.png"))
+    global_image_list.append(img_d)
 
-        subframe = ttk.Frame(root.image_frame)
-        subframe.pack(side="left", padx=10)
+    subframe = ttk.Frame(root.image_frame)
+    subframe.pack(side="left", padx=10)
 
-        imglabel_f = Label(subframe, image=img_f, background="#ddd")
-        imglabel_f.pack()
+    imglabel_f = Label(subframe, image=img_f, background="#ddd")
+    imglabel_f.pack()
 
-        label = ttk.Label(subframe, text=f"T_f:")
-        label.pack(pady=5)
+    label = ttk.Label(subframe, text=f"T_f:")
+    label.pack(pady=5)
 
-        subframe = ttk.Frame(root.image_frame)
-        subframe.pack(side="left", padx=10)
+    subframe = ttk.Frame(root.image_frame)
+    subframe.pack(side="left", padx=10)
 
-        imglabel_g = Label(subframe, image=img_g, background="#ddd")
-        imglabel_g.pack()
+    imglabel_g = Label(subframe, image=img_g, background="#ddd")
+    imglabel_g.pack()
 
 
-        label = ttk.Label(subframe, text=f"T_g:")
-        label.pack(pady=5)
+    label = ttk.Label(subframe, text=f"T_g:")
+    label.pack(pady=5)
 
-        subframe = ttk.Frame(root.image_frame)
-        subframe.pack(side="left", padx=10)
+    subframe = ttk.Frame(root.image_frame)
+    subframe.pack(side="left", padx=10)
 
-        imglabel_d = Label(subframe, image=img_d, background="#ddd")
-        imglabel_d.pack()
+    imglabel_d = Label(subframe, image=img_d, background="#ddd")
+    imglabel_d.pack()
 
-        label = ttk.Label(subframe, text=f"Inferred Domain:")
-        label.pack(pady=5)
+    label = ttk.Label(subframe, text=f"Inferred Domain:")
+    label.pack(pady=5)
 
 
         

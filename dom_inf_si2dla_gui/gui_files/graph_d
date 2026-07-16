@@ -5,6 +5,6 @@ digraph graph_d {
 	0
 	1
 	2
-	1 -> 2 [label="PERF\n"]
-	0 -> 1 [label="prepare\nrub\ncast\ntouch\nlook_for\nface\nget_up_and_go_early\nreach_a_destination\nface_each_other\nbe_waterless\nrepay\n"]
+	0 -> 2 [label="insane\nlip\nslave\nchild\nbig\nfreeborn\nstar\ngazelle\nbrother\nwoman\nenvious\n"]
+	2 -> 1 [label="PL\n"]
 }

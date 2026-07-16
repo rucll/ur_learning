@@ -1,0 +1,780 @@
+t a d,A
+t a d t,B
+a,C
+t a d,D
+t,E
+t a t t a d,A A
+t a t t a d t,A B
+t a t a,A C
+t a t t a d,A D
+t a t t,A E
+t a d t t a d,B A
+t a d t t a d t,B B
+t a d t a,B C
+t a d t t a d,B D
+t a d t t,B E
+a t a d,C A
+a t a d t,C B
+a a,C C
+a t a d,C D
+a d,C E
+t a d t a d,D A
+t a d t a d t,D B
+t a d a,D C
+t a d t a d,D D
+t a d t,D E
+t t a d,E A
+t t a d t,E B
+t a,E C
+t t a d,E D
+t t,E E
+t a t t a t t a d,A A A
+t a t t a t t a d t,A A B
+t a t t a t a,A A C
+t a t t a t t a d,A A D
+t a t t a t t,A A E
+t a t t a d t t a d,A B A
+t a t t a d t t a d t,A B B
+t a t t a d t a,A B C
+t a t t a d t t a d,A B D
+t a t t a d t t,A B E
+t a t a t a d,A C A
+t a t a t a d t,A C B
+t a t a a,A C C
+t a t a t a d,A C D
+t a t a d,A C E
+t a t t a d t a d,A D A
+t a t t a d t a d t,A D B
+t a t t a d a,A D C
+t a t t a d t a d,A D D
+t a t t a d t,A D E
+t a t t t a d,A E A
+t a t t t a d t,A E B
+t a t t a,A E C
+t a t t t a d,A E D
+t a t t t,A E E
+t a d t t a t t a d,B A A
+t a d t t a t t a d t,B A B
+t a d t t a t a,B A C
+t a d t t a t t a d,B A D
+t a d t t a t t,B A E
+t a d t t a d t t a d,B B A
+t a d t t a d t t a d t,B B B
+t a d t t a d t a,B B C
+t a d t t a d t t a d,B B D
+t a d t t a d t t,B B E
+t a d t a t a d,B C A
+t a d t a t a d t,B C B
+t a d t a a,B C C
+t a d t a t a d,B C D
+t a d t a d,B C E
+t a d t t a d t a d,B D A
+t a d t t a d t a d t,B D B
+t a d t t a d a,B D C
+t a d t t a d t a d,B D D
+t a d t t a d t,B D E
+t a d t t t a d,B E A
+t a d t t t a d t,B E B
+t a d t t a,B E C
+t a d t t t a d,B E D
+t a d t t t,B E E
+a t a t t a d,C A A
+a t a t t a d t,C A B
+a t a t a,C A C
+a t a t t a d,C A D
+a t a t t,C A E
+a t a d t t a d,C B A
+a t a d t t a d t,C B B
+a t a d t a,C B C
+a t a d t t a d,C B D
+a t a d t t,C B E
+a a t a d,C C A
+a a t a d t,C C B
+a a a,C C C
+a a t a d,C C D
+a a d,C C E
+a t a d t a d,C D A
+a t a d t a d t,C D B
+a t a d a,C D C
+a t a d t a d,C D D
+a t a d t,C D E
+a t t a d,C E A
+a t t a d t,C E B
+a t a,C E C
+a t t a d,C E D
+a t t,C E E
+t a d t a t t a d,D A A
+t a d t a t t a d t,D A B
+t a d t a t a,D A C
+t a d t a t t a d,D A D
+t a d t a t t,D A E
+t a d t a d t t a d,D B A
+t a d t a d t t a d t,D B B
+t a d t a d t a,D B C
+t a d t a d t t a d,D B D
+t a d t a d t t,D B E
+t a d a t a d,D C A
+t a d a t a d t,D C B
+t a d a a,D C C
+t a d a t a d,D C D
+t a d a d,D C E
+t a d t a d t a d,D D A
+t a d t a d t a d t,D D B
+t a d t a d a,D D C
+t a d t a d t a d,D D D
+t a d t a d t,D D E
+t a d t t a d,D E A
+t a d t t a d t,D E B
+t a d t a,D E C
+t a d t t a d,D E D
+t a d t t,D E E
+t t a t t a d,E A A
+t t a t t a d t,E A B
+t t a t a,E A C
+t t a t t a d,E A D
+t t a t t,E A E
+t t a d t t a d,E B A
+t t a d t t a d t,E B B
+t t a d t a,E B C
+t t a d t t a d,E B D
+t t a d t t,E B E
+t a t a d,E C A
+t a t a d t,E C B
+t a a,E C C
+t a t a d,E C D
+t a d,E C E
+t t a d t a d,E D A
+t t a d t a d t,E D B
+t t a d a,E D C
+t t a d t a d,E D D
+t t a d t,E D E
+t t t a d,E E A
+t t t a d t,E E B
+t t a,E E C
+t t t a d,E E D
+t t t,E E E
+t a t t a t t a t t a d,A A A A
+t a t t a t t a t t a d t,A A A B
+t a t t a t t a t a,A A A C
+t a t t a t t a t t a d,A A A D
+t a t t a t t a t t,A A A E
+t a t t a t t a d t t a d,A A B A
+t a t t a t t a d t t a d t,A A B B
+t a t t a t t a d t a,A A B C
+t a t t a t t a d t t a d,A A B D
+t a t t a t t a d t t,A A B E
+t a t t a t a t a d,A A C A
+t a t t a t a t a d t,A A C B
+t a t t a t a a,A A C C
+t a t t a t a t a d,A A C D
+t a t t a t a d,A A C E
+t a t t a t t a d t a d,A A D A
+t a t t a t t a d t a d t,A A D B
+t a t t a t t a d a,A A D C
+t a t t a t t a d t a d,A A D D
+t a t t a t t a d t,A A D E
+t a t t a t t t a d,A A E A
+t a t t a t t t a d t,A A E B
+t a t t a t t a,A A E C
+t a t t a t t t a d,A A E D
+t a t t a t t t,A A E E
+t a t t a d t t a t t a d,A B A A
+t a t t a d t t a t t a d t,A B A B
+t a t t a d t t a t a,A B A C
+t a t t a d t t a t t a d,A B A D
+t a t t a d t t a t t,A B A E
+t a t t a d t t a d t t a d,A B B A
+t a t t a d t t a d t t a d t,A B B B
+t a t t a d t t a d t a,A B B C
+t a t t a d t t a d t t a d,A B B D
+t a t t a d t t a d t t,A B B E
+t a t t a d t a t a d,A B C A
+t a t t a d t a t a d t,A B C B
+t a t t a d t a a,A B C C
+t a t t a d t a t a d,A B C D
+t a t t a d t a d,A B C E
+t a t t a d t t a d t a d,A B D A
+t a t t a d t t a d t a d t,A B D B
+t a t t a d t t a d a,A B D C
+t a t t a d t t a d t a d,A B D D
+t a t t a d t t a d t,A B D E
+t a t t a d t t t a d,A B E A
+t a t t a d t t t a d t,A B E B
+t a t t a d t t a,A B E C
+t a t t a d t t t a d,A B E D
+t a t t a d t t t,A B E E
+t a t a t a t t a d,A C A A
+t a t a t a t t a d t,A C A B
+t a t a t a t a,A C A C
+t a t a t a t t a d,A C A D
+t a t a t a t t,A C A E
+t a t a t a d t t a d,A C B A
+t a t a t a d t t a d t,A C B B
+t a t a t a d t a,A C B C
+t a t a t a d t t a d,A C B D
+t a t a t a d t t,A C B E
+t a t a a t a d,A C C A
+t a t a a t a d t,A C C B
+t a t a a a,A C C C
+t a t a a t a d,A C C D
+t a t a a d,A C C E
+t a t a t a d t a d,A C D A
+t a t a t a d t a d t,A C D B
+t a t a t a d a,A C D C
+t a t a t a d t a d,A C D D
+t a t a t a d t,A C D E
+t a t a t t a d,A C E A
+t a t a t t a d t,A C E B
+t a t a t a,A C E C
+t a t a t t a d,A C E D
+t a t a t t,A C E E
+t a t t a d t a t t a d,A D A A
+t a t t a d t a t t a d t,A D A B
+t a t t a d t a t a,A D A C
+t a t t a d t a t t a d,A D A D
+t a t t a d t a t t,A D A E
+t a t t a d t a d t t a d,A D B A
+t a t t a d t a d t t a d t,A D B B
+t a t t a d t a d t a,A D B C
+t a t t a d t a d t t a d,A D B D
+t a t t a d t a d t t,A D B E
+t a t t a d a t a d,A D C A
+t a t t a d a t a d t,A D C B
+t a t t a d a a,A D C C
+t a t t a d a t a d,A D C D
+t a t t a d a d,A D C E
+t a t t a d t a d t a d,A D D A
+t a t t a d t a d t a d t,A D D B
+t a t t a d t a d a,A D D C
+t a t t a d t a d t a d,A D D D
+t a t t a d t a d t,A D D E
+t a t t a d t t a d,A D E A
+t a t t a d t t a d t,A D E B
+t a t t a d t a,A D E C
+t a t t a d t t a d,A D E D
+t a t t a d t t,A D E E
+t a t t t a t t a d,A E A A
+t a t t t a t t a d t,A E A B
+t a t t t a t a,A E A C
+t a t t t a t t a d,A E A D
+t a t t t a t t,A E A E
+t a t t t a d t t a d,A E B A
+t a t t t a d t t a d t,A E B B
+t a t t t a d t a,A E B C
+t a t t t a d t t a d,A E B D
+t a t t t a d t t,A E B E
+t a t t a t a d,A E C A
+t a t t a t a d t,A E C B
+t a t t a a,A E C C
+t a t t a t a d,A E C D
+t a t t a d,A E C E
+t a t t t a d t a d,A E D A
+t a t t t a d t a d t,A E D B
+t a t t t a d a,A E D C
+t a t t t a d t a d,A E D D
+t a t t t a d t,A E D E
+t a t t t t a d,A E E A
+t a t t t t a d t,A E E B
+t a t t t a,A E E C
+t a t t t t a d,A E E D
+t a t t t t,A E E E
+t a d t t a t t a t t a d,B A A A
+t a d t t a t t a t t a d t,B A A B
+t a d t t a t t a t a,B A A C
+t a d t t a t t a t t a d,B A A D
+t a d t t a t t a t t,B A A E
+t a d t t a t t a d t t a d,B A B A
+t a d t t a t t a d t t a d t,B A B B
+t a d t t a t t a d t a,B A B C
+t a d t t a t t a d t t a d,B A B D
+t a d t t a t t a d t t,B A B E
+t a d t t a t a t a d,B A C A
+t a d t t a t a t a d t,B A C B
+t a d t t a t a a,B A C C
+t a d t t a t a t a d,B A C D
+t a d t t a t a d,B A C E
+t a d t t a t t a d t a d,B A D A
+t a d t t a t t a d t a d t,B A D B
+t a d t t a t t a d a,B A D C
+t a d t t a t t a d t a d,B A D D
+t a d t t a t t a d t,B A D E
+t a d t t a t t t a d,B A E A
+t a d t t a t t t a d t,B A E B
+t a d t t a t t a,B A E C
+t a d t t a t t t a d,B A E D
+t a d t t a t t t,B A E E
+t a d t t a d t t a t t a d,B B A A
+t a d t t a d t t a t t a d t,B B A B
+t a d t t a d t t a t a,B B A C
+t a d t t a d t t a t t a d,B B A D
+t a d t t a d t t a t t,B B A E
+t a d t t a d t t a d t t a d,B B B A
+t a d t t a d t t a d t t a d t,B B B B
+t a d t t a d t t a d t a,B B B C
+t a d t t a d t t a d t t a d,B B B D
+t a d t t a d t t a d t t,B B B E
+t a d t t a d t a t a d,B B C A
+t a d t t a d t a t a d t,B B C B
+t a d t t a d t a a,B B C C
+t a d t t a d t a t a d,B B C D
+t a d t t a d t a d,B B C E
+t a d t t a d t t a d t a d,B B D A
+t a d t t a d t t a d t a d t,B B D B
+t a d t t a d t t a d a,B B D C
+t a d t t a d t t a d t a d,B B D D
+t a d t t a d t t a d t,B B D E
+t a d t t a d t t t a d,B B E A
+t a d t t a d t t t a d t,B B E B
+t a d t t a d t t a,B B E C
+t a d t t a d t t t a d,B B E D
+t a d t t a d t t t,B B E E
+t a d t a t a t t a d,B C A A
+t a d t a t a t t a d t,B C A B
+t a d t a t a t a,B C A C
+t a d t a t a t t a d,B C A D
+t a d t a t a t t,B C A E
+t a d t a t a d t t a d,B C B A
+t a d t a t a d t t a d t,B C B B
+t a d t a t a d t a,B C B C
+t a d t a t a d t t a d,B C B D
+t a d t a t a d t t,B C B E
+t a d t a a t a d,B C C A
+t a d t a a t a d t,B C C B
+t a d t a a a,B C C C
+t a d t a a t a d,B C C D
+t a d t a a d,B C C E
+t a d t a t a d t a d,B C D A
+t a d t a t a d t a d t,B C D B
+t a d t a t a d a,B C D C
+t a d t a t a d t a d,B C D D
+t a d t a t a d t,B C D E
+t a d t a t t a d,B C E A
+t a d t a t t a d t,B C E B
+t a d t a t a,B C E C
+t a d t a t t a d,B C E D
+t a d t a t t,B C E E
+t a d t t a d t a t t a d,B D A A
+t a d t t a d t a t t a d t,B D A B
+t a d t t a d t a t a,B D A C
+t a d t t a d t a t t a d,B D A D
+t a d t t a d t a t t,B D A E
+t a d t t a d t a d t t a d,B D B A
+t a d t t a d t a d t t a d t,B D B B
+t a d t t a d t a d t a,B D B C
+t a d t t a d t a d t t a d,B D B D
+t a d t t a d t a d t t,B D B E
+t a d t t a d a t a d,B D C A
+t a d t t a d a t a d t,B D C B
+t a d t t a d a a,B D C C
+t a d t t a d a t a d,B D C D
+t a d t t a d a d,B D C E
+t a d t t a d t a d t a d,B D D A
+t a d t t a d t a d t a d t,B D D B
+t a d t t a d t a d a,B D D C
+t a d t t a d t a d t a d,B D D D
+t a d t t a d t a d t,B D D E
+t a d t t a d t t a d,B D E A
+t a d t t a d t t a d t,B D E B
+t a d t t a d t a,B D E C
+t a d t t a d t t a d,B D E D
+t a d t t a d t t,B D E E
+t a d t t t a t t a d,B E A A
+t a d t t t a t t a d t,B E A B
+t a d t t t a t a,B E A C
+t a d t t t a t t a d,B E A D
+t a d t t t a t t,B E A E
+t a d t t t a d t t a d,B E B A
+t a d t t t a d t t a d t,B E B B
+t a d t t t a d t a,B E B C
+t a d t t t a d t t a d,B E B D
+t a d t t t a d t t,B E B E
+t a d t t a t a d,B E C A
+t a d t t a t a d t,B E C B
+t a d t t a a,B E C C
+t a d t t a t a d,B E C D
+t a d t t a d,B E C E
+t a d t t t a d t a d,B E D A
+t a d t t t a d t a d t,B E D B
+t a d t t t a d a,B E D C
+t a d t t t a d t a d,B E D D
+t a d t t t a d t,B E D E
+t a d t t t t a d,B E E A
+t a d t t t t a d t,B E E B
+t a d t t t a,B E E C
+t a d t t t t a d,B E E D
+t a d t t t t,B E E E
+a t a t t a t t a d,C A A A
+a t a t t a t t a d t,C A A B
+a t a t t a t a,C A A C
+a t a t t a t t a d,C A A D
+a t a t t a t t,C A A E
+a t a t t a d t t a d,C A B A
+a t a t t a d t t a d t,C A B B
+a t a t t a d t a,C A B C
+a t a t t a d t t a d,C A B D
+a t a t t a d t t,C A B E
+a t a t a t a d,C A C A
+a t a t a t a d t,C A C B
+a t a t a a,C A C C
+a t a t a t a d,C A C D
+a t a t a d,C A C E
+a t a t t a d t a d,C A D A
+a t a t t a d t a d t,C A D B
+a t a t t a d a,C A D C
+a t a t t a d t a d,C A D D
+a t a t t a d t,C A D E
+a t a t t t a d,C A E A
+a t a t t t a d t,C A E B
+a t a t t a,C A E C
+a t a t t t a d,C A E D
+a t a t t t,C A E E
+a t a d t t a t t a d,C B A A
+a t a d t t a t t a d t,C B A B
+a t a d t t a t a,C B A C
+a t a d t t a t t a d,C B A D
+a t a d t t a t t,C B A E
+a t a d t t a d t t a d,C B B A
+a t a d t t a d t t a d t,C B B B
+a t a d t t a d t a,C B B C
+a t a d t t a d t t a d,C B B D
+a t a d t t a d t t,C B B E
+a t a d t a t a d,C B C A
+a t a d t a t a d t,C B C B
+a t a d t a a,C B C C
+a t a d t a t a d,C B C D
+a t a d t a d,C B C E
+a t a d t t a d t a d,C B D A
+a t a d t t a d t a d t,C B D B
+a t a d t t a d a,C B D C
+a t a d t t a d t a d,C B D D
+a t a d t t a d t,C B D E
+a t a d t t t a d,C B E A
+a t a d t t t a d t,C B E B
+a t a d t t a,C B E C
+a t a d t t t a d,C B E D
+a t a d t t t,C B E E
+a a t a t t a d,C C A A
+a a t a t t a d t,C C A B
+a a t a t a,C C A C
+a a t a t t a d,C C A D
+a a t a t t,C C A E
+a a t a d t t a d,C C B A
+a a t a d t t a d t,C C B B
+a a t a d t a,C C B C
+a a t a d t t a d,C C B D
+a a t a d t t,C C B E
+a a a t a d,C C C A
+a a a t a d t,C C C B
+a a a a,C C C C
+a a a t a d,C C C D
+a a a d,C C C E
+a a t a d t a d,C C D A
+a a t a d t a d t,C C D B
+a a t a d a,C C D C
+a a t a d t a d,C C D D
+a a t a d t,C C D E
+a a t t a d,C C E A
+a a t t a d t,C C E B
+a a t a,C C E C
+a a t t a d,C C E D
+a a t t,C C E E
+a t a d t a t t a d,C D A A
+a t a d t a t t a d t,C D A B
+a t a d t a t a,C D A C
+a t a d t a t t a d,C D A D
+a t a d t a t t,C D A E
+a t a d t a d t t a d,C D B A
+a t a d t a d t t a d t,C D B B
+a t a d t a d t a,C D B C
+a t a d t a d t t a d,C D B D
+a t a d t a d t t,C D B E
+a t a d a t a d,C D C A
+a t a d a t a d t,C D C B
+a t a d a a,C D C C
+a t a d a t a d,C D C D
+a t a d a d,C D C E
+a t a d t a d t a d,C D D A
+a t a d t a d t a d t,C D D B
+a t a d t a d a,C D D C
+a t a d t a d t a d,C D D D
+a t a d t a d t,C D D E
+a t a d t t a d,C D E A
+a t a d t t a d t,C D E B
+a t a d t a,C D E C
+a t a d t t a d,C D E D
+a t a d t t,C D E E
+a t t a t t a d,C E A A
+a t t a t t a d t,C E A B
+a t t a t a,C E A C
+a t t a t t a d,C E A D
+a t t a t t,C E A E
+a t t a d t t a d,C E B A
+a t t a d t t a d t,C E B B
+a t t a d t a,C E B C
+a t t a d t t a d,C E B D
+a t t a d t t,C E B E
+a t a t a d,C E C A
+a t a t a d t,C E C B
+a t a a,C E C C
+a t a t a d,C E C D
+a t a d,C E C E
+a t t a d t a d,C E D A
+a t t a d t a d t,C E D B
+a t t a d a,C E D C
+a t t a d t a d,C E D D
+a t t a d t,C E D E
+a t t t a d,C E E A
+a t t t a d t,C E E B
+a t t a,C E E C
+a t t t a d,C E E D
+a t t t,C E E E
+t a d t a t t a t t a d,D A A A
+t a d t a t t a t t a d t,D A A B
+t a d t a t t a t a,D A A C
+t a d t a t t a t t a d,D A A D
+t a d t a t t a t t,D A A E
+t a d t a t t a d t t a d,D A B A
+t a d t a t t a d t t a d t,D A B B
+t a d t a t t a d t a,D A B C
+t a d t a t t a d t t a d,D A B D
+t a d t a t t a d t t,D A B E
+t a d t a t a t a d,D A C A
+t a d t a t a t a d t,D A C B
+t a d t a t a a,D A C C
+t a d t a t a t a d,D A C D
+t a d t a t a d,D A C E
+t a d t a t t a d t a d,D A D A
+t a d t a t t a d t a d t,D A D B
+t a d t a t t a d a,D A D C
+t a d t a t t a d t a d,D A D D
+t a d t a t t a d t,D A D E
+t a d t a t t t a d,D A E A
+t a d t a t t t a d t,D A E B
+t a d t a t t a,D A E C
+t a d t a t t t a d,D A E D
+t a d t a t t t,D A E E
+t a d t a d t t a t t a d,D B A A
+t a d t a d t t a t t a d t,D B A B
+t a d t a d t t a t a,D B A C
+t a d t a d t t a t t a d,D B A D
+t a d t a d t t a t t,D B A E
+t a d t a d t t a d t t a d,D B B A
+t a d t a d t t a d t t a d t,D B B B
+t a d t a d t t a d t a,D B B C
+t a d t a d t t a d t t a d,D B B D
+t a d t a d t t a d t t,D B B E
+t a d t a d t a t a d,D B C A
+t a d t a d t a t a d t,D B C B
+t a d t a d t a a,D B C C
+t a d t a d t a t a d,D B C D
+t a d t a d t a d,D B C E
+t a d t a d t t a d t a d,D B D A
+t a d t a d t t a d t a d t,D B D B
+t a d t a d t t a d a,D B D C
+t a d t a d t t a d t a d,D B D D
+t a d t a d t t a d t,D B D E
+t a d t a d t t t a d,D B E A
+t a d t a d t t t a d t,D B E B
+t a d t a d t t a,D B E C
+t a d t a d t t t a d,D B E D
+t a d t a d t t t,D B E E
+t a d a t a t t a d,D C A A
+t a d a t a t t a d t,D C A B
+t a d a t a t a,D C A C
+t a d a t a t t a d,D C A D
+t a d a t a t t,D C A E
+t a d a t a d t t a d,D C B A
+t a d a t a d t t a d t,D C B B
+t a d a t a d t a,D C B C
+t a d a t a d t t a d,D C B D
+t a d a t a d t t,D C B E
+t a d a a t a d,D C C A
+t a d a a t a d t,D C C B
+t a d a a a,D C C C
+t a d a a t a d,D C C D
+t a d a a d,D C C E
+t a d a t a d t a d,D C D A
+t a d a t a d t a d t,D C D B
+t a d a t a d a,D C D C
+t a d a t a d t a d,D C D D
+t a d a t a d t,D C D E
+t a d a t t a d,D C E A
+t a d a t t a d t,D C E B
+t a d a t a,D C E C
+t a d a t t a d,D C E D
+t a d a t t,D C E E
+t a d t a d t a t t a d,D D A A
+t a d t a d t a t t a d t,D D A B
+t a d t a d t a t a,D D A C
+t a d t a d t a t t a d,D D A D
+t a d t a d t a t t,D D A E
+t a d t a d t a d t t a d,D D B A
+t a d t a d t a d t t a d t,D D B B
+t a d t a d t a d t a,D D B C
+t a d t a d t a d t t a d,D D B D
+t a d t a d t a d t t,D D B E
+t a d t a d a t a d,D D C A
+t a d t a d a t a d t,D D C B
+t a d t a d a a,D D C C
+t a d t a d a t a d,D D C D
+t a d t a d a d,D D C E
+t a d t a d t a d t a d,D D D A
+t a d t a d t a d t a d t,D D D B
+t a d t a d t a d a,D D D C
+t a d t a d t a d t a d,D D D D
+t a d t a d t a d t,D D D E
+t a d t a d t t a d,D D E A
+t a d t a d t t a d t,D D E B
+t a d t a d t a,D D E C
+t a d t a d t t a d,D D E D
+t a d t a d t t,D D E E
+t a d t t a t t a d,D E A A
+t a d t t a t t a d t,D E A B
+t a d t t a t a,D E A C
+t a d t t a t t a d,D E A D
+t a d t t a t t,D E A E
+t a d t t a d t t a d,D E B A
+t a d t t a d t t a d t,D E B B
+t a d t t a d t a,D E B C
+t a d t t a d t t a d,D E B D
+t a d t t a d t t,D E B E
+t a d t a t a d,D E C A
+t a d t a t a d t,D E C B
+t a d t a a,D E C C
+t a d t a t a d,D E C D
+t a d t a d,D E C E
+t a d t t a d t a d,D E D A
+t a d t t a d t a d t,D E D B
+t a d t t a d a,D E D C
+t a d t t a d t a d,D E D D
+t a d t t a d t,D E D E
+t a d t t t a d,D E E A
+t a d t t t a d t,D E E B
+t a d t t a,D E E C
+t a d t t t a d,D E E D
+t a d t t t,D E E E
+t t a t t a t t a d,E A A A
+t t a t t a t t a d t,E A A B
+t t a t t a t a,E A A C
+t t a t t a t t a d,E A A D
+t t a t t a t t,E A A E
+t t a t t a d t t a d,E A B A
+t t a t t a d t t a d t,E A B B
+t t a t t a d t a,E A B C
+t t a t t a d t t a d,E A B D
+t t a t t a d t t,E A B E
+t t a t a t a d,E A C A
+t t a t a t a d t,E A C B
+t t a t a a,E A C C
+t t a t a t a d,E A C D
+t t a t a d,E A C E
+t t a t t a d t a d,E A D A
+t t a t t a d t a d t,E A D B
+t t a t t a d a,E A D C
+t t a t t a d t a d,E A D D
+t t a t t a d t,E A D E
+t t a t t t a d,E A E A
+t t a t t t a d t,E A E B
+t t a t t a,E A E C
+t t a t t t a d,E A E D
+t t a t t t,E A E E
+t t a d t t a t t a d,E B A A
+t t a d t t a t t a d t,E B A B
+t t a d t t a t a,E B A C
+t t a d t t a t t a d,E B A D
+t t a d t t a t t,E B A E
+t t a d t t a d t t a d,E B B A
+t t a d t t a d t t a d t,E B B B
+t t a d t t a d t a,E B B C
+t t a d t t a d t t a d,E B B D
+t t a d t t a d t t,E B B E
+t t a d t a t a d,E B C A
+t t a d t a t a d t,E B C B
+t t a d t a a,E B C C
+t t a d t a t a d,E B C D
+t t a d t a d,E B C E
+t t a d t t a d t a d,E B D A
+t t a d t t a d t a d t,E B D B
+t t a d t t a d a,E B D C
+t t a d t t a d t a d,E B D D
+t t a d t t a d t,E B D E
+t t a d t t t a d,E B E A
+t t a d t t t a d t,E B E B
+t t a d t t a,E B E C
+t t a d t t t a d,E B E D
+t t a d t t t,E B E E
+t a t a t t a d,E C A A
+t a t a t t a d t,E C A B
+t a t a t a,E C A C
+t a t a t t a d,E C A D
+t a t a t t,E C A E
+t a t a d t t a d,E C B A
+t a t a d t t a d t,E C B B
+t a t a d t a,E C B C
+t a t a d t t a d,E C B D
+t a t a d t t,E C B E
+t a a t a d,E C C A
+t a a t a d t,E C C B
+t a a a,E C C C
+t a a t a d,E C C D
+t a a d,E C C E
+t a t a d t a d,E C D A
+t a t a d t a d t,E C D B
+t a t a d a,E C D C
+t a t a d t a d,E C D D
+t a t a d t,E C D E
+t a t t a d,E C E A
+t a t t a d t,E C E B
+t a t a,E C E C
+t a t t a d,E C E D
+t a t t,E C E E
+t t a d t a t t a d,E D A A
+t t a d t a t t a d t,E D A B
+t t a d t a t a,E D A C
+t t a d t a t t a d,E D A D
+t t a d t a t t,E D A E
+t t a d t a d t t a d,E D B A
+t t a d t a d t t a d t,E D B B
+t t a d t a d t a,E D B C
+t t a d t a d t t a d,E D B D
+t t a d t a d t t,E D B E
+t t a d a t a d,E D C A
+t t a d a t a d t,E D C B
+t t a d a a,E D C C
+t t a d a t a d,E D C D
+t t a d a d,E D C E
+t t a d t a d t a d,E D D A
+t t a d t a d t a d t,E D D B
+t t a d t a d a,E D D C
+t t a d t a d t a d,E D D D
+t t a d t a d t,E D D E
+t t a d t t a d,E D E A
+t t a d t t a d t,E D E B
+t t a d t a,E D E C
+t t a d t t a d,E D E D
+t t a d t t,E D E E
+t t t a t t a d,E E A A
+t t t a t t a d t,E E A B
+t t t a t a,E E A C
+t t t a t t a d,E E A D
+t t t a t t,E E A E
+t t t a d t t a d,E E B A
+t t t a d t t a d t,E E B B
+t t t a d t a,E E B C
+t t t a d t t a d,E E B D
+t t t a d t t,E E B E
+t t a t a d,E E C A
+t t a t a d t,E E C B
+t t a a,E E C C
+t t a t a d,E E C D
+t t a d,E E C E
+t t t a d t a d,E E D A
+t t t a d t a d t,E E D B
+t t t a d a,E E D C
+t t t a d t a d,E E D D
+t t t a d t,E E D E
+t t t t a d,E E E A
+t t t t a d t,E E E B
+t t t a,E E E C
+t t t t a d,E E E D
+t t t t,E E E E

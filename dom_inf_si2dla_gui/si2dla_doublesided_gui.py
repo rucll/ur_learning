@@ -124,7 +124,8 @@ def execute_algorithm(D_list):
     for s in T_g.Q:
         graph_g.node("".join(s))
 
-    graph_g.node("qe", label = "qe \\n stout: " + T_g.stout["qe"][0])
+    graph_g.node("qe", label = "qt \\n stout: " + T_g.stout["qe"][0])
+    graph_g.node("qt", label = "qe")
         
 
     # if len(T_f.Q) == 1:

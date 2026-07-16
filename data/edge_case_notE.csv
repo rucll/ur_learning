@@ -1,0 +1,20 @@
+t a d,A
+t a d t,B
+a,C
+t a d,D
+t a t t a d,A A
+t a t t a d t,A B
+t a t a,A C
+t a t t a d,A D
+t a d t t a d,B A
+t a d t t a d t,B B
+t a d t a,B C
+t a d t t a d,B D
+a t a d,C A
+a t a d t,C B
+a a,C C
+a t a d,C D
+t a d t a d,D A
+t a d t a d t,D B
+t a d a,D C
+t a d t a d,D D

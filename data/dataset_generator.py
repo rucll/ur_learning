@@ -72,7 +72,7 @@ def dataset_generator(left_context, right_context, morphemes, input, output):
                 replace_string = str(left_context + " " + output + " " + right_context)
                
             replacement_value = str(dataset[i][1]).replace(find_string, replace_string)
-
+           
 
         #split by spaces, make into tuple inside the tuple
         split_value = tuple(replacement_value.split())
