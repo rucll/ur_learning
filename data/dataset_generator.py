@@ -12,9 +12,9 @@ contexts:
     # on the right = word-final
 
 application modes:
-    Simultaneous / input-local
-    Iterative left-to-right
-    Iterative right-to-left
+    simultaneous / input-local
+    iterative left-to-right
+    iterative right-to-left
 """
 
 import ast
@@ -159,13 +159,7 @@ def right_context_matches(symbols, end, right_context):
     return tuple(symbols[end:end + context_length]) == right_context
 
 
-def rule_matches_at(
-    symbols,
-    start,
-    target,
-    left_context,
-    right_context
-):
+def rule_matches_at(symbols, start, target, left_context, right_context):
     
     end = start + len(target)
 
