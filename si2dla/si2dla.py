@@ -1,12 +1,10 @@
 """An implementation SI2DLA of Hua & Jardine (2021).
 
   Written by Adam Jardine.
-
-  Modified by Jane Chandlee (22 Oct. 2021)
 """
 
 from utility.fst_object import *
-from ostia import *
+from utility.ostia import *
 from utility.helper import *
 
 
@@ -22,8 +20,8 @@ def suff_1(w):
 
 def get_OS(T,q):
     """Gets output 1-suffixes of state q in FST T"""
-    incoming = { tr for tr in T.E if tr[3] == q}
-    outs = { tr[2] for tr in incoming}
+    incoming = { tr for tr in T.E if tr[3] == q}    # n: tr[3] is the ending state of the edge
+    outs = { tr[2] for tr in incoming}  # n: tr[2] is the output string of the edge
     suffs = { suff_1(w) for w in outs}
     return suffs
 
@@ -34,7 +32,6 @@ def lncat(w,v):
         return w
     elif w.endswith(v):
         return w[0:-len(v)]
-        
 
 
 # Main algorithm
@@ -51,7 +48,7 @@ def si2dla(D,Rho,Sigma):
     print("  E:\t"+str(T_f.E))  # n: set of edges (starting state, input char, output string, ending state)
     print("  q0:\t"+str(T_f.qe))    # n: initial state
     print("  stout:\t"+str(T_f.stout)+"\n") # n: state outputs (state, output)
-    
+
     q1 = T_f.Q[0]   # n: state 1
     q2 = T_f.Q[1]   # n: state 2
 
@@ -86,8 +83,8 @@ def si2dla(D,Rho,Sigma):
            "qd" : OS[corr["qd"]]
     }
 
-    if len(IS["qe"]) > 1:   # n: removing duplicates from both def and env state suffixes
-        IS["qe"] = IS["qe"] - (IS["qe"] & IS["qd"])
+    if len(IS["qe"]) > 1:
+        IS["qe"] = IS["qe"] - (IS["qe"] & IS["qd"])  # n: removing duplicates from both def and env state
     IS["qd"] = IS["qd"] - (IS["qe"] & IS["qd"])
 
     print("ISs for T_g:\t"+str(IS)+"\n")
@@ -96,71 +93,42 @@ def si2dla(D,Rho,Sigma):
 
     for q in Q_g:
         for s in Sigma:
+            for r in Q_g:
+                if s in IS[r]:
+                    d_g[(q,s)] = r
 
-            # First modification: assume segments that are not input-suffixes to q_env should go to q_def.             
-            if s in IS["qe"]:
-                d_g[(q,s)] = "qe"
-            else:
-                d_g[(q,s)] = "qd"
-
-            # Original code:
-            #for r in Q_g:
-            #    if s in IS[r]:
-            #        d_g[(q,s)] = r
-
-    print("d_g:\t"+str(d_g)+"\n")
+    print("d_g:\t"+str(d_g))    # n: (start state, suffix) : end state based on suffix
 
     o_g = {}
 
-    for s in Sigma:
+    for s in Sigma:   # check for no change
         o_g[("qd",s)] = s
 
-        #print('s',s)
+        d_tr = [ tr for tr in T_f.E if tr[0] == corr["qd"] and tr[2][0] == s ][0]
 
-        # Second modification: first check whether a transition on s even exists... 
-        find_tran = [ tr for tr in T_f.E if tr[0] == corr["qd"] and tr[2][0] == s ]
-        if find_tran:        
+        w_d = d_tr[2]
 
-            #...if it does, follow original code
-            d_tr = find_tran[0]
-            #print('d_tr',d_tr)
+        w_e = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]][0]
 
-            w_d = d_tr[2]
+        print("w_d for "+s+":\t"+w_d)
+        print("w_e for "+s+":\t"+w_e+"\n")
 
-            # (likewise here)
-            find_other_tran = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]]
-            if find_other_tran:
-                w_e = find_other_tran[0]
-            
-            # if no transition exists, assume the output is identity
-            else:
-                w_e = s
+        w_s = lncat(w_e,w_d[1:])
 
-            print("w_d for "+s+":\t"+w_d)
-            print("w_e for "+s+":\t"+w_e+"\n")
-            
-            w_s = lncat(w_e,w_d[1:])
-            if not w_s:
-                w_s = s
-            #print('w_s', w_s)
+        o_g[("qe",s)] = w_s
 
-            o_g[("qe",s)] = w_s
+        if s != w_s: #This is lns 2-3 from Alg 3
+            tau = s
+            w_tau = w_s
 
-            if s != w_s: #This is lns 2-3 from Alg 3
-                tau = s
-                w_tau = w_s
-                
-        # if no transition exists, assume the output is identity
-        else:
-            o_g[("qe",s)] = s
-            
+
     # Translate transitions into fst_object FST format
     E_g = []
 
     for (q,s) in d_g.keys():
         E_g.append((q,s,o_g[(q,s)],d_g[(q,s)]))
 
-    #print("E_g:\t"+str(E_g))
+    # print("E_g:\t"+str(E_g))
 
     T_g = FST(Rho,Sigma)
     T_g.Q = Q_g
@@ -205,7 +173,7 @@ def si2dla(D,Rho,Sigma):
     print("  q0:\t"+str(T_f.qe))
     print("  stout:\t"+str(T_f.stout)+"\n")
 
-    return (T_f,T_g) 
+    return (T_f,T_g)
 
 
 

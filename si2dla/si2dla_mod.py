@@ -6,7 +6,7 @@
 """
 
 from utility.fst_object import *
-from ostia import *
+from utility.ostia import *
 from utility.helper import *
 
 
@@ -22,8 +22,7 @@ def suff_1(w):
 
 def get_OS(T,q):
     """Gets output 1-suffixes of state q in FST T"""
-    print(tuple(T.E[1]))
-    incoming = { tuple(tr) for tr in T.E if tr[3] == q}
+    incoming = { tr for tr in T.E if tr[3] == q}
     outs = { tr[2] for tr in incoming}
     suffs = { suff_1(w) for w in outs}
     return suffs
@@ -35,9 +34,6 @@ def lncat(w,v):
         return w
     elif w.endswith(v):
         return w[0:-len(v)]
-    else: 
-        print ("using fake lncat")
-        return w
         
 
 
@@ -48,20 +44,7 @@ def si2dla(D,Rho,Sigma):
 
     print("Learning from "+str(D)+"\n")
 
-    # T_f = ostia(D,Rho,Sigma)
-
-    T_f = FST(['root1', 'root2', 'root3', 'suff1', 'suff2'], ['t', 'a', 'd'])
-    T_f.Q = [[], ['root1'], ['root2'], ['root1', 'suff1']]
-    T_f.qe = []
-    T_f.E = [
-        [[], 'root1', ['t', 'a', 'd'], ['root1']], 
-        [[], 'root2', ['t', 'a', 't'], ['root2']], 
-        [[], 'root3', ['t', 'a', 'd', 'a'], ['root2']], 
-        [['root1'], 'suff1', ['d', 'a'], ['root1', 'suff1']], 
-        [['root2'], 'suff1', ['t', 'a'], ['root1', 'suff1']], 
-        [['root1'], 'suff2', ['d', 'a'], ['root1', 'suff1']], 
-        [['root2'], 'suff2', [' d', 'a'], ['root1', 'suff1']],
-        ]
+    T_f = ostia(D,Rho,Sigma)
 
     print("Initial hypothesis for T_f:")
     print("  Q:\t"+str(T_f.Q))  # n: set of states
@@ -97,7 +80,7 @@ def si2dla(D,Rho,Sigma):
         rroc[q1] = "qd"
 
     print("corr:\t\t"+str(corr))
-    print("rroc:\t\t"+str(rroc))
+    # print("rroc:\t\t"+str(rroc))
 
     IS = { "qe" : OS[corr["qe"]], # n: (essentially deciding which suffixes are based on environment)
            "qd" : OS[corr["qd"]]
@@ -132,27 +115,23 @@ def si2dla(D,Rho,Sigma):
     for s in Sigma:
         o_g[("qd",s)] = s
 
-        print('s',s)
+        #print('s',s)
 
         # Second modification: first check whether a transition on s even exists... 
         find_tran = [ tr for tr in T_f.E if tr[0] == corr["qd"] and tr[2][0] == s ]
-        print('find_tran', find_tran)
         if find_tran:        
 
             #...if it does, follow original code
             d_tr = find_tran[0]
-            print('d_tr',d_tr)
+            #print('d_tr',d_tr)
 
             w_d = d_tr[2]
 
             # (likewise here)
-            find_other_tran = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]]  ## issue is that it's not finding backwards transition but this can be traced back to ostia
-            print('find_other_tran', find_other_tran)
+            find_other_tran = [ tr[2] for tr in T_f.E if tr[0] == corr["qe"] and tr[1] == d_tr[1]]
             if find_other_tran:
                 w_e = find_other_tran[0]
             
-           
-           ##### error section ####
             # if no transition exists, assume the output is identity
             else:
                 w_e = s
@@ -160,7 +139,7 @@ def si2dla(D,Rho,Sigma):
             print("w_d for "+s+":\t"+w_d)
             print("w_e for "+s+":\t"+w_e+"\n")
             
-            w_s = lncat(w_e,w_d[1:]) ## all leads back to the lncat issue!!
+            w_s = lncat(w_e,w_d[1:])
             if not w_s:
                 w_s = s
             #print('w_s', w_s)
@@ -170,12 +149,6 @@ def si2dla(D,Rho,Sigma):
             if s != w_s: #This is lns 2-3 from Alg 3
                 tau = s
                 w_tau = w_s
-            else:
-                tau = ''
-                w_tau = '' 
-                        ##### ATTEMPT###
-            
-            ##### error section ####
                 
         # if no transition exists, assume the output is identity
         else:
@@ -213,7 +186,7 @@ def si2dla(D,Rho,Sigma):
     for (q,rho,w,r) in T_f.E:
         if q == corr["qd"]:
             if suff_1(w) not in IS[rroc[r]]:
-                w = lncat(w,w_tau)+tau   ## another error section : basically just lncat
+                w = lncat(w,w_tau)+tau
         new_E.append((q,rho,w,q)) #Step 1 of merging is here too
 
     T_f.E = new_E
@@ -251,8 +224,7 @@ def si2dla_ex(D,Rho,Sigma):
 
     q1 = T_f.Q[0]
     q2 = T_f.Q[1]
-    
-    # error check in here
+
     OS = { q1 : get_OS(T_f,q1) | {""},
            q2 : get_OS(T_f,q2)
     }
@@ -294,13 +266,9 @@ def si2dla_ex(D,Rho,Sigma):
 
     for q in Q_g:
         for s in Sigma:
-            if s in IS["qe"]:
-                d_g[(q,s)] = "qe"
-            else:
-                d_g[(q,s)] = "qd"
-            # for r in Q_g:
-            #     if s in IS[r]:
-            #         d_g[(q,s)] = r
+            for r in Q_g:
+                if s in IS[r]:
+                    d_g[(q,s)] = r
 
     # print("d_g:\t"+str(d_g))
 

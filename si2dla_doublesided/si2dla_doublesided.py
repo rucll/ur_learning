@@ -2,7 +2,7 @@
 SI2DLA for double sided contexts
 """
 from utility.fst_object import *
-from ostia import *
+from utility.ostia import *
 from utility.helper import *
 
 

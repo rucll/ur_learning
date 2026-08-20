@@ -1,7 +1,7 @@
-from si2dla import *
-from so2dla import *
-from fsi2dla import *
-from idla import *
+from si2dla.si2dla import *
+from inactive.so2dla import *
+from inactive.fsi2dla import *
+from inactive.idla import *
 
 ## ISL data
 
