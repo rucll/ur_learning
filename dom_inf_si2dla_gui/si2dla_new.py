@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 from utility.fst_object import *
-from ostia_d import *
+from utility.ostia_d import *
 from utility.helper import *
 
 
