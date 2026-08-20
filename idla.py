@@ -2,7 +2,7 @@
 # Written by Ben Evans
 
 from utility.fst_object import FST
-from ostia import *
+from utility.ostia import *
 from utility.helper import *
 import types
 

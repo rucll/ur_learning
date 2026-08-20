@@ -6,7 +6,7 @@
 """
 
 from utility.fst_object import *
-from ostia import *
+from utility.ostia import *
 from utility.helper import *
 from features import *
 
