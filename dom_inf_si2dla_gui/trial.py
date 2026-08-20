@@ -6,7 +6,7 @@ from ostia_d import ostia_d
 from k_tssi import *
 from domain_inference import *
 from utility.helper import *
-from parser import parse_csv
+from utility.parser import parse_csv
 
 
 def read_alphabet(D_list):   

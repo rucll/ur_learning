@@ -8,7 +8,7 @@ from domain_inference import infer_domain
 import graphviz
 from PIL import ImageTk, Image
 import re
-from parser import parse_csv
+from utility.parser import parse_csv
 import os
 import pathlib
 

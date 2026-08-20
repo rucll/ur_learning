@@ -3,5 +3,5 @@ digraph graph_d {
 	node [fillcolor=gray90 fontname="Times-Roman" fontsize="12pt" shape=circle]
 	edge [arrowsize=0.6 fontname="Times-Roman" fontsize="12pt" penwidth=0.6]
 	1
-	1 -> 1 [label="B\nD\nA\nC\n"]
+	1 -> 1 [label="C\nA\nD\nB\n"]
 }
