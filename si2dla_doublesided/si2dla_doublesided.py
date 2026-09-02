@@ -256,6 +256,7 @@ def si2dla(D,Rho,Sigma):
 
     print("E_f after deletions: "+str(T_f.E)+"\n")
 
+    return T_f, T_g
 
     #*** modify_T_f
 
