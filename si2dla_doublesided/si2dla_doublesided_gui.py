@@ -4,7 +4,6 @@ from tkinter import scrolledtext
 from tkinter import filedialog
 from ast import literal_eval
 from si2dla_doublesided import *
-from domain_inference import infer_domain
 import graphviz
 from PIL import ImageTk, Image
 import re
