@@ -1,23 +1,25 @@
 # ur_learning
-Algorithms based on subregular hypothesis for induction of phonological grammars and sets of underlying forms from morphophonological paradigms. (In progress.)
+
+This is a repository of implementations of algorithms for the induction of phonological grammars and underlying forms from morphophonological paradigms. 
+These learners are based on the _subregular hypothesis_ that there are strong computational restrictions on phonological cognition (see [Heinz 2018](http://jeffreyheinz.net/papers/Heinz-CNPG-2016.pdf)).
+This work is part of the research supported by [NSF Grant #2416184](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2416184) (PIs: [Jane Chandlee](https://www.haverford.edu/users/jchandlee), [Jeffrey Heinz](https://www.jeffreyheinz.net/), and [Adam Jardine](https://adamjardine.net/))
+
+The first of these algorithms, the Simplex Input Strictly 2-Local Decomposition Learning Algorithm of [Hua & Jardine 2021](https://github.com/rucll/ur_learning/blob/main/papers/huajardine2021si2dla.pdf) is implemented in [si2dla.py](si2dla.py).
+
+For a user-friendly version with a graphical interface, run `si2dla_gui.py` in the `/dom_inf_si2dla_gui/` folder.
+
+Guides for can be found in the `/documentation/` folder.
+
+Example datasets can be found in the `/data/` folder.
+There is also a utility `/data/dataset_generator.py` for generating your own datasets for testing.
+
+This code was developed at the Rutgers University [Computational Linguistics Lab](https://rucll.github.io/). Contributors:
+
+- [Adam Jardine](https://adamjardine.net/)
+- Neha Jeyaram
+- Manish Kandepalli
+- Ezra Anthony
+- Eli Franz
+- Ben Evans
 
 `ostia.py`, `fst_object.py`, and `helper.py` courtesy of [@alenaks](https://github.com/alenaks)'s SigmaPie package.
-
-The Simplex Input Strictly 2-Local Decomposition Learning Algorithm of [Hua & Jardine 2021](https://github.com/rucll/ur_learning/blob/main/papers/huajardine2021si2dla.pdf) is implemented in [si2dla.py](si2dla.py).
-
-The Input (Strictly Local) Decomposition Learning Algorithm (To Appear) is implemented in [idla.py](idla.py).
-
-Other files are experimental variations on this algorithm:
-
-File		| Description
-----------------|-------------
-`so2dla.py`	| An [Output Strictly 2-Local](https://aclanthology.org/W15-2310/) version of the SI2DLA
-`fsi2dla.py`	| A featural version of the SI2DLA
-`features.py`	| Some code to work with features
-`kcxt.py`	| Classify PBase pattern data by k-contexts
-
-The file `testing.py` contains some test data sets; this can be run from the command line to see how the algorithms perform.
-
-The folder `dom_inf_si2dla_gui` contains a domain inference version of SI2DLA and a corresponding GUI. To use, run `si2dla_gui.py` from the folder and upload a properly formatted .csv data set. Sample data sets are included in the `data` folder under `demo_data`.
-
-This work is supported by [NSF Grant #2416184](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2416184).
