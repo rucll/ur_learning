@@ -6,11 +6,12 @@ This work is part of the research supported by [NSF Grant #2416184](https://www.
 
 The Simplex Input Strictly 2-Local Decomposition Learning Algorithm of [Hua & Jardine 2021](https://github.com/rucll/ur_learning/blob/main/papers/huajardine2021si2dla.pdf) is implemented in [si2dla.py](si2dla.py).
 
-For a user-friendly version with a graphical interface, run `si2dla_gui.py` in the [/dom_inf_si2dla_gui/](`https://github.com/rucll/ur_learning/tree/main/dom_inf_si2dla_gui`) folder.
+For a user-friendly version with a graphical interface, run `si2dla_gui.py` in the `/dom_inf_si2dla_gui/` folder.
 
-Guides for can be found in the [/documentation/] folder.
+Guides for can be found in the `/documentation/` folder.
 
-Example datasets can be found in the [/data/](https://github.com/rucll/ur_learning/tree/main/data) folder.
+Example datasets can be found in the `/data/` folder.
+There is also a utility `/data/dataset_generator.py` for generating your own datasets for testing.
 
 This code was developed at the Rutgers University [Computational Linguistics Lab](https://rucll.github.io/). Contributors:
 
